@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'users/show'
   root 'static_pages#top'
   
   devise_for :users
