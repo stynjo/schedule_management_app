@@ -1,22 +1,31 @@
 <template>
   <div id="app">
-    <p>{{ message }}</p>
+   <v-calendar
+   @dayclick='dayClicked'></v-calendar> 
+    {{ selectedDay }}
   </div>
 </template>
 
+
 <script>
-export default {
-  data: function () {
-    return {
-      message: "Hello Vue!"
+  export default {
+    data() {
+      return { 
+        selectedDay: null
+      }
+    },
+    methods: {
+      dayClicked(day) {
+        this.selectedDay = day.ariaLabel;
+      }
     }
   }
-}
 </script>
 
-<style scoped>
-p {
-  font-size: 2em;
+<style>
+#app {
   text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
 }
 </style>

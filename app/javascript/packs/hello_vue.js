@@ -8,6 +8,9 @@
 import Vue from 'vue'
 import App from '../app.vue'
 
+import VCalendar from 'v-calendar';
+Vue.use(VCalendar);
+
 document.addEventListener('DOMContentLoaded', () => {
   const app = new Vue({
     render: h => h(App)
