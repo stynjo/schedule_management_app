@@ -2,7 +2,7 @@
   <div id="app">
    <v-calendar
    @dayclick='dayClicked'></v-calendar> 
-    {{ selectedDay }}
+    {{ reservation_date }}
   </div>
 </template>
 
@@ -11,12 +11,13 @@
   export default {
     data() {
       return { 
-        selectedDay: null
+        reservation_date: null,
+        resavation_time: ''
       }
     },
     methods: {
       dayClicked(day) {
-        this.selectedDay = day.ariaLabel;
+        this.reservation_date = day
       }
     }
   }
