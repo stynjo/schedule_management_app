@@ -4,7 +4,9 @@ Rails.application.routes.draw do
                                     sessions: 'users/sessions' }
   root 'static_pages#top'
                      
-  resources :attendances                                  
-  resources :users
+                                 
+  resources :users 
+  resources :attendances   
+  resources :resereves
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
