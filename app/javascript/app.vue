@@ -6,14 +6,14 @@
     <p v-if="timeDisplay == true">
       
       <vue-timepicker
-        v-model="inputStartTime"
+        v-model="reservationStartTime"
         :hour-range="[18, 24, [18, 24]]"
         :minute-range="[0, 30]"
         hide-disabled-hours
         hide-disabled-minutes></vue-timepicker>
       ~
       <vue-timepicker
-        v-model="inputEndTime"
+        v-model="reservationEndTime"
         :hour-range="[18, 24, [18, 24]]"
         :minute-range="[0, 30]"
         hide-disabled-hours
@@ -31,8 +31,8 @@ export default {
   data() {
     return { 
       reservationDate: null,
-      inputStartTime: '',
-      inputEndTime: '',
+      reservatioStartTime: '',
+      reservatioEndTime: '',
       timeDisplay: false,
     }
   },
@@ -42,9 +42,9 @@ export default {
       this.timeDisplay = true
     },
     createReservation() {
-      let fromDate = new Date(`${this.reservationDate} ${this.inputStartTime}`)
+      let fromDate = new Date(`${this.reservationDate} ${this.reservationStartTime}`)
       let fromTimestamp = fromDate.getTime();
-      let toDate = new Date(`${this.reservationDate} ${this.inputEndTime}`)
+      let toDate = new Date(`${this.reservationDate} ${this.reservationEndTime}`)
       let toTimestamp = toDate.getTime();
       console.log('test')
     }

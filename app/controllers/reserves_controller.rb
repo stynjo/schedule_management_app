@@ -8,6 +8,6 @@ class ReservesController < ApplicationController
     
     private
       def resereve_params
-        params.require(:reserve).permit(:reservation_date, :number_of_people, :table_name)
+        params.require(:reserve).permit(:reservation_date, :number_of_people, :reservation_start_time, :reservation_end_time)
       end
 end
