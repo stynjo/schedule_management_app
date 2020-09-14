@@ -1,4 +1,5 @@
 class ReservesController < ApplicationController
+  protect_from_forgery with: :null_session
     def create
       @reserve = Reserve.new(resereve_params)
       @reserve.save
@@ -8,6 +9,6 @@ class ReservesController < ApplicationController
     
     private
       def resereve_params
-        params.permit(:reservation_date, :reservation_start_time, :reservation_end_time)
+        params.require(:reserve).permit(:reservation_date, :reservation_start_time, :reservation_end_time)
       end
 end

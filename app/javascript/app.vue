@@ -4,7 +4,7 @@
    @dayclick='dayClicked'></v-calendar> 
     {{ reservationDate }}
     <p v-if="timeDisplay == true">
-      
+
       <vue-timepicker
         v-model="inputStartTime"
         :hour-range="[18, 24, [18, 24]]"
@@ -45,10 +45,8 @@ export default {
       this.timeDisplay = true
     },
     createReservation() {
-      let fromDate = new Date(`${this.reservationDate} ${this.inputStartTime}`)
-      this.reservationStartTime = fromDate.getTime();
-      let toDate = new Date(`${this.reservationDate} ${this.inputEndTime}`)
-       this.reservationEndTime = toDate.getTime();
+      this.reservationStartTime = new Date(`${this.reservationDate} ${this.inputStartTime}`).toLocaleString({ timeZone: 'Asia/Tokyo' });
+      this.reservationEndTime = new Date(`${this.reservationDate} ${this.inputEndTime}`).toLocaleString({ timeZone: 'Asia/Tokyo' });
       axios.post(`/reserves/`, {reservation_date: this.reservationDate, reservation_start_time: this.reservationStartTime, reservation_end_time: this.reservationEndTime})
        .then(res => {
           console.log(res.data);
