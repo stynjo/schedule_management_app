@@ -48,8 +48,8 @@ export default {
       this.timeDisplay = true
     },
     createReservation() {
-      this.reservationStartTime = new Date(`${this.reservationDate} ${this.inputStartTime}`).toLocaleString({ timeZone: 'Asia/Tokyo' });
-      this.reservationEndTime = new Date(`${this.reservationDate} ${this.inputEndTime}`).toLocaleString({ timeZone: 'Asia/Tokyo' });
+      this.reservationStartTime = (`${this.reservationDate} ${this.inputStartTime}`)
+      this.reservationEndTime = (`${this.reservationDate} ${this.inputEndTime}`)
       axios.post(`/reserves/`, {reservation_date: this.reservationDate, reservation_start_time: this.reservationStartTime, reservation_end_time: this.reservationEndTime})
        .then(res => {
           console.log(res.data);
