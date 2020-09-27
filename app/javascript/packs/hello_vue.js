@@ -7,15 +7,19 @@
 
 import Vue from 'vue'
 import App from '../app.vue'
+import VCalendar from 'v-calendar'
+//import { csrfToken } from 'rails-ujs'
+//import VueAxiosPlugin from 'plugins/vue-axios.js'
+/*global axios */
+//Vue.use(VueAxiosPlugin, { axios: axios, csrfToken: csrfToken })
 
-import VCalendar from 'v-calendar';
 Vue.use(VCalendar);
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('turbolinks:load', () => {
   const app = new Vue({
     render: h => h(App)
-  }).$mount()
-  document.body.appendChild(app.$el)
+  }).$mount('#app');
+  
 
   console.log(app)
 })
