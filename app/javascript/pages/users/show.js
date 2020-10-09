@@ -6,7 +6,7 @@
 // All it does is render <div>Hello Vue</div> at the bottom of the page.
 
 import Vue from 'vue'
-import App from '../app.vue'
+import App from './show.vue'
 import VCalendar from 'v-calendar'
 //import { csrfToken } from 'rails-ujs'
 //import VueAxiosPlugin from 'plugins/vue-axios.js'
@@ -16,14 +16,13 @@ import VCalendar from 'v-calendar'
 
 Vue.use(VCalendar);
 
+console.log("test12345test");
 
-console.log("testtest")
-
-document.addEventListener('turbolinks:load', () => {
+document.addEventListener('DOMContentLoaded', () => {
   const app = new Vue({
     render: h => h(App)
   }).$mount('#app');
-  console.log(App)
+  console.log("test12345test");
 })
 
 

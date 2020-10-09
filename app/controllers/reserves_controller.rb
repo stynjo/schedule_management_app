@@ -15,10 +15,8 @@ class ReservesController < ApplicationController
       (reserve.reservation_start_time.hour..reserve.reservation_end_time.hour).each do |hour|
         reserve_time_hash[hour.to_s] += reserve.number_of_people
       end
-      @reserve_times = reserve_time_hash.values
-         
+        @reserve_times = reserve_time_hash.values.to_json
       end
-      
     end
   
     
