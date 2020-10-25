@@ -17,7 +17,6 @@ import VCalendar from 'v-calendar'
 Vue.use(VCalendar);
 
 
-console.log("testtest")
 
 document.addEventListener('turbolinks:load', () => {
   const app = new Vue({

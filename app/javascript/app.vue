@@ -21,9 +21,7 @@
         <p>予約人数<input type="number" v-model="numberOfPeople">  名</p>
     <p><input type="submit" value="登録する" v-on:click="createReservation"></p>
      
-    
-    
-  
+  {{ this.getReserveData  }}
   </div>
  
 </template>
@@ -38,9 +36,10 @@ import axios from 'axios';
 const token = document.getElementsByName('csrf-token')[0].getAttribute('content')
 axios.defaults.headers.common['X-CSRF-Token'] = token
 
-
+/*global $*/
 
 export default {
+  props: ['reserve_times'],
   data() {
     return { 
       reservationDate: null,
@@ -57,6 +56,16 @@ export default {
     dayClicked(day) {
       this.reservationDate = day.id
       this.timeDisplay = true
+      axios.get(`/reserves/`, {
+        params: {
+          reservationDate: this.reservationDate
+        }
+      })
+      .then(res => {
+        console.log(res.data)
+        this.getReserveData = res.data
+      });
+      
     },
     createReservation() {
       this.reservationStartTime = (`${this.reservationDate} ${this.inputStartTime}`)
@@ -75,7 +84,6 @@ export default {
     'vue-timepicker': VueTimepicker,
     'radar-chart': Chart
   },
-  
 }
 </script>
 
