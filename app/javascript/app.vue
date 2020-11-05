@@ -65,7 +65,7 @@ export default {
       })
       .then(res => {
         console.log(res.data)
-        this.reserveData = res.data
+        this.updateChartData(res.data)
       });
     },
     createReservation() {
@@ -80,24 +80,29 @@ export default {
           console.log(res.data);
     　　});
     },
-    fillData () {
+    updateChartData(reserveData) {
       this.chartData = {
-        labels: [this.getRandomInt(), this.getRandomInt()],
+        labels: ['18時', '19時', '20時', '21時', '22時', '23時'],
         datasets: [
           {
-            label: 'Data One',
-            backgroundColor: '#f87979',
-            data: [this.getRandomInt(), this.getRandomInt()]
-          }, {
-            label: 'Data One',
-            backgroundColor: '#f87979',
-            data: [this.getRandomInt(), this.getRandomInt()]
+            label: 'Bar Dataset',
+            data: reserveData,
+            backgroundColor:
+              'rgba(255, 99, 132, 0.2)',
+            borderColor:
+              'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+          },
+          {
+            label: 'Line Dataset',
+            data: [30, 50, 70, 100, 120, 150],
+            borderColor: '#CFD8DC',
+            fill: false,
+            type: 'line',
+            lineTension: 0.3,
           }
         ]
       }
-    },
-    getRandomInt () {
-      return Math.floor(Math.random() * (50 - 5 + 1)) + 5
     }
   },
   components: {
@@ -105,7 +110,7 @@ export default {
     'radar-chart': Chart
   },
   mounted() {
-    this.fillData()
+    this.updateChartData({})
   }
 }
 </script>
