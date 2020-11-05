@@ -21,7 +21,7 @@
         <p>予約人数<input type="number" v-model="numberOfPeople">  名</p>
     <p><input type="submit" value="登録する" v-on:click="createReservation"></p>
      
-    <radar-chart class="chart_bar" :chart_data="getReserveData"></radar-chart> 
+    <radar-chart class="chart_bar" :chart-data="chartData"></radar-chart> 
     
   </div>
  
@@ -50,7 +50,8 @@ export default {
       reservationStartTime: null,
       reservationEndTime: null,
       numberOfPeople: '',
-      getReserveData: ''
+      reserveData: '',
+      chartData: {},
     }
   },
   methods: {
@@ -64,9 +65,8 @@ export default {
       })
       .then(res => {
         console.log(res.data)
-        this.getReserveData = res.data
+        this.reserveData = res.data
       });
-      
     },
     createReservation() {
       this.reservationStartTime = (`${this.reservationDate} ${this.inputStartTime}`)
@@ -79,12 +79,34 @@ export default {
        .then(res => {
           console.log(res.data);
     　　});
+    },
+    fillData () {
+      this.chartData = {
+        labels: [this.getRandomInt(), this.getRandomInt()],
+        datasets: [
+          {
+            label: 'Data One',
+            backgroundColor: '#f87979',
+            data: [this.getRandomInt(), this.getRandomInt()]
+          }, {
+            label: 'Data One',
+            backgroundColor: '#f87979',
+            data: [this.getRandomInt(), this.getRandomInt()]
+          }
+        ]
+      }
+    },
+    getRandomInt () {
+      return Math.floor(Math.random() * (50 - 5 + 1)) + 5
     }
   },
   components: {
     'vue-timepicker': VueTimepicker,
     'radar-chart': Chart
   },
+  mounted() {
+    this.fillData()
+  }
 }
 </script>
 
