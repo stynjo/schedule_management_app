@@ -21,7 +21,8 @@
         <p>予約人数<input type="number" v-model="numberOfPeople">  名</p>
     <p><input type="submit" value="登録する" v-on:click="createReservation"></p>
      
-  {{ this.getReserveData  }}
+    <radar-chart class="chart_bar" :chart_data="getReserveData"></radar-chart> 
+    
   </div>
  
 </template>
@@ -89,8 +90,12 @@ export default {
 
 <style>
 #app {
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
 }
+.v-calendar {
+   width: 820px;
+   height: 360px;
+}
+.chart_bar {
+  margin: 180px;
+} 
 </style>
