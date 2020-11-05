@@ -57,6 +57,9 @@ export default {
   methods: {
     dayClicked(day) {
       this.reservationDate = day.id
+      this.getReservations()
+    },
+    getReservations() {
       this.timeDisplay = true
       axios.get(`/reserves/`, {
         params: {
@@ -110,7 +113,9 @@ export default {
     'radar-chart': Chart
   },
   mounted() {
-    this.updateChartData({})
+    let today = new Date();
+    this.reservationDate = `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`
+    this.getReservations()
   }
 }
 </script>
