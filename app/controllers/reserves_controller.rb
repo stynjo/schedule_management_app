@@ -8,7 +8,9 @@ class ReservesController < ApplicationController
     end
     
     def index
-      @reservation_date = Reserve.where(params[reservation_date: :reservationDate])
+      @reservation_date_string = params[:reservationDate]
+      @change_reservation_date = @reservation_date_string.in_time_zone
+      @reservation_date = Reserve.where(reservation_date: @change_reservation_date.all_day)
        # Hash#valuesはkeyの追加順で生成されるので、事前にhashを作ってしまう
       reserve_time_hash = %w[18 19 20 21 22 23].map { |i| [ i.to_s, 0 ] }.to_h
       @reservation_date.each do |reserve|

@@ -122,12 +122,14 @@ export default {
 
 <style>
 #app {
+  
 }
 .v-calendar {
-   width: 820px;
-   height: 360px;
+  width: 1820px;
+   height: 560px;
 }
 .chart_bar {
-  margin: 180px;
+   width: 820px;
+   height: 360px;
 } 
 </style>
