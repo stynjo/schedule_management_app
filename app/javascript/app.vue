@@ -1,8 +1,13 @@
 <template>
   <div id="app">
-   <v-calendar
-   @dayclick='dayClicked'></v-calendar> 
-    {{ reservationDate }}
+    <div id="calendar-wrapper">
+      <v-calendar
+        @dayclick='dayClicked'
+        is-expanded
+        class="v-calendar"
+      ></v-calendar> 
+      {{ reservationDate }}
+    </div>
     <p v-if="timeDisplay == true">
 
       <vue-timepicker
@@ -123,8 +128,25 @@ export default {
 <style>
 #app {
 }
+
 .chart_bar {
    width: 820px;
    height: 360px;
 } 
+
+#calendar-wrapper {
+  width: 50%;
+  
+}
+
+#calendar-wrapper .vc-container {
+  --day-content-height: 100px;
+  --day-content-width: 100px;
+}
+
+#calendar-wrapper .vc-text-sm {
+  font-size: 21px;
+}
+
+ 
 </style>
