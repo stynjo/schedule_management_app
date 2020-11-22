@@ -14,7 +14,7 @@ import VCalendar from 'v-calendar'
 //Vue.use(VueAxiosPlugin, { axios: axios, csrfToken: csrfToken })
 
 
-Vue.use(VCalendar);;
+Vue.use(VCalendar);
 
 
 
