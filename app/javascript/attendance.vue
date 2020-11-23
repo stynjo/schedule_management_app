@@ -1,14 +1,39 @@
 <template>
   <div id="attendanece">
     <div id="calendar-wrapper">
-      <v-calendar></v-calendar>
+      <v-calendar
+      @dayclick='dayClicked'>
+      </v-calendar>
     </div>
-    
+    {{ userList }}
   </div>
 </template>
 
 <script>
-  
+import axios from 'axios';
+
+export default {
+  data(){
+    return {
+      attendanceDate: '',
+      userList: {}
+    }
+  },
+   methods: {
+    dayClicked(day) {
+      this.attendanceDate = day.id
+      this.getAlluser()
+    },
+    getAlluser() {
+      axios.get(`/users/`)
+      .then(res => {
+        console.log(res.data)
+        this.userList = res.data
+      });
+    }
+  }
+}
+
 </script>
 
 <style>
