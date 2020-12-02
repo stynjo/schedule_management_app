@@ -3,9 +3,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
   def index
-    @users = User.all
-    @user_name = @users.map { |user| @user_name = user.name }
-    @all_users = @user_name.to_json
-    render json: @all_users
+    users_hash = User.all.map { |user| {id: user.id, name: user.name } }
+    render json: users_hash.to_json
   end
 end
