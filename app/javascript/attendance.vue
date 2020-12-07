@@ -33,7 +33,7 @@
                hide-disabled-minutes>
                </vue-timepicker>
           </td>
-          <td class="btn btn-primary" @click="createAttendance(user.id)">更新</button></td>
+          <td class="btn btn-primary" @click="onCreateAttendance(user.id)">更新</button></td>
         </tr>
     </tbody>
     </table>
@@ -46,10 +46,14 @@ import axios from 'axios';
 import VueTimepicker from 'vue2-timepicker';
 import 'vue2-timepicker/dist/VueTimepicker.css';
 
+const token = document.getElementsByName('csrf-token')[0].getAttribute('content')
+axios.defaults.headers.common['X-CSRF-Token'] = token
+
 export default {
   data(){
     return {
       attendanceDate: '',
+      attendanceIdHash: {},
       users: [],
       userId: '',
       startTimeHash: {},
@@ -59,10 +63,67 @@ export default {
   components: {
     'vue-timepicker': VueTimepicker,
   },
-   methods: {
+  methods: {
     dayClicked(day) {
       this.attendanceDate = day.id
-      this.getAlluser()
+
+      // 選択された日付の内容で勤怠一覧を更新する
+      this.updateAttendancesByDate()
+    },
+    onCreateAttendance(userId) {
+      let startTime = this.startTimeHash[userId]
+      let endTime = this.endTimeHash[userId]
+
+      if (!startTime || !endTime) {
+        // TODO: エラーメッセージの表示をいい感じにしたい。
+        // TODO: 不正な値が来たときのチェックが甘いのでいい感じにしたい。
+        alert('時刻を設定してください')
+        return
+      }
+      
+      let startTimeStr = `${this.attendanceDate} ${startTime.HH}:${startTime.mm}`
+      let endTimeStr = `${this.attendanceDate} ${endTime.HH}:${endTime.mm}`
+
+      // 問題なければAPI叩いて勤怠登録する
+      this.updateAttendance(userId, startTimeStr, endTimeStr)
+    },
+    updateAttendancesByDate(date) {
+      // hashの初期化をする
+      this.startTimeHash = {}
+      this.endTimeHash = {}
+
+      // TODO: 入力済みの勤怠情報を取得してthis.startTimeHash/endTimeHashの内容を更新する
+      
+      
+      // TODO: attendanceIdHashも更新する
+    },
+    updateAttendance(userId, startTime, endTime) {
+      let httpMethod = 'post'
+      let params = {
+        attendance: {
+          user_id: userId,
+          started_at: startTime,
+          finished_at: endTime,
+        }
+      }
+      
+      let attendanceId = this.attendanceIdHash[userId]
+
+      if (attendanceId) {
+        // attendanceIdが存在する = 更新処理とする
+        httpMethod = 'put'
+        params[attendanceId] = attendanceId
+      }
+
+      axios.request({
+        method: httpMethod,
+        url: '/attendances',
+        data: params,
+      })
+      .then(res => {
+        console.log(res.data)
+        this.users = res.data
+      });
     },
     getAlluser() {
       axios.get(`/users/`)
@@ -70,11 +131,10 @@ export default {
         console.log(res.data)
         this.users = res.data
       });
-    },
-    createAttendance(user_id) {
-      let startTime = this.startTimeHash[user_id]
-      let endTime = this.endTimeHash[user_id]
     }
+  },
+  mounted: function () {
+    this.getAlluser()
   }
 }
 
