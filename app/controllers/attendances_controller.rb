@@ -12,7 +12,8 @@ class AttendancesController < ApplicationController
   
   # 日付に応じた勤怠一覧API
   def date
-    puts params
+    @attendance_date = params[:date]
+    byebug
   end
   
   

@@ -91,9 +91,16 @@ export default {
       // hashの初期化をする
       this.startTimeHash = {}
       this.endTimeHash = {}
-
       // TODO: 入力済みの勤怠情報を取得してthis.startTimeHash/endTimeHashの内容を更新する
-      
+      axios.get(`/attendances/date`,{
+        params: {
+          date: this.attendanceDate
+        }
+      })
+      .then(res => {
+        console.log(res.data)
+        this.users = res.data
+      });
       
       // TODO: attendanceIdHashも更新する
     },
