@@ -35,6 +35,9 @@
           </td>
           <td class="btn btn-primary" @click="onCreateAttendance(user.id)">更新</button></td>
         </tr>
+        <div class="csv">
+          <input type="file" @change="loadCsvFile" />
+        </div>
     </tbody>
     </table>
     
@@ -59,6 +62,8 @@ export default {
       userId: '',
       startTimeHash: {},
       endTimeHash: {},
+      message: "",
+      uploadFile: null
     }
   },
   components: {
@@ -70,6 +75,16 @@ export default {
 
       // 選択された日付の内容で勤怠一覧を更新する
       this.updateAttendancesByDate()
+    },
+    loadCsvFile(e) {
+      let file = e.target.files[0];
+      
+      if (!file.type.match("text/csv")) {
+        this.message = "CSVファイルを選択してください";
+        return;
+      }
+      
+    
     },
     onCreateAttendance(userId) {
       let startTime = this.startTimeHash[userId]
