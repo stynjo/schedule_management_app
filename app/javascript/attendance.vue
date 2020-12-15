@@ -15,7 +15,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr v-for="user in users">
+        <tr v-for="user in users" :key="user.id">
           <th>{{ user.id }}</th>
           <td>{{ user.name  }}</td>
           <td><vue-timepicker
@@ -37,6 +37,7 @@
         </tr>
     </tbody>
     </table>
+    
   </div>
       
 </template>
@@ -87,22 +88,24 @@ export default {
       // 問題なければAPI叩いて勤怠登録する
       this.updateAttendance(userId, startTimeStr, endTimeStr)
     },
-    updateAttendancesByDate(date) {
+    updateAttendancesByDate() {
       // hashの初期化をする
-      this.startTimeHash = {}
-      this.endTimeHash = {}
-      // TODO: 入力済みの勤怠情報を取得してthis.startTimeHash/endTimeHashの内容を更新する
-      axios.get(`/attendances/date`,{
-        params: {
-          date: this.attendanceDate
-        }
-      })
+      let startTimeHash = {}
+      let endTimeHash = {}
+
+      // 入力済みの勤怠情報を取得してthis.startTimeHash/endTimeHashの内容を更新する
+      axios.get(`/attendances/date/${this.attendanceDate}`)
       .then(res => {
         console.log(res.data)
-        this.users = res.data
+        res.data.forEach(attendance => {
+          startTimeHash[attendance.user_id] = this.timeStringByDatetimeStr(attendance.started_at)
+          endTimeHash[attendance.user_id] = this.timeStringByDatetimeStr(attendance.finished_at)
+        });
+
+        // attendanceIdHashも更新する
+        this.startTimeHash = startTimeHash
+        this.endTimeHash = endTimeHash
       });
-      
-      // TODO: attendanceIdHashも更新する
     },
     updateAttendance(userId, startTime, endTime) {
       let httpMethod = 'post'
@@ -129,7 +132,6 @@ export default {
       })
       .then(res => {
         console.log(res.data)
-        this.users = res.data
       });
     },
     getAlluser() {
@@ -138,7 +140,15 @@ export default {
         console.log(res.data)
         this.users = res.data
       });
-    }
+    },
+    timeStringByDatetimeStr(src) {
+      let datetime = new Date(src)
+      let zeroPadding = (src, digit) => {
+        return ("0".repeat(digit) + src).slice(-1 * digit)
+      }
+
+      return `${zeroPadding(datetime.getHours(), 2)}:${zeroPadding(datetime.getMinutes(), 2)}`
+    },
   },
   mounted: function () {
     this.getAlluser()
