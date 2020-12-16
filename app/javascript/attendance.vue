@@ -76,15 +76,23 @@ export default {
       // 選択された日付の内容で勤怠一覧を更新する
       this.updateAttendancesByDate()
     },
-    loadCsvFile(e) {
-      let file = e.target.files[0];
-      
-      if (!file.type.match("text/csv")) {
-        this.message = "CSVファイルを選択してください";
-        return;
-      }
-      
+    loadCsvFile: function(e) {
+      // 選択された File の情報を保存しておく
+      e.preventDefault();
+      let files = e.target.files;
+      this.uploadFile = files[0];
     
+      let formData = new FormData();
+      formData.append('file', this.uploadFile);
+     
+      axios
+          .post(`/attendances/import/`, formData)
+          .then(function(response) {
+              // response 処理
+          })
+          .catch(function(error) {
+              // error 処理
+          })
     },
     onCreateAttendance(userId) {
       let startTime = this.startTimeHash[userId]

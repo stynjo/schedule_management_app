@@ -1,13 +1,24 @@
 class Attendance < ApplicationRecord
   belongs_to :user
   
-  #validates :worked_on, presence: true
-  #validates :started_at, presence: true
+  def self.import(file)
+    unless file
+       raise RangeError, "ERROR!"
+    else
+      CSV.foreach(file.path, headers: true) do |row|
+      # IDが見つかれば、レコードを呼び出し、見つかれなければ、新しく作成
+        att = find_by(user_id: row["user_id"]) || new
+      # CSVからデータを取得し、設定する
+        att.attributes = row.to_hash.slice(*updatable_attributes)
+      # 保存する
+        att.save
+      end
+    end
+  end
+
+  # 更新を許可するカラムを定義
+  def self.updatable_attributes
+    ["user_id", "started_at", "finished_at"]
+  end
   
-  #出勤時間が存在しないと退勤時間葉は無効
-#  validates :finished_at_is_invalid_without_a_started_at
-  
- # def finished_at_is_invalid_without_a_started_at
-  #  errors.add(:started_at, "が必要です") if started_at.blank? && finished_at.present?
- # end
 end

@@ -19,6 +19,9 @@ class AttendancesController < ApplicationController
     render json: @attendance_date_json
   end
   
+  def import
+    Attendance.import(params[:file])
+  end
   
   def attendance_params
     params.require(:attendance).permit(:user_id, :started_at, :finished_at)

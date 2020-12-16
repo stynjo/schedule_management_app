@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :users 
   resource :attendances do
     get 'date/:date', to: 'attendances#date'
+     collection { post :import }
   end
   resources :reserves
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
