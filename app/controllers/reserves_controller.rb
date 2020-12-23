@@ -9,15 +9,21 @@ class ReservesController < ApplicationController
     
     def index
       @reservation_date_string = params[:reservationDate]
-      @change_reservation_date = @reservation_date_string.in_time_zone
-      @reservation_date = Reserve.where(reservation_date: @change_reservation_date.all_day)
-       # Hash#valuesはkeyの追加順で生成されるので、事前にhashを作ってしまう
-      reserve_time_hash = %w[18 19 20 21 22 23].map { |i| [ i.to_s, 0 ] }.to_h
+      @date_value = @reservation_date_string.in_time_zone
+      
+      #取得したい予約を取ってくる
+      @reservation_date = Reserve.where(reservation_date: @date_value.all_day)
+      #取得したい勤怠情報を取ってくる
+      @attendance_date = Attendance.where(started_at: @date_value.all_day)
+      
+      # Hash#valuesはkeyの追加順で生成されるので、事前にhashを作ってしまう
+      time_hash = %w[18 19 20 21 22 23].map { |i| [ i.to_s, 0 ] }.to_h
+      
       @reservation_date.each do |reserve|
       (reserve.reservation_start_time.hour..reserve.reservation_end_time.hour).each do |hour|
-        reserve_time_hash[hour.to_s] += reserve.number_of_people
+        time_hash[hour.to_s] += reserve.number_of_people
       end
-        @reserve_times = reserve_time_hash.values.to_json
+        @reserve_times = time_hash.values.to_json
       end
        render json: @reserve_times
     end
