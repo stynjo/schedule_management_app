@@ -23,14 +23,16 @@
                :hour-range="[18, 24, [18, 24]]"
                :minute-range="[0, 30]"
                hide-disabled-hours
-               hide-disabled-minutes>
+               hide-disabled-minutes
+               ref="startTime">
                </vue-timepicker></td>
           <td><vue-timepicker
                v-model="endTimeHash[user.id]"
                :hour-range="[18, 24, [18, 24]]"
                :minute-range="[0, 30]"
                hide-disabled-hours
-               hide-disabled-minutes>
+               hide-disabled-minutes
+               ref="endTime">
                </vue-timepicker>
           </td>
           <td class="btn btn-primary" @click="onCreateAttendance(user.id)">更新</button></td>
@@ -87,12 +89,12 @@ export default {
      
       axios
           .post(`/attendances/import/`, formData)
-          .then(function(response) {
-              // response 処理
-          })
-          .catch(function(error) {
-              // error 処理
-          })
+          .catch(function (error) {
+            if (error.response) {
+              console.log(error.response.status);
+              console.log(error.config);
+            }
+          });
     },
     onCreateAttendance(userId) {
       let startTime = this.startTimeHash[userId]
@@ -112,20 +114,24 @@ export default {
       this.updateAttendance(userId, startTimeStr, endTimeStr)
     },
     updateAttendancesByDate() {
-      // hashの初期化をする
       let startTimeHash = {}
       let endTimeHash = {}
+
+      // vue-timepickerをリセット
+      this.$refs.startTime.forEach(e => {e.clearTime()})
+      this.$refs.endTime.forEach(e => { e.clearTime() })
 
       // 入力済みの勤怠情報を取得してthis.startTimeHash/endTimeHashの内容を更新する
       axios.get(`/attendances/date/${this.attendanceDate}`)
       .then(res => {
         console.log(res.data)
+
         res.data.forEach(attendance => {
-          startTimeHash[attendance.user_id] = this.timeStringByDatetimeStr(attendance.started_at)
-          endTimeHash[attendance.user_id] = this.timeStringByDatetimeStr(attendance.finished_at)
+          let userId = attendance.user_id
+          startTimeHash[userId] = this.timeStringByDatetimeStr(attendance.started_at)
+          endTimeHash[userId] = this.timeStringByDatetimeStr(attendance.finished_at)
         });
 
-        // attendanceIdHashも更新する
         this.startTimeHash = startTimeHash
         this.endTimeHash = endTimeHash
       });
