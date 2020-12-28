@@ -38,7 +38,8 @@
           <td class="btn btn-primary" @click="onCreateAttendance(user.id)">更新</button></td>
         </tr>
         <div class="csv">
-          <input type="file" @change="loadCsvFile" />
+          <input type="file" @change="loadCsvFile" /></br>
+          {{ message }}
         </div>
     </tbody>
     </table>
@@ -62,6 +63,7 @@ export default {
       attendanceIdHash: {},
       users: [],
       userId: '',
+      putUserId: '',
       startTimeHash: {},
       endTimeHash: {},
       message: "",
@@ -83,9 +85,16 @@ export default {
       e.preventDefault();
       let files = e.target.files;
       this.uploadFile = files[0];
+      
+      
+      if (!this.uploadFile.type.match("text/csv")) {
+       this.message = "CSVファイルを選択してください";
+       return;
+      }
     
       let formData = new FormData();
       formData.append('file', this.uploadFile);
+      this.message = '';
      
       axios
           .post(`/attendances/import/`, formData)
@@ -128,6 +137,7 @@ export default {
 
         res.data.forEach(attendance => {
           let userId = attendance.user_id
+          this.putUserId = attendance.user_id
           startTimeHash[userId] = this.timeStringByDatetimeStr(attendance.started_at)
           endTimeHash[userId] = this.timeStringByDatetimeStr(attendance.finished_at)
         });
@@ -146,12 +156,11 @@ export default {
         }
       }
       
-      let attendanceId = this.attendanceIdHash[userId]
+     //let attendanceId = this.attendanceIdHash[userId]
 
-      if (attendanceId) {
-        // attendanceIdが存在する = 更新処理とする
+      if (this.putUserId) {
+        // attendanceIdが存在する = 更新処理とする →　 userIdが存在する = 更新処理とする
         httpMethod = 'put'
-        params[attendanceId] = attendanceId
       }
 
       axios.request({

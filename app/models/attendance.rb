@@ -11,7 +11,11 @@ class Attendance < ApplicationRecord
       # CSVからデータを取得し、設定する
         att.attributes = row.to_hash.slice(*updatable_attributes)
       # 保存する
-        att.save
+        if att.save
+          return true
+        else
+          return false
+        end
       end
     end
   end

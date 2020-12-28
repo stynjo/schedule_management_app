@@ -20,7 +20,20 @@ class AttendancesController < ApplicationController
   end
   
   def import
-    Attendance.import(params[:file])
+   response = Attendance.import(params[:file])
+   byebug
+   if response == true
+      render json: response, status: :created
+   elsif response == false
+     render json: response, status: :unprocessable_entity
+   end
+  end
+  
+  def update
+    #TODO
+    #ルーティング組み直し attendances/:user_id (仮)
+    #@attendance = params[:user_id] 
+    byebug
   end
   
   def attendance_params
