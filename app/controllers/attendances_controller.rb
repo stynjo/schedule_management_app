@@ -21,10 +21,9 @@ class AttendancesController < ApplicationController
   
   def import
    response = Attendance.import(params[:file])
-   byebug
    if response == true
       render json: response, status: :created
-   elsif response == false
+   elsif response == :unprocessable_entity
      render json: response, status: :unprocessable_entity
    end
   end

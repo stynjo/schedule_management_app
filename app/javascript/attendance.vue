@@ -98,21 +98,27 @@ export default {
      
       axios
           .post(`/attendances/import/`, formData)
-          .catch(function (error) {
-            if (error.response) {
-              console.log(error.response.status);
-              console.log(error.config);
-            }
-          });
+           .then(res => {
+             console.log(res.data);
+              if (res.data === true) {
+                alert('勤怠登録が完了しました。');
+              }
+           })
+           .catch(error => { 
+             console.log(error);
+               if (error === error) {
+                 alert('勤怠登録に失敗しました。');
+               }
+            });
     },
     onCreateAttendance(userId) {
-      let startTime = this.startTimeHash[userId]
-      let endTime = this.endTimeHash[userId]
+      let startTime = this.startTimeHash[userId];
+      let endTime = this.endTimeHash[userId];
 
       if (!startTime || !endTime) {
         // TODO: エラーメッセージの表示をいい感じにしたい。
         // TODO: 不正な値が来たときのチェックが甘いのでいい感じにしたい。
-        alert('時刻を設定してください')
+        alert('時刻を設定してください');
         return
       }
       
@@ -133,34 +139,34 @@ export default {
       // 入力済みの勤怠情報を取得してthis.startTimeHash/endTimeHashの内容を更新する
       axios.get(`/attendances/date/${this.attendanceDate}`)
       .then(res => {
-        console.log(res.data)
+        console.log(res.data);
 
         res.data.forEach(attendance => {
-          let userId = attendance.user_id
-          this.putUserId = attendance.user_id
-          startTimeHash[userId] = this.timeStringByDatetimeStr(attendance.started_at)
-          endTimeHash[userId] = this.timeStringByDatetimeStr(attendance.finished_at)
+          let userId = attendance.user_id;
+          this.putUserId = attendance.user_id;
+          startTimeHash[userId] = this.timeStringByDatetimeStr(attendance.started_at);
+          endTimeHash[userId] = this.timeStringByDatetimeStr(attendance.finished_at);
         });
 
-        this.startTimeHash = startTimeHash
-        this.endTimeHash = endTimeHash
+        this.startTimeHash = startTimeHash;
+        this.endTimeHash = endTimeHash;
       });
     },
     updateAttendance(userId, startTime, endTime) {
-      let httpMethod = 'post'
+      let httpMethod = 'post';
       let params = {
         attendance: {
           user_id: userId,
           started_at: startTime,
           finished_at: endTime,
         }
-      }
+      };
       
      //let attendanceId = this.attendanceIdHash[userId]
 
       if (this.putUserId) {
         // attendanceIdが存在する = 更新処理とする →　 userIdが存在する = 更新処理とする
-        httpMethod = 'put'
+        httpMethod = 'put';
       }
 
       axios.request({
@@ -169,29 +175,29 @@ export default {
         data: params,
       })
       .then(res => {
-        console.log(res.data)
+        console.log(res.data);
       });
     },
     getAlluser() {
       axios.get(`/users/`)
       .then(res => {
-        console.log(res.data)
-        this.users = res.data
+        console.log(res.data);
+        this.users = res.data;
       });
     },
     timeStringByDatetimeStr(src) {
-      let datetime = new Date(src)
+      let datetime = new Date(src);
       let zeroPadding = (src, digit) => {
-        return ("0".repeat(digit) + src).slice(-1 * digit)
-      }
+        return ("0".repeat(digit) + src).slice(-1 * digit);
+      };
 
-      return `${zeroPadding(datetime.getHours(), 2)}:${zeroPadding(datetime.getMinutes(), 2)}`
+      return `${zeroPadding(datetime.getHours(), 2)}:${zeroPadding(datetime.getMinutes(), 2)}`;
     },
   },
   mounted: function () {
-    this.getAlluser()
+    this.getAlluser();
   }
-}
+};
 
 </script>
 

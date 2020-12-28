@@ -14,7 +14,7 @@ class Attendance < ApplicationRecord
         if att.save
           return true
         else
-          return false
+          return :unprocessable_entity
         end
       end
     end
