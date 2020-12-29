@@ -63,7 +63,6 @@ export default {
       attendanceIdHash: {},
       users: [],
       userId: '',
-      putUserId: '',
       startTimeHash: {},
       endTimeHash: {},
       message: "",
@@ -115,6 +114,9 @@ export default {
       let startTime = this.startTimeHash[userId];
       let endTime = this.endTimeHash[userId];
 
+      if (startTime instanceof Object) { startTime = `${startTime.HH}:${startTime.mm}` }
+      if (endTime instanceof Object) { endTime = `${endTime.HH}:${endTime.mm}` }
+
       if (!startTime || !endTime) {
         // TODO: エラーメッセージの表示をいい感じにしたい。
         // TODO: 不正な値が来たときのチェックが甘いのでいい感じにしたい。
@@ -122,8 +124,8 @@ export default {
         return
       }
       
-      let startTimeStr = `${this.attendanceDate} ${startTime.HH}:${startTime.mm}`
-      let endTimeStr = `${this.attendanceDate} ${endTime.HH}:${endTime.mm}`
+      let startTimeStr = `${this.attendanceDate} ${startTime}`
+      let endTimeStr = `${this.attendanceDate} ${endTime}`
 
       // 問題なければAPI叩いて勤怠登録する
       this.updateAttendance(userId, startTimeStr, endTimeStr)
@@ -131,7 +133,7 @@ export default {
     updateAttendancesByDate() {
       let startTimeHash = {}
       let endTimeHash = {}
-
+      let attendanceIdHash = {}
       // vue-timepickerをリセット
       this.$refs.startTime.forEach(e => {e.clearTime()})
       this.$refs.endTime.forEach(e => { e.clearTime() })
@@ -143,13 +145,14 @@ export default {
 
         res.data.forEach(attendance => {
           let userId = attendance.user_id;
-          this.putUserId = attendance.user_id;
+          attendanceIdHash[userId] = attendance.id;
           startTimeHash[userId] = this.timeStringByDatetimeStr(attendance.started_at);
           endTimeHash[userId] = this.timeStringByDatetimeStr(attendance.finished_at);
         });
 
         this.startTimeHash = startTimeHash;
         this.endTimeHash = endTimeHash;
+        this.attendanceIdHash = attendanceIdHash;
       });
     },
     updateAttendance(userId, startTime, endTime) {
@@ -162,10 +165,8 @@ export default {
         }
       };
       
-     //let attendanceId = this.attendanceIdHash[userId]
-
-      if (this.putUserId) {
-        // attendanceIdが存在する = 更新処理とする →　 userIdが存在する = 更新処理とする
+      if (this.attendanceIdHash[userId]) {
+        // attendanceIdが存在する = 更新処理とする
         httpMethod = 'put';
       }
 

@@ -29,10 +29,7 @@ class AttendancesController < ApplicationController
   end
   
   def update
-    #TODO
-    #ルーティング組み直し attendances/:user_id (仮)
-    #@attendance = params[:user_id] 
-    byebug
+    @attendance = params[:user_id] 
   end
   
   def attendance_params
