@@ -23,20 +23,23 @@
                :hour-range="[18, 24, [18, 24]]"
                :minute-range="[0, 30]"
                hide-disabled-hours
-               hide-disabled-minutes>
+               hide-disabled-minutes
+               ref="startTime">
                </vue-timepicker></td>
           <td><vue-timepicker
                v-model="endTimeHash[user.id]"
                :hour-range="[18, 24, [18, 24]]"
                :minute-range="[0, 30]"
                hide-disabled-hours
-               hide-disabled-minutes>
+               hide-disabled-minutes
+               ref="endTime">
                </vue-timepicker>
           </td>
           <td class="btn btn-primary" @click="onCreateAttendance(user.id)">更新</button></td>
         </tr>
         <div class="csv">
-          <input type="file" @change="loadCsvFile" />
+          <input type="file" @change="loadCsvFile" /></br>
+          {{ message }}
         </div>
     </tbody>
     </table>
@@ -81,102 +84,124 @@ export default {
       e.preventDefault();
       let files = e.target.files;
       this.uploadFile = files[0];
+      
+      
+      if (!this.uploadFile.type.match("text/csv")) {
+       this.message = "CSVファイルを選択してください";
+       return;
+      }
     
       let formData = new FormData();
       formData.append('file', this.uploadFile);
+      this.message = '';
      
       axios
           .post(`/attendances/import/`, formData)
-          .then(function(response) {
-              // response 処理
-          })
-          .catch(function(error) {
-              // error 処理
-          })
+           .then(res => {
+             console.log(res.data);
+              if (res.data === true) {
+                alert('勤怠登録が完了しました。');
+              }
+           })
+           .catch(error => { 
+             console.log(error);
+               if (error === error) {
+                 alert('勤怠登録に失敗しました。');
+               }
+            });
     },
     onCreateAttendance(userId) {
-      let startTime = this.startTimeHash[userId]
-      let endTime = this.endTimeHash[userId]
+      let startTime = this.startTimeHash[userId];
+      let endTime = this.endTimeHash[userId];
+
+      if (startTime instanceof Object) { startTime = `${startTime.HH}:${startTime.mm}` }
+      if (endTime instanceof Object) { endTime = `${endTime.HH}:${endTime.mm}` }
 
       if (!startTime || !endTime) {
         // TODO: エラーメッセージの表示をいい感じにしたい。
         // TODO: 不正な値が来たときのチェックが甘いのでいい感じにしたい。
-        alert('時刻を設定してください')
+        alert('時刻を設定してください');
         return
       }
       
-      let startTimeStr = `${this.attendanceDate} ${startTime.HH}:${startTime.mm}`
-      let endTimeStr = `${this.attendanceDate} ${endTime.HH}:${endTime.mm}`
+      let startTimeStr = `${this.attendanceDate} ${startTime}`
+      let endTimeStr = `${this.attendanceDate} ${endTime}`
 
       // 問題なければAPI叩いて勤怠登録する
       this.updateAttendance(userId, startTimeStr, endTimeStr)
     },
     updateAttendancesByDate() {
-      // hashの初期化をする
       let startTimeHash = {}
       let endTimeHash = {}
+      let attendanceIdHash = {}
+      // vue-timepickerをリセット
+      this.$refs.startTime.forEach(e => {e.clearTime()})
+      this.$refs.endTime.forEach(e => { e.clearTime() })
 
       // 入力済みの勤怠情報を取得してthis.startTimeHash/endTimeHashの内容を更新する
       axios.get(`/attendances/date/${this.attendanceDate}`)
       .then(res => {
-        console.log(res.data)
+        console.log(res.data);
+
         res.data.forEach(attendance => {
-          startTimeHash[attendance.user_id] = this.timeStringByDatetimeStr(attendance.started_at)
-          endTimeHash[attendance.user_id] = this.timeStringByDatetimeStr(attendance.finished_at)
+          let userId = attendance.user_id;
+          attendanceIdHash[userId] = attendance.id;
+          startTimeHash[userId] = this.timeStringByDatetimeStr(attendance.started_at);
+          endTimeHash[userId] = this.timeStringByDatetimeStr(attendance.finished_at);
         });
 
-        // attendanceIdHashも更新する
-        this.startTimeHash = startTimeHash
-        this.endTimeHash = endTimeHash
+        this.startTimeHash = startTimeHash;
+        this.endTimeHash = endTimeHash;
+        this.attendanceIdHash = attendanceIdHash;
       });
     },
     updateAttendance(userId, startTime, endTime) {
-      let httpMethod = 'post'
+      let httpMethod = 'post';
       let params = {
         attendance: {
           user_id: userId,
           started_at: startTime,
           finished_at: endTime,
         }
-      }
+      };
       
-      let attendanceId = this.attendanceIdHash[userId]
-
-      if (attendanceId) {
+      if (this.attendanceIdHash[userId]) {
         // attendanceIdが存在する = 更新処理とする
-        httpMethod = 'put'
-        params[attendanceId] = attendanceId
+        httpMethod = 'put';
       }
 
       axios.request({
         method: httpMethod,
-        url: '/attendances',
+        url: '/attendances/',
         data: params,
       })
       .then(res => {
-        console.log(res.data)
+        console.log(res.data);
+          if (res.status === 201) {
+            alert('勤怠登録が完了しました。');
+          }
       });
     },
     getAlluser() {
       axios.get(`/users/`)
       .then(res => {
-        console.log(res.data)
-        this.users = res.data
+        console.log(res.data);
+        this.users = res.data;
       });
     },
     timeStringByDatetimeStr(src) {
-      let datetime = new Date(src)
+      let datetime = new Date(src);
       let zeroPadding = (src, digit) => {
-        return ("0".repeat(digit) + src).slice(-1 * digit)
-      }
+        return ("0".repeat(digit) + src).slice(-1 * digit);
+      };
 
-      return `${zeroPadding(datetime.getHours(), 2)}:${zeroPadding(datetime.getMinutes(), 2)}`
+      return `${zeroPadding(datetime.getHours(), 2)}:${zeroPadding(datetime.getMinutes(), 2)}`;
     },
   },
   mounted: function () {
-    this.getAlluser()
+    this.getAlluser();
   }
-}
+};
 
 </script>
 
