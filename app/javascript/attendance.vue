@@ -172,11 +172,14 @@ export default {
 
       axios.request({
         method: httpMethod,
-        url: '/attendances',
+        url: '/attendances/',
         data: params,
       })
       .then(res => {
         console.log(res.data);
+          if (res.status === 201) {
+            alert('勤怠登録が完了しました。');
+          }
       });
     },
     getAlluser() {

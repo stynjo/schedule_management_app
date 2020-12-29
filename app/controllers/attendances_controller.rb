@@ -6,8 +6,11 @@ class AttendancesController < ApplicationController
   # 登録API
   def create
     @attendances = Attendance.new(attendance_params)
-    @attendances.save
-    head :no_content
+    if  @attendances.save
+      render json: @attendance, status: :created
+    elsif 
+      render json: @attendance, status: :unprocessable_entity
+    end
   end
   
   # 日付に応じた勤怠一覧API
@@ -29,7 +32,12 @@ class AttendancesController < ApplicationController
   end
   
   def update
-    @attendance = params[:user_id] 
+    attendance = Attendance.find_by(id: params[:attendance][:user_id])
+    if attendance.update_attributes(attendance_params)
+      render json: attendance, status: :created
+    elsif 
+      render json: attendance, status: :unprocessable_entity
+    end
   end
   
   def attendance_params
