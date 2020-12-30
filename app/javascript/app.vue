@@ -66,15 +66,18 @@ export default {
     },
     getReservations() {
       this.timeDisplay = true
-      axios.get(`/reserves/`, {
-        params: {
-          reservationDate: this.reservationDate
-        }
+       Promise.all([
+        axios.get(`/reserves/`, {
+          params: { reservationDate: this.reservationDate }}),
+        axios.get(`/attendances/index`, {
+          params: { reservationDate: this.reservationDate }})
+      ])
+      .then(responses => {
+        responses.forEach(res => console.log(res.data))
+        var reserveData = responses[0].data
+        var emloyeeData = responses[1].data
+        this.updateChartData(reserveData,emloyeeData)
       })
-      .then(res => {
-        console.log(res.data)
-        this.updateChartData(res.data)
-      });
     },
     createReservation() {
       this.reservationStartTime = (`${this.reservationDate} ${this.inputStartTime}`)
@@ -88,7 +91,7 @@ export default {
           console.log(res.data);
     　　});
     },
-    updateChartData(reserveData) {
+    updateChartData(reserveData,emloyeeData) {
       this.chartData = {
         labels: ['18時', '19時', '20時', '21時', '22時', '23時'],
         datasets: [
@@ -103,7 +106,7 @@ export default {
           },
           {
             label: 'Line Dataset',
-            data: [30, 50, 70, 100, 120, 150],
+            data: emloyeeData,
             borderColor: '#CFD8DC',
             fill: false,
             type: 'line',

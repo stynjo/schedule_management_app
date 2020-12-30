@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :users 
   resource :attendances do
     get 'date/:date', to: 'attendances#date'
+    get '/index', to: 'attendances#index'
      collection { post :import }
   end
   resources :reserves
