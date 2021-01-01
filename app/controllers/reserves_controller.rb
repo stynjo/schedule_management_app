@@ -26,6 +26,11 @@ class ReservesController < ApplicationController
     end
     
     def slack
+      client = Slack::Web::Client.new
+      client.chat_postMessage(
+        channel: '#テスト用チャンネル',
+        text: 'こんにちは'
+      )
     end
   
     
