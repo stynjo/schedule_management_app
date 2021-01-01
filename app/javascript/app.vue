@@ -8,8 +8,7 @@
       ></v-calendar> 
       {{ reservationDate }}
     </div>
-    <p v-if="timeDisplay == true">
-
+    <p v-if ="timeDisplay">
       <vue-timepicker
         v-model="inputStartTime"
         :hour-range="[18, 24, [18, 24]]"
@@ -22,11 +21,12 @@
         :hour-range="[18, 24, [18, 24]]"
         :minute-range="[0, 30]"
         hide-disabled-hours
-        hide-disabled-minutes></vue-timepicker></p>
-        <p>予約人数<input type="number" v-model="numberOfPeople">  名</p>
-    <p><input type="submit" value="登録する" v-on:click="createReservation"></p>
-    <p><input type="submit" value="slackメッセージを送る" v-on:click="sendMessage"></p>
-     
+        hide-disabled-minutes></vue-timepicker></br>
+        予約人数<input type="number" v-model="numberOfPeople">  名</br>
+        <input type="submit" value="slackメッセージを送る" v-on:click="sendMessage"></br>
+        <input type="submit" value="登録する" v-on:click="createReservation">
+     </p>
+        
     <radar-chart class="chart_bar" :chart-data="chartData"></radar-chart> 
     
   </div>
@@ -62,17 +62,18 @@ export default {
   },
   methods: {
     dayClicked(day) {
+      this.timeDisplay = true
       this.reservationDate = day.id
       this.getReservations()
     },
     sendMessage() {
-      axios.get(`/reserves/slack/`)
+      axios.get(`/reserves/slack/`, {
+          params: { reservationDate: this.reservationDate }})
       .then(res => {
         console.log(res.data);
       });
     },
     getReservations() {
-      this.timeDisplay = true
        Promise.all([
         axios.get(`/reserves/`, {
           params: { reservationDate: this.reservationDate }}),
@@ -96,6 +97,7 @@ export default {
                                })
        .then(res => {
           console.log(res.data);
+          this.timeDisplay = false
     　　});
     },
     updateChartData(reserveData,emloyeeData) {
