@@ -11,6 +11,9 @@ Rails.application.routes.draw do
     get '/index', to: 'attendances#index'
      collection { post :import }
   end
-  resources :reserves
+  resources :reserves do
+    get 'slack', to: 'reserves#slack'
+  end
+  get 'reserves/slack', to: 'reserves#slack'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

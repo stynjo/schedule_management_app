@@ -24,6 +24,9 @@ class ReservesController < ApplicationController
       end
        render json: @reserve_times
     end
+    
+    def slack
+    end
   
     
     private
