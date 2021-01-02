@@ -5,12 +5,16 @@
       @dayclick='dayClicked'>
       </v-calendar>
     </div>
+     <div class="csv">
+      <input type="file" @change="loadCsvFile" /></br>
+        {{ message }}
+     </div>
     <table class="table">
     <thead>
         <tr>
             <th>No</th>
             <th>名前</th>
-            <th>出勤時間</th>
+            <th>出勤時間 / 選択日{{ attendanceDate }}</th>
             <th>退勤時間</th>
         </tr>
     </thead>
@@ -37,10 +41,6 @@
           </td>
           <td class="btn btn-primary" @click="onCreateAttendance(user.id)">更新</button></td>
         </tr>
-        <div class="csv">
-          <input type="file" @change="loadCsvFile" /></br>
-          {{ message }}
-        </div>
     </tbody>
     </table>
     
