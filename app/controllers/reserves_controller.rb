@@ -31,7 +31,6 @@ class ReservesController < ApplicationController
       
       #取得したい予約を取ってくる
       @reservation_date = Reserve.where(reservation_date: @date_value.all_day)
-      byebug
       client = Slack::Web::Client.new
       client.chat_postMessage(
         channel: '#general',

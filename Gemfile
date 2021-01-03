@@ -20,6 +20,7 @@ gem 'jbuilder', '~> 2.7'
 gem 'jquery-rails'
 gem 'faker'
 gem 'pry-rails'
+gem 'whenever', require: false
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
