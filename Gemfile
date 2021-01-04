@@ -19,6 +19,9 @@ gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.7'
 gem 'jquery-rails'
 gem 'faker'
+gem 'pry-rails'
+gem 'whenever', require: false
+gem 'slack-api'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
@@ -56,3 +59,6 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+gem 'dotenv-rails', groups: [:development, :test]
+#gem 'slack-ruby-client'
