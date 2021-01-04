@@ -23,7 +23,6 @@
         hide-disabled-hours
         hide-disabled-minutes></vue-timepicker></br>
         予約人数<input type="number" v-model="numberOfPeople">  名</br>
-        <input type="submit" value="slackメッセージを送る" v-on:click="sendMessage"></br>
         <input type="submit" value="登録する" v-on:click="createReservation">
      </p>
         
@@ -65,13 +64,6 @@ export default {
       this.timeDisplay = true
       this.reservationDate = day.id
       this.getReservations()
-    },
-    sendMessage() {
-      axios.get(`/reserves/slack/`, {
-          params: { reservationDate: this.reservationDate }})
-      .then(res => {
-        console.log(res.data);
-      });
     },
     getReservations() {
        Promise.all([

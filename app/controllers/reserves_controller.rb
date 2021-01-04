@@ -25,20 +25,6 @@ class ReservesController < ApplicationController
        render json: @reserve_times
     end
     
-    def slack
-      @reservation_date_string = params[:reservationDate]
-      @date_value = @reservation_date_string.in_time_zone
-      
-      #取得したい予約を取ってくる
-      @reservation_date = Reserve.where(reservation_date: @date_value.all_day)
-      client = Slack::Web::Client.new
-      client.chat_postMessage(
-        channel: '#general',
-        text: 'これはテストです'
-      )
-      head :no_content
-    end
-  
     
     private
       def resereve_params

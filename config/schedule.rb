@@ -6,6 +6,6 @@ def to_utc(src)
   Time.zone.parse(src).utc.strftime('%H:%M')
 end
 
-every :day, at: to_utc("5:00 pm") do
+every :day, at: to_utc("6:42 pm") do
   rake 'announce:todays_reservation'
 end
