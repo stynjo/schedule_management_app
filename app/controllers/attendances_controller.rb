@@ -48,6 +48,15 @@ class AttendancesController < ApplicationController
    end
   end
   
+  def destroy
+    @attendance = Attendance.find(params[:attendanceId])
+    if @attendance.destroy
+      head :no_content
+    else
+      render json: @attendance.errors, status: :unprocessable_entity
+    end
+  end
+  
   def update
     attendance = Attendance.find_by(id: params[:attendance][:user_id])
     if attendance.update_attributes(attendance_params)

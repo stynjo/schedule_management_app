@@ -14,8 +14,9 @@
         <tr>
             <th>No</th>
             <th>名前</th>
-            <th>出勤時間 / 選択日{{ attendanceDate }}</th>
+            <th>出勤時間 / 選択日</th>
             <th>退勤時間</th>
+            <th>{{ attendanceIdHash  }}</th>
         </tr>
     </thead>
     <tbody>
@@ -40,6 +41,7 @@
                </vue-timepicker>
           </td>
           <td class="btn btn-primary" @click="onCreateAttendance(user.id)">更新</button></td>
+          <td class="btn btn-danger" @click="onDeleteAttendance(user.id)">削除</button></td>
         </tr>
     </tbody>
     </table>
@@ -129,6 +131,12 @@ export default {
 
       // 問題なければAPI叩いて勤怠登録する
       this.updateAttendance(userId, startTimeStr, endTimeStr)
+    },
+    onDeleteAttendance(userId) {
+      let attendanceId = this.attendanceIdHash[userId]
+      axios.delete('/attendances/', {params: {attendanceId: attendanceId}}).then(res => {        
+        console.log(res.data);     
+      })
     },
     updateAttendancesByDate() {
       let startTimeHash = {}
