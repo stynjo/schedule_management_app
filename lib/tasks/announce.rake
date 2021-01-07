@@ -3,10 +3,12 @@ require "slack"
 namespace :announce do
   desc "当日の予約一覧を通知します。"
   task todays_reservation: :environment do
+    `echo "announce:todays_reservation start!" >> /tmp/test`
+    puts ENV['SLACK_TOKEN']
     Slack.configure do |config|
-      config.token = "xoxb-1591388005351-1618805748065-lYSj82SQgjQPfWqlW28MQQPz"
+      config.token = ENV['SLACK_TOKEN']
     end
-    
+
     today = DateTime.now.in_time_zone('Tokyo')
     reserves = Reserve.where(reservation_date: today.all_day)
     reserve_time_hash = %w[18 19 20 21 22 23].map { |i| [ i.to_s, 0 ] }.to_h
