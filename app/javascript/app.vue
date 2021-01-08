@@ -22,6 +22,7 @@
         :minute-range="[0, 30]"
         hide-disabled-hours
         hide-disabled-minutes></vue-timepicker></br>
+        予約名<input type="text" v-model="reserveName">  様
         予約人数<input type="number" v-model="numberOfPeople">  名</br>
         <input type="submit" value="登録する" v-on:click="createReservation">
      </p>
@@ -55,6 +56,7 @@ export default {
       reservationStartTime: null,
       reservationEndTime: null,
       numberOfPeople: '',
+      reserveName:'',
       reserveData: '',
       chartData: {},
     }
@@ -85,7 +87,8 @@ export default {
       axios.post(`/reserves/`, { reservation_date: this.reservationDate,
                                  reservation_start_time: this.reservationStartTime,
                                  reservation_end_time: this.reservationEndTime,
-                                 number_of_people: this.numberOfPeople
+                                 number_of_people: this.numberOfPeople,
+                                 reserveName: this.reserveName
                                })
        .then(res => {
           console.log(res.data);
