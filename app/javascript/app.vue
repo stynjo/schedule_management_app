@@ -88,7 +88,7 @@ export default {
                                  reservation_start_time: this.reservationStartTime,
                                  reservation_end_time: this.reservationEndTime,
                                  number_of_people: this.numberOfPeople,
-                                 reserveName: this.reserveName
+                                 reserve_name: this.reserveName
                                })
        .then(res => {
           console.log(res.data);
