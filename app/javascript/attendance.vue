@@ -134,7 +134,10 @@ export default {
       }
       let attendanceId = this.attendanceIdHash[userId]
       axios.delete('/attendances/', {params: {attendanceId: attendanceId}}).then(res => {        
-        console.log(res.data);     
+        console.log(res.data);  
+        if  (res.status === 204) {
+           alert('勤怠登録を削除しました。');
+        }
       })
     },
     updateAttendancesByDate() {
