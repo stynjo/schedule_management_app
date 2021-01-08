@@ -19,6 +19,7 @@ gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.7'
 gem 'jquery-rails'
 gem 'faker'
+gem 'gimei'
 gem 'pry-rails'
 gem 'whenever', require: false
 gem 'slack-api'

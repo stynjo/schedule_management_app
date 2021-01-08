@@ -50,6 +50,7 @@ class AttendancesController < ApplicationController
   
   def destroy
     @attendance = Attendance.find(params[:attendanceId])
+    binding.pry
     if @attendance.destroy
       head :no_content
     else

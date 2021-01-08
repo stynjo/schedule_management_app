@@ -14,9 +14,8 @@
         <tr>
             <th>No</th>
             <th>名前</th>
-            <th>出勤時間 / 選択日</th>
+            <th>出勤時間 / 選択日{{ attendanceDate }}</th>
             <th>退勤時間</th>
-            <th>{{ attendanceIdHash  }}</th>
         </tr>
     </thead>
     <tbody>
@@ -41,11 +40,11 @@
                </vue-timepicker>
           </td>
           <td class="btn btn-primary" @click="onCreateAttendance(user.id)">更新</button></td>
-          <td class="btn btn-danger" @click= "deleteTarget = user.id; showModal = true">削除</td>
-          <Modal></Modal>
+          <td class="btn btn-danger" @click="onDeleteAttendance(user.id)">削除</button></td>
         </tr>
     </tbody>
     </table>
+    
   </div>
       
 </template>
@@ -54,11 +53,8 @@
 import axios from 'axios';
 import VueTimepicker from 'vue2-timepicker';
 import 'vue2-timepicker/dist/VueTimepicker.css';
-import Modal from 'Modal.vue';
-
 const token = document.getElementsByName('csrf-token')[0].getAttribute('content')
 axios.defaults.headers.common['X-CSRF-Token'] = token
-
 export default {
   data(){
     return {
@@ -69,19 +65,15 @@ export default {
       startTimeHash: {},
       endTimeHash: {},
       message: "",
-      uploadFile: null,
-      showModal: false,
-      deleteTarget: ''
+      uploadFile: null
     }
   },
   components: {
     'vue-timepicker': VueTimepicker,
-     Modal
   },
   methods: {
     dayClicked(day) {
       this.attendanceDate = day.id
-
       // 選択された日付の内容で勤怠一覧を更新する
       this.updateAttendancesByDate()
     },
@@ -119,10 +111,8 @@ export default {
     onCreateAttendance(userId) {
       let startTime = this.startTimeHash[userId];
       let endTime = this.endTimeHash[userId];
-
       if (startTime instanceof Object) { startTime = `${startTime.HH}:${startTime.mm}` }
       if (endTime instanceof Object) { endTime = `${endTime.HH}:${endTime.mm}` }
-
       if (!startTime || !endTime) {
         // TODO: エラーメッセージの表示をいい感じにしたい。
         // TODO: 不正な値が来たときのチェックが甘いのでいい感じにしたい。
@@ -132,11 +122,16 @@ export default {
       
       let startTimeStr = `${this.attendanceDate} ${startTime}`
       let endTimeStr = `${this.attendanceDate} ${endTime}`
-
       // 問題なければAPI叩いて勤怠登録する
       this.updateAttendance(userId, startTimeStr, endTimeStr)
     },
     onDeleteAttendance(userId) {
+      let startTime = this.startTimeHash[userId];
+      let endTime = this.endTimeHash[userId];
+       if (!startTime || !endTime) {
+        alert('日付を設定してください');
+        return
+      }
       let attendanceId = this.attendanceIdHash[userId]
       axios.delete('/attendances/', {params: {attendanceId: attendanceId}}).then(res => {        
         console.log(res.data);     
@@ -149,19 +144,16 @@ export default {
       // vue-timepickerをリセット
       this.$refs.startTime.forEach(e => {e.clearTime()})
       this.$refs.endTime.forEach(e => { e.clearTime() })
-
       // 入力済みの勤怠情報を取得してthis.startTimeHash/endTimeHashの内容を更新する
       axios.get(`/attendances/date/${this.attendanceDate}`)
       .then(res => {
         console.log(res.data);
-
         res.data.forEach(attendance => {
           let userId = attendance.user_id;
           attendanceIdHash[userId] = attendance.id;
           startTimeHash[userId] = this.timeStringByDatetimeStr(attendance.started_at);
           endTimeHash[userId] = this.timeStringByDatetimeStr(attendance.finished_at);
         });
-
         this.startTimeHash = startTimeHash;
         this.endTimeHash = endTimeHash;
         this.attendanceIdHash = attendanceIdHash;
@@ -181,7 +173,6 @@ export default {
         // attendanceIdが存在する = 更新処理とする
         httpMethod = 'put';
       }
-
       axios.request({
         method: httpMethod,
         url: '/attendances/',
@@ -206,7 +197,6 @@ export default {
       let zeroPadding = (src, digit) => {
         return ("0".repeat(digit) + src).slice(-1 * digit);
       };
-
       return `${zeroPadding(datetime.getHours(), 2)}:${zeroPadding(datetime.getMinutes(), 2)}`;
     },
   },
@@ -214,7 +204,6 @@ export default {
     this.getAlluser();
   }
 };
-
 </script>
 
 <style>
@@ -223,12 +212,7 @@ export default {
   --day-content-height: 100px;
   --day-content-width: 100px;
 }
-
 #calendar-wrapper .vc-text-sm {
   font-size: 21px;
-}
-
-.modal-backdrop {
-  opacity: 0.5;
 }
 </style>
