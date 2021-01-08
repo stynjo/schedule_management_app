@@ -41,11 +41,11 @@
                </vue-timepicker>
           </td>
           <td class="btn btn-primary" @click="onCreateAttendance(user.id)">更新</button></td>
-          <td class="btn btn-danger" @click="onDeleteAttendance(user.id)">削除</button></td>
+          <td class="btn btn-danger" @click= "deleteTarget = user.id; showModal = true">削除</td>
+          <Modal></Modal>
         </tr>
     </tbody>
     </table>
-    
   </div>
       
 </template>
@@ -54,6 +54,7 @@
 import axios from 'axios';
 import VueTimepicker from 'vue2-timepicker';
 import 'vue2-timepicker/dist/VueTimepicker.css';
+import Modal from 'Modal.vue';
 
 const token = document.getElementsByName('csrf-token')[0].getAttribute('content')
 axios.defaults.headers.common['X-CSRF-Token'] = token
@@ -68,11 +69,14 @@ export default {
       startTimeHash: {},
       endTimeHash: {},
       message: "",
-      uploadFile: null
+      uploadFile: null,
+      showModal: false,
+      deleteTarget: ''
     }
   },
   components: {
     'vue-timepicker': VueTimepicker,
+     Modal
   },
   methods: {
     dayClicked(day) {
@@ -222,5 +226,9 @@ export default {
 
 #calendar-wrapper .vc-text-sm {
   font-size: 21px;
+}
+
+.modal-backdrop {
+  opacity: 0.5;
 }
 </style>
