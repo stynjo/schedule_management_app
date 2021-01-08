@@ -2,9 +2,11 @@ class ReservesController < ApplicationController
   protect_from_forgery with: :null_session
     def create
       @reserve = Reserve.new(resereve_params)
-      @reserve.save
-      flash[:success] ='予約登録を完了しました'
-      head :no_content
+      if @reserve.save
+        render json: @resereve, status: :created
+      else
+        render json: @reserve, status: :unprocessable_entity
+      end
     end
     
     def index

@@ -92,6 +92,11 @@ export default {
                                })
        .then(res => {
           console.log(res.data);
+          if  (res.status === 201) {
+           alert('予約登録を完了しました。');
+          } else if (res.status === 422) {
+            alert('予約登録に失敗しました。');
+          }
           this.timeDisplay = false
     　　});
     },
