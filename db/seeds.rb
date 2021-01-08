@@ -7,7 +7,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 20.times do |n|
-  name  = Faker::Name.name
+  name  = Gimei.kanji 
   email = "sample#{n+6}@example.com"
   password = "password"
   User.create!(name: name,

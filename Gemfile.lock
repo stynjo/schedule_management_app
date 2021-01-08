@@ -99,6 +99,8 @@ GEM
       eventmachine (>= 0.12.0)
       websocket-driver (>= 0.5.1)
     ffi (1.13.1)
+    gimei (0.5.1)
+      romaji
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     i18n (1.8.4)
@@ -178,6 +180,8 @@ GEM
     responders (3.0.1)
       actionpack (>= 5.0)
       railties (>= 5.0)
+    romaji (0.2.4)
+      rake (>= 0.8.0)
     rubyzip (2.3.0)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
@@ -251,6 +255,7 @@ DEPENDENCIES
   devise
   dotenv-rails
   faker
+  gimei
   jbuilder (~> 2.7)
   jquery-rails
   listen (~> 3.2)
