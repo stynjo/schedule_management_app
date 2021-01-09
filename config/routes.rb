@@ -6,14 +6,14 @@ Rails.application.routes.draw do
                      
                                  
   resources :users 
+  
   resource :attendances do
     get 'date/:date', to: 'attendances#date'
     get '/index', to: 'attendances#index'
      collection { post :import }
   end
-  get 'reserves/slack', to: 'reserves#slack'
-  resources :reserves do
-    
+  resource :reserves do
+    get '/:date', to: 'reserves#list'
   end
   
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
