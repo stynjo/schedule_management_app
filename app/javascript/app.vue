@@ -63,7 +63,7 @@ export default {
       reserveName:'',
       reserveData: '',
       chartData: {},
-      reserveList: ''
+      reserveList: {}
     }
   },
   methods: {
@@ -74,16 +74,21 @@ export default {
     },
     getReservations() {
        Promise.all([
-        axios.get(`/reserves/`, {
+         //時間あたりの予約数取得
+        axios.get(`/reserves/index`, {
           params: { reservationDate: this.reservationDate }}),
+         //時間あたりの人員数取得
         axios.get(`/attendances/index`, {
+          params: { reservationDate: this.reservationDate }}),
+          //その日の予約データ取得
+        axios.get(`/reserves/date`, {
           params: { reservationDate: this.reservationDate }})
       ])
       .then(responses => {
         responses.forEach(res => console.log(res.data))
         var reserveData = responses[0].data
         var emloyeeData = responses[1].data
-        this.reserveList = reserveData
+        var reserveList = responses[2].data
         this.updateChartData(reserveData,emloyeeData)
       })
     },

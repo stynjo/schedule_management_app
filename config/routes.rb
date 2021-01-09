@@ -13,7 +13,8 @@ Rails.application.routes.draw do
      collection { post :import }
   end
   resource :reserves do
-    get '/:date', to: 'reserves#list'
+    get '/index', to: 'reserves#index'
+    get '/date', to: 'reserves#list'
   end
   
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

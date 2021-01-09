@@ -28,6 +28,19 @@ class ReservesController < ApplicationController
     end
     
     
+    def list
+      @reservation_date_string = params[:reservationDate]
+      @date_value = @reservation_date_string.in_time_zone
+      reserve_lists = []
+      
+      #取得したい予約を取ってくる
+      @reservation_date = Reserve.where(reservation_date: @date_value.all_day)
+      @reservation_date.each do |reserve|
+        reserve_lists.push(reserve.to_json)
+      end
+      render json: reserve_lists
+    end
+    
     private
       def resereve_params
         params.require(:reserve).permit(:number_of_people, :reservation_start_time, :reservation_end_time, :reservation_date, :reserve_name)
