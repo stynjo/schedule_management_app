@@ -2,12 +2,13 @@
   <div id="app">
     <div id="calendar-wrapper">
       <v-calendar
-        @dayclick='dayClicked'
-        is-expanded
-        class="v-calendar"
+      @dayclick='dayClicked'
+      is-expanded
+      class="v-calendar"
       ></v-calendar> 
       {{ reservationDate }}
     </div>
+     <reserve-table :reserve_list="reserveList"></reserve-table>
     <p v-if ="timeDisplay">
       <vue-timepicker
         v-model="inputStartTime"
@@ -26,7 +27,7 @@
         予約人数<input type="number" v-model="numberOfPeople">  名</br>
         <input type="submit" value="登録する" v-on:click="createReservation">
      </p>
-        
+      
     <radar-chart class="chart_bar" :chart-data="chartData"></radar-chart> 
     
   </div>
@@ -37,8 +38,11 @@
 <script>
 import VueTimepicker from 'vue2-timepicker'
 import 'vue2-timepicker/dist/VueTimepicker.css'
+import 'bootstrap/dist/css/bootstrap.css' 
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 import Chart from 'chart.vue';
 import axios from 'axios';
+import Table from 'table.vue';
 
 const token = document.getElementsByName('csrf-token')[0].getAttribute('content')
 axios.defaults.headers.common['X-CSRF-Token'] = token
@@ -59,6 +63,7 @@ export default {
       reserveName:'',
       reserveData: '',
       chartData: {},
+      reserveList: ''
     }
   },
   methods: {
@@ -78,6 +83,7 @@ export default {
         responses.forEach(res => console.log(res.data))
         var reserveData = responses[0].data
         var emloyeeData = responses[1].data
+        this.reserveList = reserveData
         this.updateChartData(reserveData,emloyeeData)
       })
     },
@@ -127,7 +133,8 @@ export default {
   },
   components: {
     'vue-timepicker': VueTimepicker,
-    'radar-chart': Chart
+    'radar-chart': Chart,
+    'reserve-table': Table
   },
   mounted() {
     let today = new Date();
@@ -159,6 +166,7 @@ export default {
 #calendar-wrapper .vc-text-sm {
   font-size: 21px;
 }
+
 
  
 </style>
