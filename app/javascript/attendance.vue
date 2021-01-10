@@ -73,7 +73,7 @@ export default {
   },
   components: {
     'vue-timepicker': VueTimepicker,
-    'modal' : modal
+    'modal': modal
   },
   methods: {
     dayClicked(day) {

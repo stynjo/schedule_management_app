@@ -41,6 +41,15 @@ class ReservesController < ApplicationController
       render json: reserve_lists
     end
     
+    def destroy
+      @resereve = Reserve.find(params[:resereveId])
+      if @resereve.destroy
+        head :no_content
+      else
+        render json: @resereve.errors, status: :unprocessable_entity
+      end
+    end
+    
     private
       def resereve_params
         params.require(:reserve).permit(:number_of_people, :reservation_start_time, :reservation_end_time, :reservation_date, :reserve_name)
