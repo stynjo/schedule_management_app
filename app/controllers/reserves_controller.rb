@@ -36,7 +36,7 @@ class ReservesController < ApplicationController
       #取得したい予約を取ってくる
       @reservation_date = Reserve.where(reservation_date: @date_value.all_day)
       @reservation_date.each do |reserve|
-        reserve_lists.push(reserve.to_json)
+        reserve_lists.push(reserve)
       end
       render json: reserve_lists
     end

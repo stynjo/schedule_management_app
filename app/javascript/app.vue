@@ -50,6 +50,11 @@ axios.defaults.headers.common['X-CSRF-Token'] = token
 /*global $*/
 
 export default {
+  components: {
+    'vue-timepicker': VueTimepicker,
+    'radar-chart': Chart,
+    'reserve-table': Table
+  },
   props: ['reserve_times'],
   data() {
     return { 
@@ -88,8 +93,9 @@ export default {
         responses.forEach(res => console.log(res.data))
         var reserveData = responses[0].data
         var emloyeeData = responses[1].data
-        var reserveList = responses[2].data
         this.updateChartData(reserveData,emloyeeData)
+
+        this.reserveList = responses[2].data
       })
     },
     createReservation() {
@@ -135,11 +141,6 @@ export default {
         ]
       }
     }
-  },
-  components: {
-    'vue-timepicker': VueTimepicker,
-    'radar-chart': Chart,
-    'reserve-table': Table
   },
   mounted() {
     let today = new Date();

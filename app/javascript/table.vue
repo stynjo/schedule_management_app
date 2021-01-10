@@ -2,30 +2,19 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
+      <th scope="col">予約名</th>
+      <th scope="col">人数</th>
+      <th scope="col">開始時間</th>
+      <th scope="col">終了時間</th>
     </tr>
   </thead>
   <tbody>
-    <tr>
+     <tr v-for="resereve in reserve_list" :key="resereve.id">
       <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>{{reserve_list}}</td>
+      <td>{{ resereve.reserve_name }}</td>
+      <td>{{ resereve.number_of_people }}</td>
+      <td>{{ resereve.reservation_start_time }}</td>
+      <td>{{ resereve.reservation_end_time }}</td>
     </tr>
   </tbody>
 </table>
@@ -35,8 +24,12 @@
 export default {
   props: ['reserve_list'],
   data() {
-    return { 
-    
+    return {
+    }
+  },
+  watch: {
+    reserve_list: function (val) {
+      console.log(this.reserve_list)
     }
   }
 }

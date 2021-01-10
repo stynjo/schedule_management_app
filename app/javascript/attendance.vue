@@ -44,6 +44,7 @@
         </tr>
     </tbody>
     </table>
+          <modal></modal>
     
   </div>
       
@@ -53,6 +54,8 @@
 import axios from 'axios';
 import VueTimepicker from 'vue2-timepicker';
 import 'vue2-timepicker/dist/VueTimepicker.css';
+import modal from 'modal.vue'
+
 const token = document.getElementsByName('csrf-token')[0].getAttribute('content')
 axios.defaults.headers.common['X-CSRF-Token'] = token
 export default {
@@ -70,6 +73,7 @@ export default {
   },
   components: {
     'vue-timepicker': VueTimepicker,
+    'modal' : modal
   },
   methods: {
     dayClicked(day) {
