@@ -18,6 +18,7 @@
             <th>退勤時間</th>
         </tr>
     </thead>
+    <modal></modal>
     <tbody>
         <tr v-for="user in users" :key="user.id">
           <th>{{ user.id }}</th>
@@ -44,8 +45,7 @@
         </tr>
     </tbody>
     </table>
-          <modal></modal>
-    
+    <modal></modal>
   </div>
       
 </template>
