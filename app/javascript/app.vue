@@ -8,30 +8,49 @@
       ></v-calendar> 
       {{ reservationDate }}
     </div>
-     <reserve-table :reserve_list="reserveList"></reserve-table>
-    <p v-if ="timeDisplay">
-      <vue-timepicker
-        v-model="inputStartTime"
-        :hour-range="[18, 24, [18, 24]]"
-        :minute-range="[0, 30]"
-        hide-disabled-hours
-        hide-disabled-minutes></vue-timepicker>
+  <p v-if ="timeDisplay">
+    <vue-timepicker
+    v-model="inputStartTime"
+    :hour-range="[18, 24, [18, 24]]"
+    :minute-range="[0, 30]"
+    hide-disabled-hours
+    hide-disabled-minutes></vue-timepicker>
       ~
-      <vue-timepicker
-        v-model="inputEndTime"
-        :hour-range="[18, 24, [18, 24]]"
-        :minute-range="[0, 30]"
-        hide-disabled-hours
-        hide-disabled-minutes></vue-timepicker></br>
-        予約名<input type="text" v-model="reserveName">  様
-        予約人数<input type="number" v-model="numberOfPeople">  名</br>
-        <input type="submit" value="登録する" v-on:click="createReservation">
-     </p>
-      
-    <radar-chart class="chart_bar" :chart-data="chartData"></radar-chart> 
+    <vue-timepicker
+      v-model="inputEndTime"
+      :hour-range="[18, 24, [18, 24]]"
+      :minute-range="[0, 30]"
+      hide-disabled-hours
+      hide-disabled-minutes></vue-timepicker></br>
+      予約名<input type="text" v-model="reserveName">  様
+      予約人数<input type="number" v-model="numberOfPeople">  名</br>
+      <input type="submit" value="登録する" v-on:click="createReservation">
+  </p>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">予約名</th>
+          <th scope="col">人数</th>
+          <th scope="col">開始時間</th>
+          <th scope="col">終了時間</th>
+       </tr>
+     </thead>
+     <tbody>
+       <tr v-for="resereve in reserveList" :key="resereve.id">
+         <td>{{ resereve.reserve_name }}</td>
+         <td>{{ resereve.number_of_people }}</td>
+         <td>{{ formatDate(resereve.reservation_start_time) }}</td>
+         <td>{{ formatDate(resereve.reservation_end_time) }}</td>
+         <td><button class="btn btn-danger" @click="deleteTarget = resereve.id; showModal = true">削除</button></td>
+       </tr>
+     </tbody>
+   </table>  
+  <radar-chart class="chart_bar" :chart-data="chartData"></radar-chart>
+  <modal v-if="showModal" @cancel="showModal = false; deleteTarget = ''" @ok="onDeleteReserve(deleteTarget); showModal = false;">
+      <div slot="body">本当に削除しますか?</div>
+    </modal>
+</div>
     
-  </div>
- 
 </template>
 
 
@@ -42,7 +61,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import Chart from 'chart.vue';
 import axios from 'axios';
-import Table from 'table.vue';
+import modal from 'modal.vue'
 
 const token = document.getElementsByName('csrf-token')[0].getAttribute('content')
 axios.defaults.headers.common['X-CSRF-Token'] = token
@@ -53,7 +72,7 @@ export default {
   components: {
     'vue-timepicker': VueTimepicker,
     'radar-chart': Chart,
-    'reserve-table': Table
+    'modal': modal
   },
   props: ['reserve_times'],
   data() {
@@ -68,7 +87,9 @@ export default {
       reserveName:'',
       reserveData: '',
       chartData: {},
-      reserveList: {}
+      reserveList: {},
+      showModal: false,
+      deleteTarget: ''
     }
   },
   methods: {
@@ -116,6 +137,31 @@ export default {
           }
           this.timeDisplay = false
     　　});
+    },
+    onDeleteReserve(resereveId) {
+      axios.delete('/reserves/', {params: {resereveId: resereveId}}).then(res => {        
+        console.log(res.data);  
+        if  (res.status === 204) {
+           alert('予約データを削除しました。');
+        }
+      })
+    },
+    formatDate(dateStr) {
+      return this.dateToStr24HPad0DayOfWeek(new Date(dateStr), 'hh:mm')
+    },
+    dateToStr24HPad0DayOfWeek(date, format) {
+      var weekday = ["日", "月", "火", "水", "木", "金", "土"];
+      if (!format) {
+          format = 'YYYY/MM/DD(WW) hh:mm:ss'
+      }
+      format = format.replace(/YYYY/g, date.getFullYear());
+      format = format.replace(/MM/g, ('0' + (date.getMonth() + 1)).slice(-2));
+      format = format.replace(/DD/g, ('0' + date.getDate()).slice(-2));
+      format = format.replace(/WW/g, weekday[date.getDay()]);
+      format = format.replace(/hh/g, ('0' + date.getHours()).slice(-2));
+      format = format.replace(/mm/g, ('0' + date.getMinutes()).slice(-2));
+      format = format.replace(/ss/g, ('0' + date.getSeconds()).slice(-2));
+      return format;
     },
     updateChartData(reserveData,emloyeeData) {
       this.chartData = {
