@@ -10,8 +10,7 @@
           </div>
 
           <div class="modal-body">
-            <slot name="body">
-            </slot>
+              本当に削除しますか?
           </div>
 
           <div class="modal-footer">

@@ -47,7 +47,6 @@
    </table>  
   <radar-chart class="chart_bar" :chart-data="chartData"></radar-chart>
   <modal v-if="showModal" @cancel="showModal = false; deleteTarget = ''" @ok="onDeleteReserve(deleteTarget); showModal = false;">
-      <div slot="body">本当に削除しますか?</div>
     </modal>
 </div>
     
