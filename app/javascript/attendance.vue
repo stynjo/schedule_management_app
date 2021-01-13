@@ -18,7 +18,9 @@
             <th>退勤時間</th>
         </tr>
     </thead>
-    <modal></modal>
+    <p v-if="modalAlert">
+      <modal></modal>
+    </p>
     <tbody>
         <tr v-for="user in users" :key="user.id">
           <th>{{ user.id }}</th>
@@ -41,12 +43,12 @@
                </vue-timepicker>
           </td>
           <td class="btn btn-primary" @click="onCreateAttendance(user.id)">更新</button></td>
-          <td class="btn btn-danger" @click="onDeleteAttendance(user.id)">削除</button></td>
+          <td class="btn btn-danger" @click="showModal(user.id)">削除</button></td>
         </tr>
     </tbody>
     </table>
-    <modal></modal>
   </div>
+ 
       
 </template>
 
@@ -68,7 +70,8 @@ export default {
       startTimeHash: {},
       endTimeHash: {},
       message: "",
-      uploadFile: null
+      uploadFile: null,
+      modalAlert: false
     }
   },
   components: {
@@ -76,6 +79,10 @@ export default {
     'modal': modal
   },
   methods: {
+     showModal(resereveId) {
+      this.modalAlert = true
+      this.resereveId = resereveId
+    },
     dayClicked(day) {
       this.attendanceDate = day.id
       // 選択された日付の内容で勤怠一覧を更新する
