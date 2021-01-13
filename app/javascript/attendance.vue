@@ -42,8 +42,8 @@
                ref="endTime">
                </vue-timepicker>
           </td>
-          <td class="btn btn-primary" @click="onCreateAttendance(user.id)">更新</button></td>
-          <td class="btn btn-danger" @click="showModal(user.id)">削除</button></td>
+          <td><button class="btn btn-primary" @click="onCreateAttendance(user.id)">更新</button></td>
+          <td><button class="btn btn-danger" @click="showModal(user.id)">削除</button></td>
         </tr>
     </tbody>
     </table>

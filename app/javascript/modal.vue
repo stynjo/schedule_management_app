@@ -7,4 +7,3 @@
   </b-modal>
 </div>
 </template>
-
