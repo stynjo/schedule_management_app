@@ -59,7 +59,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import Chart from 'chart.vue';
 import axios from 'axios';
-import modal from 'modal.vue'
+import modal from 'delete-modal.vue'
 
 const token = document.getElementsByName('csrf-token')[0].getAttribute('content')
 axios.defaults.headers.common['X-CSRF-Token'] = token
