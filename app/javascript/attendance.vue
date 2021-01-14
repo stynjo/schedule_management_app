@@ -18,9 +18,6 @@
             <th>退勤時間</th>
         </tr>
     </thead>
-    <p v-if="modalAlert">
-      <modal></modal>
-    </p>
     <tbody>
         <tr v-for="user in users" :key="user.id">
           <th>{{ user.id }}</th>
@@ -43,10 +40,11 @@
                </vue-timepicker>
           </td>
           <td><button class="btn btn-primary" @click="onCreateAttendance(user.id)">更新</button></td>
-          <td><button class="btn btn-danger" @click="showModal(user.id)">削除</button></td>
+          <td><button class="btn btn-danger" @click="deleteTarget = user.id; attShowModal = true">削除</button></td>
         </tr>
     </tbody>
     </table>
+    <modal v-if="attShowModal" @cancel="attShowModal = false; deleteTarget = ''" @ok="onDeleteAttendance(deleteTarget); attShowModal = false;"></modal>
   </div>
  
       
@@ -71,7 +69,9 @@ export default {
       endTimeHash: {},
       message: "",
       uploadFile: null,
-      modalAlert: false
+      attShowModal: false,
+      deleteTarget: '',
+      flashMessage: ''
     }
   },
   components: {
@@ -79,10 +79,6 @@ export default {
     'modal': modal
   },
   methods: {
-     showModal(resereveId) {
-      this.modalAlert = true
-      this.resereveId = resereveId
-    },
     dayClicked(day) {
       this.attendanceDate = day.id
       // 選択された日付の内容で勤怠一覧を更新する
@@ -141,6 +137,7 @@ export default {
       let endTime = this.endTimeHash[userId];
        if (!startTime || !endTime) {
         alert('日付を設定してください');
+        this.deleteTarget = ''
         return
       }
       let attendanceId = this.attendanceIdHash[userId]

@@ -41,13 +41,12 @@
          <td>{{ resereve.number_of_people }}</td>
          <td>{{ formatDate(resereve.reservation_start_time) }}</td>
          <td>{{ formatDate(resereve.reservation_end_time) }}</td>
-         <td><button class="btn btn-danger" @click="deleteTarget = resereve.id; showModal = true">削除</button></td>
+         <td><button class="btn btn-danger" @click="deleteTarget = resereve.id; resereveShowModal = true">削除</button></td>
        </tr>
      </tbody>
    </table>  
   <radar-chart class="chart_bar" :chart-data="chartData"></radar-chart>
-  <modal v-if="showModal" @cancel="showModal = false; deleteTarget = ''" @ok="onDeleteReserve(deleteTarget); showModal = false;">
-    </modal>
+  <modal v-if="resereveShowModal" @cancel="resereveShowModal = false; deleteTarget = ''" @ok="onDeleteReserve(deleteTarget); resereveShowModal = false;"></modal>
 </div>
     
 </template>
@@ -87,7 +86,7 @@ export default {
       reserveData: '',
       chartData: {},
       reserveList: {},
-      showModal: false,
+      resereveShowModal: false,
       deleteTarget: ''
     }
   },

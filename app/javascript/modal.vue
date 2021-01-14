@@ -15,10 +15,10 @@
 
           <div class="modal-footer">
             <slot name="footer">
-              <button class="modal-default-button" @click="$emit('ok')">
+              <button type="button" class="btn btn-outline-danger" @click="$emit('ok')">
                 OK
               </button>
-              <button class="modal-default-button" @click="$emit('cancel')">
+              <button type="button" class="btn btn-outline-secondary" @click="$emit('cancel')">
                 Cancel
               </button>
             </slot>
@@ -53,7 +53,7 @@ export default {
 }
 
 .modal-container {
-  width: 300px;
+  width: 500px;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #fff;
