@@ -10,6 +10,15 @@
           </div>
 
           <div class="modal-body">
+            予約日
+            <v-date-picker
+              :popover="popover"
+              v-model="resereveDate">
+              <template v-slot="{ inputValue, inputEvents }">
+                <input :value="inputValue"  v-on="inputEvents" />
+              </template>
+            </v-date-picker>
+            予約時間
             <vue-timepicker
                v-model="startTime"
               :hour-range="[18, 24, [18, 24]]"
@@ -50,6 +59,8 @@ export default {
   },
   data() {
     return {
+      popover: null,
+      resereveDate: null,
       startTime: '',
       endTime: '',
       resereveName: '',
@@ -58,12 +69,17 @@ export default {
   },
   methods: {
     submit() {
+      this.changeDateFormat(this.resereveDate)
       this.$parent.onSubmitReserveForm({
         startTime: this.startTime,
         endTime: this.endTime,
         resereveName: this.resereveName,
-        number: this.number
+        number: this.number,
+        resereveDate: this.resereveDate
       })
+    },
+    changeDateFormat(day){
+      this.resereveDate = `${day.getFullYear()}/${day.getMonth() + 1}/${day.getDate()}`
     }
   }
 }

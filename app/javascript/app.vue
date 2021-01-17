@@ -137,8 +137,8 @@ export default {
       this.inputEndTime = formValue.endTime
       this.reserveName = formValue.resereveName
       this.numberOfPeople = formValue.number
-
-      //this.createReservation()
+      this.reservationEndTime = formValue.reserveDate
+      this.createReservation()
     },
     createReservation() {
       this.reservationStartTime = (`${this.reservationDate} ${this.inputStartTime}`)
@@ -157,6 +157,7 @@ export default {
             alert('予約登録に失敗しました。');
           }
           this.timeDisplayModal = false
+          this.closeReserveModal()
     　　});
     },
     onDeleteReserve(resereveId) {
