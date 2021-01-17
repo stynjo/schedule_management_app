@@ -8,7 +8,9 @@
       ></v-calendar> 
       {{ reservationDate }}
     </div>
-  <p v-if ="timeDisplay">
+    <button type="button" class="btn btn-info" @click="openReserveModal()">予約登録フォーム</button>
+    {{ formList }}
+  <p>
     <vue-timepicker
     v-model="inputStartTime"
     :hour-range="[18, 24, [18, 24]]"
@@ -22,6 +24,7 @@
       :minute-range="[0, 30]"
       hide-disabled-hours
       hide-disabled-minutes></vue-timepicker></br>
+      
       予約名<input type="text" v-model="reserveName">  様
       予約人数<input type="number" v-model="numberOfPeople">  名</br>
       <input type="submit" value="登録する" v-on:click="createReservation">
@@ -41,14 +44,16 @@
          <td>{{ resereve.number_of_people }}</td>
          <td>{{ formatDate(resereve.reservation_start_time) }}</td>
          <td>{{ formatDate(resereve.reservation_end_time) }}</td>
-         <td><button class="btn btn-danger" @click="deleteTarget = resereve.id; resereveShowModal = true">削除</button></td>
+         <td><button class="btn btn-danger" @click="deleteTarget = resereve.id; resereveDeleteModal = true">削除</button></td>
        </tr>
      </tbody>
    </table>  
   <radar-chart class="chart_bar" :chart-data="chartData"></radar-chart>
-  <modal v-if="resereveShowModal" @cancel="resereveShowModal = false; deleteTarget = ''" @ok="onDeleteReserve(deleteTarget); resereveShowModal = false;"></modal>
+  <modal v-if="resereveDeleteModal" @cancel="resereveDeleteModal = false; deleteTarget = ''" @ok="onDeleteReserve(deleteTarget); resereveDeleteModal = false;"></modal>
+  
+  <reserve-modal v-if="resereveResponseModal" @cancel="this.resereveResponseModal = false;" @form="this.inputFormValue($event); this.resereveResponseModal = false;"></reserve-modal>
 </div>
-    
+
 </template>
 
 
@@ -60,6 +65,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import Chart from 'chart.vue';
 import axios from 'axios';
 import modal from 'delete-modal.vue'
+import ReserveModal from 'reserve-modal.vue'
 
 const token = document.getElementsByName('csrf-token')[0].getAttribute('content')
 axios.defaults.headers.common['X-CSRF-Token'] = token
@@ -70,7 +76,8 @@ export default {
   components: {
     'vue-timepicker': VueTimepicker,
     'radar-chart': Chart,
-    'modal': modal
+    'modal': modal,
+    'reserve-modal': ReserveModal
   },
   props: ['reserve_times'],
   data() {
@@ -78,7 +85,7 @@ export default {
       reservationDate: null,
       inputStartTime: '',
       inputEndTime: '',
-      timeDisplay: false,
+      timeDisplayModal: false,
       reservationStartTime: null,
       reservationEndTime: null,
       numberOfPeople: '',
@@ -86,13 +93,21 @@ export default {
       reserveData: '',
       chartData: {},
       reserveList: {},
-      resereveShowModal: false,
-      deleteTarget: ''
+      resereveDeleteModal: false,
+      deleteTarget: '',
+      resereveResponseModal: false,
+      formList: {}
     }
   },
   methods: {
+    openReserveModal() {
+      this.resereveResponseModal = true
+    },
+    closeReserveModal() {
+      this.resereveResponseModal = false
+    },
     dayClicked(day) {
-      this.timeDisplay = true
+      this.timeDisplayModal = true
       this.reservationDate = day.id
       this.getReservations()
     },
@@ -117,6 +132,14 @@ export default {
         this.reserveList = responses[2].data
       })
     },
+    onSubmitReserveForm(formValue) {
+      this.inputStartTime = formValue.startTime
+      this.inputEndTime = formValue.endTime
+      this.reserveName = formValue.resereveName
+      this.numberOfPeople = formValue.number
+
+      //this.createReservation()
+    },
     createReservation() {
       this.reservationStartTime = (`${this.reservationDate} ${this.inputStartTime}`)
       this.reservationEndTime = (`${this.reservationDate} ${this.inputEndTime}`)
@@ -133,7 +156,7 @@ export default {
           } else if (res.status === 422) {
             alert('予約登録に失敗しました。');
           }
-          this.timeDisplay = false
+          this.timeDisplayModal = false
     　　});
     },
     onDeleteReserve(resereveId) {

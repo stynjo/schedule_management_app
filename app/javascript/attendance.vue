@@ -44,7 +44,7 @@
         </tr>
     </tbody>
     </table>
-    <modal v-if="attShowModal" @cancel="attShowModal = false; deleteTarget = ''" @ok="onDeleteAttendance(deleteTarget); attShowModal = false;"></modal>
+ 
   </div>
  
       
