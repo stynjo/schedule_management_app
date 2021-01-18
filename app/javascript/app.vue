@@ -1,5 +1,8 @@
 <template>
   <div id="app">
+
+    <flash-message ref="flashMessage"></flash-message>
+    
     <div id="calendar-wrapper">
       <v-calendar
       @dayclick='dayClicked'
@@ -9,26 +12,7 @@
       {{ reservationDate }}
     </div>
     <button type="button" class="btn btn-info" @click="openReserveModal()">予約登録フォーム</button>
-    {{ formList }}
-  <p>
-    <vue-timepicker
-    v-model="inputStartTime"
-    :hour-range="[18, 24, [18, 24]]"
-    :minute-range="[0, 30]"
-    hide-disabled-hours
-    hide-disabled-minutes></vue-timepicker>
-      ~
-    <vue-timepicker
-      v-model="inputEndTime"
-      :hour-range="[18, 24, [18, 24]]"
-      :minute-range="[0, 30]"
-      hide-disabled-hours
-      hide-disabled-minutes></vue-timepicker></br>
-      
-      予約名<input type="text" v-model="reserveName">  様
-      予約人数<input type="number" v-model="numberOfPeople">  名</br>
-      <input type="submit" value="登録する" v-on:click="createReservation">
-  </p>
+
     <table class="table table-striped">
       <thead>
         <tr>
@@ -66,6 +50,7 @@ import Chart from 'chart.vue';
 import axios from 'axios';
 import modal from 'delete-modal.vue'
 import ReserveModal from 'reserve-modal.vue'
+import FlashMessage from 'flash-message.vue'
 
 const token = document.getElementsByName('csrf-token')[0].getAttribute('content')
 axios.defaults.headers.common['X-CSRF-Token'] = token
@@ -77,7 +62,8 @@ export default {
     'vue-timepicker': VueTimepicker,
     'radar-chart': Chart,
     'modal': modal,
-    'reserve-modal': ReserveModal
+    'reserve-modal': ReserveModal,
+    'flash-message': FlashMessage,
   },
   props: ['reserve_times'],
   data() {
@@ -85,7 +71,6 @@ export default {
       reservationDate: null,
       inputStartTime: '',
       inputEndTime: '',
-      timeDisplayModal: false,
       reservationStartTime: null,
       reservationEndTime: null,
       numberOfPeople: '',
@@ -96,10 +81,13 @@ export default {
       resereveDeleteModal: false,
       deleteTarget: '',
       resereveResponseModal: false,
-      formList: {}
+      formList: {},
     }
   },
   methods: {
+    showAlert(message) {
+      this.$refs.flashMessage.showFlashMessage(message)
+    },
     openReserveModal() {
       this.resereveResponseModal = true
     },
@@ -107,7 +95,6 @@ export default {
       this.resereveResponseModal = false
     },
     dayClicked(day) {
-      this.timeDisplayModal = true
       this.reservationDate = day.id
       this.getReservations()
     },
@@ -152,11 +139,10 @@ export default {
        .then(res => {
           console.log(res.data);
           if  (res.status === 201) {
-           alert('予約登録を完了しました。');
+            this.showAlert('予約登録を完了しました。');
           } else if (res.status === 422) {
-            alert('予約登録に失敗しました。');
+            this.showAlert('予約登録に失敗しました。');
           }
-          this.timeDisplayModal = false
           this.closeReserveModal()
     　　});
     },
@@ -164,7 +150,7 @@ export default {
       axios.delete('/reserves/', {params: {resereveId: resereveId}}).then(res => {        
         console.log(res.data);  
         if  (res.status === 204) {
-           alert('予約データを削除しました。');
+           this.showAlert('予約データを削除しました。');
         }
       })
     },
