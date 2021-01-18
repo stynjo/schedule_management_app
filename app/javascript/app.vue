@@ -33,7 +33,7 @@
      </tbody>
    </table>  
   <radar-chart class="chart_bar" :chart-data="chartData"></radar-chart>
-  <modal v-if="resereveDeleteModal" @cancel="resereveDeleteModal = false; deleteTarget = ''" @ok="onDeleteReserve(deleteTarget); resereveDeleteModal = false;"></modal>
+  <delete-modal v-if="resereveDeleteModal" @cancel="resereveDeleteModal = false; deleteTarget = ''" @ok="onDeleteReserve(deleteTarget); resereveDeleteModal = false;"></delete-modal>
   
   <reserve-modal v-if="resereveResponseModal" @cancel="this.resereveResponseModal = false;" @form="this.inputFormValue($event); this.resereveResponseModal = false;"></reserve-modal>
 </div>
@@ -48,7 +48,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import Chart from 'chart.vue';
 import axios from 'axios';
-import modal from 'delete-modal.vue'
+import DeleteModal from 'delete-modal.vue'
 import ReserveModal from 'reserve-modal.vue'
 import FlashMessage from 'flash-message.vue'
 
@@ -61,7 +61,7 @@ export default {
   components: {
     'vue-timepicker': VueTimepicker,
     'radar-chart': Chart,
-    'modal': modal,
+    'delete-modal': DeleteModal,
     'reserve-modal': ReserveModal,
     'flash-message': FlashMessage,
   },

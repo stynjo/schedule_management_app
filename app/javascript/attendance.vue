@@ -1,5 +1,6 @@
 <template>
   <div id="attendanece">
+    <flash-message ref="flashMessage"></flash-message>
     <div id="calendar-wrapper">
       <v-calendar
       @dayclick='dayClicked'>
@@ -40,11 +41,11 @@
                </vue-timepicker>
           </td>
           <td><button class="btn btn-primary" @click="onCreateAttendance(user.id)">更新</button></td>
-          <td><button class="btn btn-danger" @click="deleteTarget = user.id; attShowModal = true">削除</button></td>
+          <td><button class="btn btn-danger" @click="deleteTarget = user.id; attendanceDeleteModal = true">削除</button></td>
         </tr>
     </tbody>
     </table>
- 
+   <delete-modal v-if="attendanceDeleteModal" @cancel="attendanceDeleteModal = false; deleteTarget = ''" @ok="onDeleteAttendance(deleteTarget); attendanceDeleteModal = false;"></delete-modal>
   </div>
  
       
@@ -54,7 +55,8 @@
 import axios from 'axios';
 import VueTimepicker from 'vue2-timepicker';
 import 'vue2-timepicker/dist/VueTimepicker.css';
-import modal from 'delete-modal.vue'
+import FlashMessage from 'flash-message.vue'
+import DeleteModal from 'delete-modal.vue'
 
 const token = document.getElementsByName('csrf-token')[0].getAttribute('content')
 axios.defaults.headers.common['X-CSRF-Token'] = token
@@ -69,14 +71,15 @@ export default {
       endTimeHash: {},
       message: "",
       uploadFile: null,
-      attShowModal: false,
+      attendanceDeleteModal: false,
       deleteTarget: '',
       flashMessage: ''
     }
   },
   components: {
     'vue-timepicker': VueTimepicker,
-    'modal': modal
+    'delete-modal': DeleteModal,
+    'flash-message': FlashMessage
   },
   methods: {
     dayClicked(day) {
@@ -105,13 +108,13 @@ export default {
            .then(res => {
              console.log(res.data);
               if (res.data === true) {
-                alert('勤怠登録が完了しました。');
+                 this.showAlert('勤怠登録が完了しました。')
               }
            })
            .catch(error => { 
              console.log(error);
                if (error === error) {
-                 alert('勤怠登録に失敗しました。');
+                   this.showAlert('勤怠登録に失敗しました。')
                }
             });
     },
@@ -144,7 +147,7 @@ export default {
       axios.delete('/attendances/', {params: {attendanceId: attendanceId}}).then(res => {        
         console.log(res.data);  
         if  (res.status === 204) {
-           alert('勤怠登録を削除しました。');
+          this.showAlert('勤怠登録を削除しました。')
         }
       })
     },
@@ -192,7 +195,7 @@ export default {
       .then(res => {
         console.log(res.data);
           if (res.status === 201) {
-            alert('勤怠登録が完了しました。');
+            this.showAlert('勤怠登録が完了しました。')
           }
       });
     },
@@ -210,6 +213,9 @@ export default {
       };
       return `${zeroPadding(datetime.getHours(), 2)}:${zeroPadding(datetime.getMinutes(), 2)}`;
     },
+    showAlert(message) {
+      this.$refs.flashMessage.showFlashMessage(message)
+    }
   },
   mounted: function () {
     this.getAlluser();
