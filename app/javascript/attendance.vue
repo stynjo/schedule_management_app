@@ -124,8 +124,6 @@ export default {
       if (startTime instanceof Object) { startTime = `${startTime.HH}:${startTime.mm}` }
       if (endTime instanceof Object) { endTime = `${endTime.HH}:${endTime.mm}` }
       if (!startTime || !endTime) {
-        // TODO: エラーメッセージの表示をいい感じにしたい。
-        // TODO: 不正な値が来たときのチェックが甘いのでいい感じにしたい。
         alert('時刻を設定してください');
         return
       }

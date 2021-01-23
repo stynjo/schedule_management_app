@@ -27,6 +27,5 @@
 .success-flash{
   width: 200px;
   height: auto;
-  background-color: #00FF99;
 }
 </style>

@@ -1,8 +1,8 @@
 class Attendance < ApplicationRecord
   belongs_to :user
   
-  # 出勤時間が存在しない場合、退勤時間は無効
-  validate :finished_at_is_invalid_without_a_started_at
+  # 出勤時間、または退勤時間が存在しない場合入力は無効
+  validate :invalid_without_a_started_at_or_finished_at
   # 出勤・退勤時間どちらも存在する時、出勤時間より早い退勤時間は無効
   validate :started_at_than_finished_at_fast_if_invalid
 
@@ -31,13 +31,13 @@ class Attendance < ApplicationRecord
   end
   
   
-  def finished_at_is_invalid_without_a_started_at
-    errors.add(:started_at, "が必要です") if started_at.blank? && finished_at.present?
+  def invalid_without_a_started_at_or_finished_at
+    errors.add("入力が正しくありません") if started_at.blank? || finished_at.blank?
   end
 
   def started_at_than_finished_at_fast_if_invalid
     if started_at.present? && finished_at.present?
-      errors.add(:started_at, "より早い退勤時間は無効です") if started_at > finished_at
+      errors.add("出勤時間より早い退勤時間は無効です") if started_at > finished_at
     end
   end
   

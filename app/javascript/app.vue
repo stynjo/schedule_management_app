@@ -140,7 +140,7 @@ export default {
           console.log(res.data);
           if  (res.status === 201) {
             this.showAlert('予約登録を完了しました。');
-          } else if (res.status === 422) {
+          } else if (res.status === 500) {
             this.showAlert('予約登録に失敗しました。');
           }
           this.closeReserveModal()
