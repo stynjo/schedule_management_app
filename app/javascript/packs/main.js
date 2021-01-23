@@ -8,3 +8,5 @@ Vue.use(VCalendar)
    el: '#app',
    render: h => h(App)
 })
+
+console.log('main.js')

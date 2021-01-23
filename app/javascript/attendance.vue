@@ -1,5 +1,6 @@
 <template>
   <div id="attendanece">
+    <flash-message ref="flashMessage"></flash-message>
     <div id="calendar-wrapper">
       <v-calendar
       @dayclick='dayClicked'>
@@ -39,13 +40,14 @@
                ref="endTime">
                </vue-timepicker>
           </td>
-          <td class="btn btn-primary" @click="onCreateAttendance(user.id)">更新</button></td>
-          <td class="btn btn-danger" @click="onDeleteAttendance(user.id)">削除</button></td>
+          <td><button class="btn btn-primary" @click="onCreateAttendance(user.id)">更新</button></td>
+          <td><button class="btn btn-danger" @click="deleteTarget = user.id; attendanceDeleteModal = true">削除</button></td>
         </tr>
     </tbody>
     </table>
-    
+   <delete-modal v-if="attendanceDeleteModal" @cancel="attendanceDeleteModal = false; deleteTarget = ''" @ok="onDeleteAttendance(deleteTarget); attendanceDeleteModal = false;"></delete-modal>
   </div>
+ 
       
 </template>
 
@@ -53,6 +55,9 @@
 import axios from 'axios';
 import VueTimepicker from 'vue2-timepicker';
 import 'vue2-timepicker/dist/VueTimepicker.css';
+import FlashMessage from 'flash-message.vue'
+import DeleteModal from 'delete-modal.vue'
+
 const token = document.getElementsByName('csrf-token')[0].getAttribute('content')
 axios.defaults.headers.common['X-CSRF-Token'] = token
 export default {
@@ -65,11 +70,16 @@ export default {
       startTimeHash: {},
       endTimeHash: {},
       message: "",
-      uploadFile: null
+      uploadFile: null,
+      attendanceDeleteModal: false,
+      deleteTarget: '',
+      flashMessage: ''
     }
   },
   components: {
     'vue-timepicker': VueTimepicker,
+    'delete-modal': DeleteModal,
+    'flash-message': FlashMessage
   },
   methods: {
     dayClicked(day) {
@@ -98,13 +108,13 @@ export default {
            .then(res => {
              console.log(res.data);
               if (res.data === true) {
-                alert('勤怠登録が完了しました。');
+                 this.showAlert('勤怠登録が完了しました。')
               }
            })
            .catch(error => { 
              console.log(error);
                if (error === error) {
-                 alert('勤怠登録に失敗しました。');
+                   this.showAlert('勤怠登録に失敗しました。')
                }
             });
     },
@@ -114,8 +124,6 @@ export default {
       if (startTime instanceof Object) { startTime = `${startTime.HH}:${startTime.mm}` }
       if (endTime instanceof Object) { endTime = `${endTime.HH}:${endTime.mm}` }
       if (!startTime || !endTime) {
-        // TODO: エラーメッセージの表示をいい感じにしたい。
-        // TODO: 不正な値が来たときのチェックが甘いのでいい感じにしたい。
         alert('時刻を設定してください');
         return
       }
@@ -130,13 +138,14 @@ export default {
       let endTime = this.endTimeHash[userId];
        if (!startTime || !endTime) {
         alert('日付を設定してください');
+        this.deleteTarget = ''
         return
       }
       let attendanceId = this.attendanceIdHash[userId]
       axios.delete('/attendances/', {params: {attendanceId: attendanceId}}).then(res => {        
         console.log(res.data);  
         if  (res.status === 204) {
-           alert('勤怠登録を削除しました。');
+          this.showAlert('勤怠登録を削除しました。')
         }
       })
     },
@@ -184,7 +193,7 @@ export default {
       .then(res => {
         console.log(res.data);
           if (res.status === 201) {
-            alert('勤怠登録が完了しました。');
+            this.showAlert('勤怠登録が完了しました。')
           }
       });
     },
@@ -202,6 +211,9 @@ export default {
       };
       return `${zeroPadding(datetime.getHours(), 2)}:${zeroPadding(datetime.getMinutes(), 2)}`;
     },
+    showAlert(message) {
+      this.$refs.flashMessage.showFlashMessage(message)
+    }
   },
   mounted: function () {
     this.getAlluser();

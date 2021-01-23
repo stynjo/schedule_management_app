@@ -7,15 +7,16 @@
 
 import Vue from 'vue'
 import App from '../app.vue'
-import VCalendar from 'v-calendar'
 //import { csrfToken } from 'rails-ujs'
 //import VueAxiosPlugin from 'plugins/vue-axios.js'
 /*global axios */
 //Vue.use(VueAxiosPlugin, { axios: axios, csrfToken: csrfToken })
 
+import BootstrapVue from 'bootstrap-vue'
+import VCalendar from 'v-calendar'
 
+Vue.use(BootstrapVue)
 Vue.use(VCalendar);
-
 
 
 document.addEventListener('turbolinks:load', () => {

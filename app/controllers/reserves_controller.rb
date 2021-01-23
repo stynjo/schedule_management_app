@@ -2,9 +2,11 @@ class ReservesController < ApplicationController
   protect_from_forgery with: :null_session
     def create
       @reserve = Reserve.new(resereve_params)
-      @reserve.save
-      flash[:success] ='予約登録を完了しました'
-      head :no_content
+      if @reserve.save
+        render json: @resereve, status: :created
+      else
+        render json: @reserve, status: :unprocessable_entity
+      end
     end
     
     def index
@@ -26,9 +28,31 @@ class ReservesController < ApplicationController
     end
     
     
+    def list
+      @reservation_date_string = params[:reservationDate]
+      @date_value = @reservation_date_string.in_time_zone
+      reserve_lists = []
+      
+      #取得したい予約を取ってくる
+      @reservation_date = Reserve.where(reservation_date: @date_value.all_day)
+      @reservation_date.each do |reserve|
+        reserve_lists.push(reserve)
+      end
+      render json: reserve_lists
+    end
+    
+    def destroy
+      @resereve = Reserve.find(params[:resereveId])
+      if @resereve.destroy
+        head :no_content
+      else
+        render json: @resereve.errors, status: :unprocessable_entity
+      end
+    end
+    
     private
       def resereve_params
-        params.require(:reserve).permit(:number_of_people, :reservation_start_time, :reservation_end_time, :reservation_date)
+        params.require(:reserve).permit(:number_of_people, :reservation_start_time, :reservation_end_time, :reservation_date, :reserve_name)
       end
       
 end
