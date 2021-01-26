@@ -2,7 +2,7 @@
   <div id="app">
 
     <flash-message ref="flashMessage"></flash-message>
-    
+    <div class="test">hogehoge (scoped)</div>
     <div id="calendar-wrapper">
       <v-calendar
       @dayclick='dayClicked'
@@ -204,7 +204,8 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
 #app {
 }
 

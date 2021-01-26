@@ -10,15 +10,26 @@
   </head>
 
   <body>
+    <header class="p-5 mb-2 bg-dark text-white">
      <% if user_signed_in? %>
         <%= link_to 'プロフィール変更', edit_user_registration_path %>
         <%= link_to 'ログアウト', destroy_user_session_path, method: :delete %>
         <%= link_to '予約状況', user_path(current_user), data: {"turbolinks" => false} %>
         <%= link_to '勤怠編集ページ', attendances_path, data: {"turbolinks" => false} %>
       <% else %>
-        <%= link_to 'サインアップ', new_user_registration_path %>
-        <%= link_to 'ログイン', new_user_session_path %>
-      <% end %>
+      
+        <div class="float-right">
+          <div class="row">
+            <div class="mx-1">
+               <%= link_to '新規作成', new_user_registration_path, class: "btn btn-primary"%>
+            </div>
+            <div class="mx-1">
+              <%= link_to 'ログイン', new_user_session_path, class: "btn btn-primary" %>
+            </div>
+          </div>
+        </div>
+       
+       <% end %>
     </header>
     <%= yield %>
   </body>
