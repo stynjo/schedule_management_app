@@ -43,9 +43,6 @@
 
 <script>
 import VueTimepicker from 'vue2-timepicker'
-import 'vue2-timepicker/dist/VueTimepicker.css'
-import 'bootstrap/dist/css/bootstrap.css' 
-import 'bootstrap-vue/dist/bootstrap-vue.css'
 import Chart from 'chart.vue';
 import axios from 'axios';
 import DeleteModal from 'delete-modal.vue'

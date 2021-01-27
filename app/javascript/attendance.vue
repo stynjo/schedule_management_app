@@ -54,7 +54,6 @@
 <script>
 import axios from 'axios';
 import VueTimepicker from 'vue2-timepicker';
-import 'vue2-timepicker/dist/VueTimepicker.css';
 import FlashMessage from 'flash-message.vue'
 import DeleteModal from 'delete-modal.vue'
 
