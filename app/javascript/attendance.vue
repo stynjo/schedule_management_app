@@ -94,8 +94,8 @@ export default {
       
       
       if (!this.uploadFile.type.match("text/csv")) {
-       this.message = "CSVファイルを選択してください";
-       return;
+        this.message = "CSVファイルを選択してください";
+        return;
       }
     
       let formData = new FormData();
@@ -103,19 +103,19 @@ export default {
       this.message = '';
      
       axios
-          .post(`/attendances/import/`, formData)
-           .then(res => {
-             console.log(res.data);
-              if (res.data === true) {
-                 this.showAlert('勤怠登録が完了しました。')
-              }
-           })
-           .catch(error => { 
-             console.log(error);
-               if (error === error) {
-                   this.showAlert('勤怠登録に失敗しました。')
-               }
-            });
+        .post(`/attendances/import/`, formData)
+        .then(res => {
+          console.log(res.data);
+          if (res.data === true) {
+            this.showAlert('勤怠登録が完了しました。')
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          if (error === error) {
+            this.showAlert('勤怠登録に失敗しました。')
+          }
+        });
     },
     onCreateAttendance(userId) {
       let startTime = this.startTimeHash[userId];
@@ -135,7 +135,7 @@ export default {
     onDeleteAttendance(userId) {
       let startTime = this.startTimeHash[userId];
       let endTime = this.endTimeHash[userId];
-       if (!startTime || !endTime) {
+      if (!startTime || !endTime) {
         alert('日付を設定してください');
         this.deleteTarget = ''
         return
@@ -143,7 +143,7 @@ export default {
       let attendanceId = this.attendanceIdHash[userId]
       axios.delete('/attendances/', {params: {attendanceId: attendanceId}}).then(res => {        
         console.log(res.data);  
-        if  (res.status === 204) {
+        if (res.status === 204) {
           this.showAlert('勤怠登録を削除しました。')
         }
       })
