@@ -1,0 +1,9 @@
+$theme-colors: (
+  "cred": #FF82B2,
+  "cblue": #75A9FF,
+  "cgreen2": #FF0
+);
+
+@import '~bootstrap/scss/bootstrap';
+@import 'bootstrap-vue/dist/bootstrap-vue.css';
+@import 'vue2-timepicker/dist/VueTimepicker.css';

@@ -5,20 +5,41 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
+    <header class="p-5 mb-2 bg-dark text-white">
      <% if user_signed_in? %>
-        <%= link_to 'プロフィール変更', edit_user_registration_path %>
-        <%= link_to 'ログアウト', destroy_user_session_path, method: :delete %>
-        <%= link_to '予約状況', user_path(current_user), data: {"turbolinks" => false} %>
-        <%= link_to '勤怠編集ページ', attendances_path, data: {"turbolinks" => false} %>
+     <div class="float-right">
+          <div class="row">
+            <div class="mx-1">
+               <%= link_to '予約状況', user_path(current_user), data: {"turbolinks" => false}, class: "btn btn-cblue" %>
+            </div>
+            <div class="mx-1">
+               <%= link_to '勤怠編集ページ', attendances_path, data: {"turbolinks" => false}, class: "btn btn-cred" %>
+            </div>
+            <div class="mx-1">
+               <%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: "btn btn-secondary" %>
+            </div>
+          </div>
+        </div>
+    
       <% else %>
-        <%= link_to 'サインアップ', new_user_registration_path %>
-        <%= link_to 'ログイン', new_user_session_path %>
-      <% end %>
+      
+        <div class="float-right">
+          <div class="row">
+            <div class="mx-1">
+               <%= link_to '新規作成', new_user_registration_path, class: "btn btn-primary"%>
+            </div>
+            <div class="mx-1">
+              <%= link_to 'ログイン', new_user_session_path, class: "btn btn-primary" %>
+            </div>
+          </div>
+        </div>
+       
+       <% end %>
     </header>
     <%= yield %>
   </body>
