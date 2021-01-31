@@ -1,6 +1,24 @@
 <template>
   <div id="attendanece">
     <flash-message ref="flashMessage"></flash-message>
+    <div id="attendance-table">
+      <table class="table">
+      <thead>
+          <tr>
+              <th>名前</th>
+              <th v-for="targetTime in attendanceTargerTimes">{{ targetTime }}</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr v-for="user in users" :key="user.id">
+            <td>{{ user.name  }}</td>
+            <td v-for="targetTime in attendanceTargerTimes" class="attend" :class="getAttendanceCssClass(user, targetTime)">
+              <div class="chart">&nbsp;</div>
+            </td>
+          </tr>
+      </tbody>
+      </table>
+    </div>
     <div id="calendar-wrapper">
       <v-calendar
       @dayclick='dayClicked'>
@@ -64,6 +82,7 @@ export default {
     return {
       attendanceDate: '',
       attendanceIdHash: {},
+      attendanceTargerTimes: [],
       users: [],
       userId: '',
       startTimeHash: {},
@@ -125,8 +144,10 @@ export default {
       if (!startTime || !endTime) {
         alert('時刻を設定してください');
         return
+      } else if(startTime > endTime) {
+        alert('退勤時間より早い出勤時間は設定できません。');
+        return
       }
-      
       let startTimeStr = `${this.attendanceDate} ${startTime}`
       let endTimeStr = `${this.attendanceDate} ${endTime}`
       // 問題なければAPI叩いて勤怠登録する
@@ -212,10 +233,23 @@ export default {
     },
     showAlert(message) {
       this.$refs.flashMessage.showFlashMessage(message)
+    },
+    getAttendanceCssClass(user, targetTime) {
+      return Math.random() < 0.5 ? 'attended' : ''
     }
   },
   mounted: function () {
     this.getAlluser();
+
+    // 勤怠時刻の一覧を用意する
+    const vueObj = this
+
+    for (var hour = 18; hour <= 24; hour++) {
+      ['00', '30'].forEach(minute => {
+        vueObj.attendanceTargerTimes.push(`${hour}:${minute}`)
+      })
+    }
+    console.log('aaa')
   }
 };
 </script>
@@ -228,5 +262,11 @@ export default {
 }
 #calendar-wrapper .vc-text-sm {
   font-size: 21px;
+}
+#attendance-table td.attend {
+  padding: 12px 0;
+}
+#attendance-table td.attend.attended .chart {
+  background-color: green;
 }
 </style>

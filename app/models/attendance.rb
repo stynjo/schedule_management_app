@@ -41,4 +41,8 @@ class Attendance < ApplicationRecord
     end
   end
   
+  def tarted_at_is_zero_if_invalid
+    errors.add("入力が正しくありません") if started_at.strftime("%T") == "00:00:00"
+  end
+  
 end

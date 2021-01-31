@@ -1,38 +1,47 @@
 <template>
   <div id="app">
-
-    <flash-message ref="flashMessage"></flash-message>
-    <div class="test">hogehoge (scoped)</div>
-    <div id="calendar-wrapper">
-      <v-calendar
-      @dayclick='dayClicked'
-      is-expanded
-      class="v-calendar"
-      ></v-calendar> 
-      {{ reservationDate }}
-    </div>
     <button type="button" class="btn btn-info" @click="openReserveModal()">予約登録フォーム</button>
-
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th scope="col">予約名</th>
-          <th scope="col">人数</th>
-          <th scope="col">開始時間</th>
-          <th scope="col">終了時間</th>
-       </tr>
-     </thead>
-     <tbody>
-       <tr v-for="resereve in reserveList" :key="resereve.id">
-         <td>{{ resereve.reserve_name }}</td>
-         <td>{{ resereve.number_of_people }}</td>
-         <td>{{ formatDate(resereve.reservation_start_time) }}</td>
-         <td>{{ formatDate(resereve.reservation_end_time) }}</td>
-         <td><button class="btn btn-danger" @click="deleteTarget = resereve.id; resereveDeleteModal = true">削除</button></td>
-       </tr>
-     </tbody>
-   </table>  
-  <radar-chart class="chart_bar" :chart-data="chartData"></radar-chart>
+    <flash-message ref="flashMessage"></flash-message>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-8">
+          <radar-chart class="chart_bar" :chart-data="chartData"></radar-chart>
+        </div>
+     　  <div class="col-md-4">
+     　    <div id="calendar-wrapper">
+　　　　    <div class="d-flex flex-column">　
+              <v-calendar
+              @dayclick='dayClicked'
+              is-expanded
+              ></v-calendar>
+            </div>
+          </div>
+          <div class="d-flex flex-column">　
+            <table class="table table-striped">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">予約名</th>
+                  <th scope="col">人数</th>
+                  <th scope="col">開始時間</th>
+                  <th scope="col">終了時間</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="resereve in reserveList" :key="resereve.id">
+                  <td>{{ resereve.reserve_name }}</td>
+                  <td>{{ resereve.number_of_people }}</td>
+                  <td>{{ formatDate(resereve.reservation_start_time) }}</td>
+                  <td>{{ formatDate(resereve.reservation_end_time) }}</td>
+                  <td><button class="btn btn-danger" @click="deleteTarget = resereve.id; resereveDeleteModal = true">削除</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+   </div>
+     
   <delete-modal v-if="resereveDeleteModal" @cancel="resereveDeleteModal = false; deleteTarget = ''" @ok="onDeleteReserve(deleteTarget); resereveDeleteModal = false;"></delete-modal>
   
   <reserve-modal v-if="resereveResponseModal" @cancel="this.resereveResponseModal = false;" @form="this.inputFormValue($event); this.resereveResponseModal = false;"></reserve-modal>
@@ -40,7 +49,7 @@
 
 </template>
 
-
+  
 <script>
 import VueTimepicker from 'vue2-timepicker'
 import Chart from 'chart.vue';
@@ -127,6 +136,7 @@ export default {
     createReservation() {
       this.reservationStartTime = (`${this.reservationDate} ${this.inputStartTime}`)
       this.reservationEndTime = (`${this.reservationDate} ${this.inputEndTime}`)
+      
       axios.post(`/reserves/`, { reservation_date: this.reservationDate,
                                  reservation_start_time: this.reservationStartTime,
                                  reservation_end_time: this.reservationEndTime,
@@ -207,8 +217,8 @@ export default {
 }
 
 .chart_bar {
-   width: 820px;
-   height: 360px;
+   width: 1200px;
+   height: 500px;
 } 
 
 #calendar-wrapper {
@@ -217,8 +227,8 @@ export default {
 }
 
 #calendar-wrapper .vc-container {
-  --day-content-height: 100px;
-  --day-content-width: 100px;
+  --day-content-height: 110px;
+  --day-content-width: 110px;
 }
 
 #calendar-wrapper .vc-text-sm {

@@ -69,6 +69,13 @@ export default {
   },
   methods: {
     submit() {
+      if (!this.startTime || !this.endTime) {
+        alert('時刻を設定してください');
+        return
+      } else if(this.startTime > this.endTime) {
+        alert('退勤時間より早い出勤時間は設定できません。');
+        return
+      }
       this.changeDateFormat(this.resereveDate)
       this.$parent.onSubmitReserveForm({
         startTime: this.startTime,
