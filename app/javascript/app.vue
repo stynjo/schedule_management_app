@@ -143,15 +143,18 @@ export default {
                                  number_of_people: this.numberOfPeople,
                                  reserve_name: this.reserveName
                                })
-       .then(res => {
-          console.log(res.data);
-          if  (res.status === 201) {
-            this.showAlert('予約登録を完了しました。');
-          } else if (res.status === 500) {
-            this.showAlert('予約登録に失敗しました。');
-          }
+      .then(res => {
+       console.log(res.data);
+         if  (res.status === 201) {
+           this.showAlert('予約登録を完了しました。');
+         }
+         this.closeReserveModal()
+      })
+      .catch(error => {
+        console.log(error);
+          this.showAlert('予約登録に失敗しました。');
           this.closeReserveModal()
-    　　});
+      });
     },
     onDeleteReserve(resereveId) {
       axios.delete('/reserves/', {params: {resereveId: resereveId}}).then(res => {        

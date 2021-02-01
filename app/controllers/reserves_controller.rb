@@ -24,7 +24,7 @@ class ReservesController < ApplicationController
       end
         @reserve_times = reserve_time_hash.values.to_json
       end
-       render json: @reserve_times
+        render json: @reserve_times
     end
     
     

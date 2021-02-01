@@ -141,13 +141,13 @@ export default {
       let endTime = this.endTimeHash[userId];
       if (startTime instanceof Object) { startTime = `${startTime.HH}:${startTime.mm}` }
       if (endTime instanceof Object) { endTime = `${endTime.HH}:${endTime.mm}` }
-      if (!startTime || !endTime) {
-        alert('時刻を設定してください');
-        return
-      } else if(startTime > endTime) {
-        alert('退勤時間より早い出勤時間は設定できません。');
-        return
-      }
+      // if (!startTime || !endTime) {
+      //   alert('時刻を設定してください');
+      //   return
+      // } else if(startTime > endTime) {
+      //   alert('退勤時間より早い出勤時間は設定できません。');
+      //   return
+      // }
       let startTimeStr = `${this.attendanceDate} ${startTime}`
       let endTimeStr = `${this.attendanceDate} ${endTime}`
       // 問題なければAPI叩いて勤怠登録する
@@ -211,10 +211,14 @@ export default {
         data: params,
       })
       .then(res => {
-        console.log(res.data);
-          if (res.status === 201) {
-            this.showAlert('勤怠登録が完了しました。')
-          }
+       console.log(res.data);
+         if  (res.status === 201) {
+           this.showAlert('勤怠登録を完了しました。');
+         }
+      })
+      .catch(error => {
+        console.log(error);
+          this.showAlert('勤怠登録に失敗しました。');
       });
     },
     getAlluser() {
