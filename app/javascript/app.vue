@@ -4,10 +4,10 @@
     <flash-message ref="flashMessage"></flash-message>
     <div class="container-fluid">
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-8">
           <radar-chart class="chart_bar" :chart-data="chartData"></radar-chart>
         </div>
-     　  <div class="col-md-4">
+     　  <div class="col-4">
      　    <div id="calendar-wrapper">
 　　　　    <div class="d-flex flex-column">　
               <v-calendar
@@ -27,16 +27,23 @@
                   <th></th>
                 </tr>
               </thead>
-              <tbody>
-                <tr v-for="resereve in reserveList" :key="resereve.id">
-                  <td>{{ resereve.reserve_name }}</td>
-                  <td>{{ resereve.number_of_people }}</td>
-                  <td>{{ formatDate(resereve.reservation_start_time) }}</td>
-                  <td>{{ formatDate(resereve.reservation_end_time) }}</td>
-                  <td><button class="btn btn-danger" @click="deleteTarget = resereve.id; resereveDeleteModal = true">削除</button></td>
-                </tr>
-              </tbody>
+                <tbody>
+                  <tr v-for="resereve in reserveList" :key="resereve.id">
+                    <td>{{ resereve.reserve_name }}</td>
+                    <td>{{ resereve.number_of_people }}</td>
+                    <td>{{ formatDate(resereve.reservation_start_time) }}</td>
+                    <td>{{ formatDate(resereve.reservation_end_time) }}</td>
+                    <td><button class="btn btn-danger" @click="deleteTarget = resereve.id; resereveDeleteModal = true">削除</button></td>
+                  </tr>
+                </tbody>
             </table>
+            <div v-if="reserveList == false">
+              <div class="col-12 text-center">
+                 <div class="border" style="padding:150px;">
+               　　　 <h4>データがありません</h4>
+               　</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -121,7 +128,6 @@ export default {
         var reserveData = responses[0].data
         var emloyeeData = responses[1].data
         this.updateChartData(reserveData,emloyeeData)
-
         this.reserveList = responses[2].data
       })
     },
