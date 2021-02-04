@@ -154,6 +154,7 @@ export default {
          if  (res.status === 201) {
            this.showAlert('予約登録を完了しました。');
          }
+         this.getReservations()
          this.closeReserveModal()
       })
       .catch(error => {
