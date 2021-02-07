@@ -20,9 +20,11 @@
             <div class="mx-1">
                <%= link_to '勤怠編集ページ', attendances_path, data: {"turbolinks" => false}, class: "btn btn-cred" %>
             </div>
+            <% if current_user.admin %>
             <div class="mx-1">
-               <%= link_to '新規ユーザー作成', new_user_registration_path, class: "btn btn-primary"%>
+               <%= link_to '新規ユーザー作成', new_user_registration_path, class: "btn btn-cgreen"%>
             </div>
+            <% end %>
             <div class="mx-1">
                <%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: "btn btn-secondary" %>
             </div>
@@ -33,9 +35,6 @@
       
         <div class="float-right">
           <div class="row">
-            <div class="mx-1">
-               <%= link_to '新規ユーザー作成', new_user_registration_path, class: "btn btn-primary"%>
-            </div>
             <div class="mx-1">
               <%= link_to 'ログイン', new_user_session_path, class: "btn btn-primary" %>
             </div>
