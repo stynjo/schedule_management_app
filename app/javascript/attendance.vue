@@ -211,10 +211,14 @@ export default {
         data: params,
       })
       .then(res => {
-        console.log(res.data);
-          if (res.status === 201) {
-            this.showAlert('勤怠登録が完了しました。')
-          }
+       console.log(res.data);
+         if  (res.status === 201) {
+           this.showAlert('勤怠登録を完了しました。');
+         }
+      })
+      .catch(error => {
+        console.log(error);
+          this.showAlert('勤怠登録に失敗しました。');y
       });
     },
     getAlluser() {
