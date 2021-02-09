@@ -1,70 +1,81 @@
 <template>
   <div id="attendanece">
     <flash-message ref="flashMessage"></flash-message>
-    <div id="attendance-table">
-      <table class="table">
-      <thead>
-          <tr>
-              <th>名前</th>
-              <th v-for="targetTime in attendanceTargerTimes">{{ targetTime }}</th>
-          </tr>
-      </thead>
-      <tbody>
-          <tr v-for="user in users" :key="user.id">
-            <td>{{ user.name  }}</td>
-            <td v-for="targetTime in attendanceTargerTimes" class="attend" :class="getAttendanceCssClass(user, targetTime)">
-              <div class="chart">&nbsp;</div>
-            </td>
-          </tr>
-      </tbody>
-      </table>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-6">
+            <div id="attendance-table">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>名前</th>
+                    <th v-for="targetTime in attendanceTargerTimes">{{ targetTime }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="user in users" :key="user.id">
+                    <td>{{ user.name  }}</td>
+                    <td v-for="targetTime in attendanceTargerTimes" class="attend" :class="getAttendanceCssClass(user, targetTime)">
+                      <div class="chart">&nbsp;</div>
+                    </td>
+                  </tr>
+                </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-4">
+          <div class="d-flex flex-column">
+            <div id="calendar-wrapper">
+              <v-calendar
+              @dayclick='dayClicked'>
+              </v-calendar>
+            </div>
+          </div>
+          <div class="d-flex flex-column">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>名前</th>
+                  <th>出勤時間 / 選択日{{ attendanceDate }}</th>
+                  <th>退勤時間</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="user in users" :key="user.id">
+                  <th>{{ user.id }}</th>
+                  <td>{{ user.name  }}</td>
+                  <td><vue-timepicker
+                    v-model="startTimeHash[user.id]"
+                    :hour-range="[18, 24, [18, 24]]"
+                    :minute-range="[0, 30]"
+                    hide-disabled-hours
+                    hide-disabled-minutes
+                    ref="startTime">
+                 </vue-timepicker></td>
+                 <td><vue-timepicker
+                   v-model="endTimeHash[user.id]"
+                   :hour-range="[18, 24, [18, 24]]"
+                   :minute-range="[0, 30]"
+                   hide-disabled-hours
+                   hide-disabled-minutes
+                   ref="endTime">
+                 </vue-timepicker></td>
+                 <td><button class="btn btn-primary" @click="onCreateAttendance(user.id)">更新</button></td>
+                 <td><button class="btn btn-danger" @click="deleteTarget = user.id; attendanceDeleteModal = true">削除</button></td>
+               </tr>
+              </tbody>
+            </table>
+          </div>
+      </div>
     </div>
-    <div id="calendar-wrapper">
-      <v-calendar
-      @dayclick='dayClicked'>
-      </v-calendar>
-    </div>
-     <div class="csv">
-      <input type="file" @change="loadCsvFile" /></br>
-        {{ message }}
-     </div>
-    <table class="table">
-    <thead>
-        <tr>
-            <th>No</th>
-            <th>名前</th>
-            <th>出勤時間 / 選択日{{ attendanceDate }}</th>
-            <th>退勤時間</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr v-for="user in users" :key="user.id">
-          <th>{{ user.id }}</th>
-          <td>{{ user.name  }}</td>
-          <td><vue-timepicker
-               v-model="startTimeHash[user.id]"
-               :hour-range="[18, 24, [18, 24]]"
-               :minute-range="[0, 30]"
-               hide-disabled-hours
-               hide-disabled-minutes
-               ref="startTime">
-               </vue-timepicker></td>
-          <td><vue-timepicker
-               v-model="endTimeHash[user.id]"
-               :hour-range="[18, 24, [18, 24]]"
-               :minute-range="[0, 30]"
-               hide-disabled-hours
-               hide-disabled-minutes
-               ref="endTime">
-               </vue-timepicker>
-          </td>
-          <td><button class="btn btn-primary" @click="onCreateAttendance(user.id)">更新</button></td>
-          <td><button class="btn btn-danger" @click="deleteTarget = user.id; attendanceDeleteModal = true">削除</button></td>
-        </tr>
-    </tbody>
-    </table>
-   <delete-modal v-if="attendanceDeleteModal" @cancel="attendanceDeleteModal = false; deleteTarget = ''" @ok="onDeleteAttendance(deleteTarget); attendanceDeleteModal = false;"></delete-modal>
   </div>
+  <delete-modal v-if="attendanceDeleteModal" @cancel="attendanceDeleteModal = false; deleteTarget = ''" @ok="onDeleteAttendance(deleteTarget); attendanceDeleteModal = false;"></delete-modal>
+  <div class="csv">
+    <input type="file" @change="loadCsvFile" /></br>
+      {{ message }}
+  </div>
+</div>
  
       
 </template>
@@ -271,6 +282,8 @@ export default {
   padding: 12px 0;
 }
 #attendance-table td.attend.attended .chart {
-  background-color: green;
+  background-color: #fc693b;
+  background-image:
+	repeating-linear-gradient(-45deg,#fff, #fff 7px,transparent 0, transparent 11px);
 }
 </style>
