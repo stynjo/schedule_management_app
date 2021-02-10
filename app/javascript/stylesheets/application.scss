@@ -8,3 +8,9 @@ $theme-colors: (
 @import 'bootstrap-vue/dist/bootstrap-vue.css';
 @import 'vue2-timepicker/dist/VueTimepicker.css';
 
+.login-form {
+  @extend .border;
+  @extend .rounded;
+  @extend .m-4;
+  @extend .p-4;
+}

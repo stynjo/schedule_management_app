@@ -1,82 +1,69 @@
-<div class="container" >
-  <div class="border" style="padding:30px;">
-    <div class="row">
-      <div class="col-4">
-        <h1><%= t('.sign_in') %></h1>
-        <div class="border-top" style="padding:10px;"></div>
-      </div>
-    </div>
-     <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-     <div class="form-group">
-       <div class="row">
-         <div class="col-4">
-           <h4><%= f.label :email %></h4>
-         </div>
-       </div>
-       <div class="row">
-         <div class="col-4">
-           <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control' %>
-         </div>
-       </div>
-     </div>
-
-    <div class="form-group">
+<div class="row justify-content-center">
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'col-6' }) do |f| %>
+    <div class="login-form">
       <div class="row">
-        <div class="col-md-4">
+        <div class="col">
+          <h1><%= t('.sign_in') %></h1>
+          <hr />
+        </div>
+      </div>
+  
+      <div class="row">
+        <div class="col">
+          <h4><%= f.label :email %></h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col form-group">
+          <%= f.email_field :email, autofocus: true, autocomplete: 'email', class: 'form-control' %>
+        </div>
+      </div>
+  
+      <div class="row">
+        <div class="col">
           <h4> <%= f.label :password %></h4>
         </div>
       </div>
       <div class="row">
-        <div class="col-4">
+        <div class="col form-group">
           <%= f.password_field :password, autocomplete: 'current-password', class: 'form-control' %>
         </div>
       </div>
-    </div>
-    
-    <% if devise_mapping.rememberable? %>
-    <div class="form-group form-check">
+  
       <div class="row">
-        <div class="col-4">
-          <%= f.check_box :remember_me, class: 'form-check-input' %>
-          <%= f.label :remember_me, class: 'form-check-label' do %>
-            <%= resource.class.human_attribute_name('remember_me') %>
-          <% end %>
+        <div class="col">
+          <div class="form-group form-check">
+            <%= f.check_box :remember_me, class: 'form-check-input' %>
+            <%= f.label :remember_me, class: 'form-check-label' do %>
+              <%= resource.class.human_attribute_name('remember_me') %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+  
+      <div class="row">
+        <div class="col text-center form-group">
+          <%= f.submit t('.sign_in'), class: 'btn btn-primary w-50' %>
+        </div>
+      </div>
+  
+      <div class="row">
+        <div class="col text-center">
+          <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+            <%= link_to t(".forgot_your_password"), new_password_path(resource_name) %>
+          <% end -%>
+        </div>
+      </div>
+  
+      <hr />
+  
+      <div class="row">
+        <div class="col text-center" style="padding:10px;">
+          <%- if devise_mapping.registerable? && controller_name != 'registrations' %>
+            <%= link_to t(".sign_up"), new_registration_path(resource_name), class: 'btn btn-outline-secondary w-50' %>
+          <% end -%>
         </div>
       </div>
     </div>
-   <% end %>
-
-    <div class="form-group">
-      <div class="row">
-        <div class="col-4 text-center">
-          <%= f.submit  t('.sign_in'), class: 'btn btn-primary w-50' %>
-        </div>
-      </div>
-    </div>
-   <% end %>
-
-  <div class="form-group">
-    <div class="row">
-      <div class="col-4 text-center">
-        <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
-        <%= link_to t(".forgot_your_password"), new_password_path(resource_name) %><br />
-        <% end -%>
-      </div>
-    </div>
-  </div>
-  
-  <div class="row">
-    <div class="col-4">
-      <div class="border-top" style="padding:10px;"></div>
-    </div>
-  </div>
-  
-   <div class="row">
-    <div class="col-4 text-center" style="padding:10px;">
-      <%- if devise_mapping.registerable? && controller_name != 'registrations' %>
-        <%= link_to t(".sign_up"), new_registration_path(resource_name), class: 'btn btn-outline-secondary w-50' %>
-      <% end -%>
-    </div>
-  </div>
-  
+  <% end -%>
 </div>
