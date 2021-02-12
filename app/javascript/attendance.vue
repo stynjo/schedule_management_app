@@ -62,7 +62,7 @@
                    ref="endTime">
                  </vue-timepicker></td>
                  <td><button class="btn btn-primary" @click="onCreateAttendance(user.id)">更新</button></td>
-                 <td><button class="btn btn-danger" @click="deleteTarget = user.id; attendanceDeleteModal = true">削除</button></td>
+                 <td><button class="btn btn-danger" @click="deleteTarget = user.id; attendanceDeleteModal = true">��除</button></td>
                </tr>
               </tbody>
             </table>
@@ -102,7 +102,9 @@ export default {
       uploadFile: null,
       attendanceDeleteModal: false,
       deleteTarget: '',
-      flashMessage: ''
+      flashMessage: '',
+      attendanceListStart: [],
+      attendanceListEnd: []
     }
   },
   components: {
