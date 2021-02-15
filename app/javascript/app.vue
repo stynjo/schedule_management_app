@@ -5,7 +5,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-8">
-          <radar-chart class="chart_bar" :chart-data="chartData"></radar-chart>
+          <radar-chart class="chart_bar" :chart-data="chartData" :options="options"></radar-chart>
         </div>
      　  <div class="col-4">
      　    <div id="calendar-wrapper">
@@ -90,6 +90,7 @@ export default {
       reserveName:'',
       reserveData: '',
       chartData: {},
+      options: {},
       reserveList: {},
       resereveDeleteModal: false,
       deleteTarget: '',
@@ -210,6 +211,27 @@ export default {
             lineTension: 0.3,
           }
         ]
+      },
+      this.options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        legend: {
+          position: "bottom"
+        },
+        layout: {
+          padding: 20
+        },
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true, 
+                min: 0,
+                max: 50 
+              }
+            }
+          ]
+        }
       }
     }
   },

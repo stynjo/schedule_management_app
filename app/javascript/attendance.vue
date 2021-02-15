@@ -27,6 +27,7 @@
           <div class="d-flex flex-column">
             <div id="calendar-wrapper">
               <v-calendar
+              :columns="$screens({ default: 1, lg: 1 })"
               @dayclick='dayClicked'>
               </v-calendar>
             </div>
@@ -102,13 +103,29 @@ export default {
       uploadFile: null,
       attendanceDeleteModal: false,
       deleteTarget: '',
-      flashMessage: ''
+      flashMessage: '',
+      attendanceListStart: [],
+      attendanceListEnd: []
     }
   },
   components: {
     'vue-timepicker': VueTimepicker,
     'delete-modal': DeleteModal,
     'flash-message': FlashMessage
+  },
+  computed: {
+    getAttendanceCssClass() {
+      return function(user, targetTime) {
+        const startTime = this.startTimeHash[user.id]
+        const endTime = this.endTimeHash[user.id]
+
+        if (!startTime) return
+        if (!endTime) return
+
+        const attended = (startTime <= targetTime && targetTime < endTime)
+        return attended ? 'attended' : ''
+      }
+    }
   },
   methods: {
     dayClicked(day) {
@@ -248,9 +265,6 @@ export default {
     },
     showAlert(message) {
       this.$refs.flashMessage.showFlashMessage(message)
-    },
-    getAttendanceCssClass(user, targetTime) {
-      return Math.random() < 0.5 ? 'attended' : ''
     }
   },
   mounted: function () {
