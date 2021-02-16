@@ -2,21 +2,20 @@
   <div id="app">
     <button type="button" class="btn btn-info" @click="openReserveModal()">予約登録フォーム</button>
     <flash-message ref="flashMessage"></flash-message>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-8">
-          <radar-chart class="chart_bar" :chart-data="chartData" :options="options"></radar-chart>
-        </div>
-     　  <div class="col-4">
-     　    <div id="calendar-wrapper">
-　　　　    <div class="d-flex flex-column">　
-              <v-calendar
-              @dayclick='dayClicked'
-              is-expanded
-              ></v-calendar>
-            </div>
+    <div class="row">
+      <div class="col-6">
+        <radar-chart class="chart_bar" :chart-data="chartData" :options="options"></radar-chart>
+      </div>
+    　<div class="row">
+        <div class="col-12">
+          <div class="d-flex flex-column">
+            <v-calendar
+            @dayclick='dayClicked'
+            is-expanded
+            :columns="$screens({ default: 1, xl: 1 })"
+            ></v-calendar>
           </div>
-          <div class="d-flex flex-column">　
+          <div class="d-flex flex-column">
             <table class="table table-striped">
               <thead class="thead-dark">
                 <tr>
@@ -27,32 +26,30 @@
                   <th></th>
                 </tr>
               </thead>
-                <tbody>
-                  <tr v-for="resereve in reserveList" :key="resereve.id">
-                    <td>{{ resereve.reserve_name }}</td>
-                    <td>{{ resereve.number_of_people }}</td>
-                    <td>{{ formatDate(resereve.reservation_start_time) }}</td>
-                    <td>{{ formatDate(resereve.reservation_end_time) }}</td>
-                    <td><button class="btn btn-danger" @click="deleteTarget = resereve.id; resereveDeleteModal = true">削除</button></td>
-                  </tr>
-                </tbody>
+              <tbody>
+                <tr v-for="resereve in reserveList" :key="resereve.id">
+                  <td>{{ resereve.reserve_name }}</td>
+                  <td>{{ resereve.number_of_people }}</td>
+                  <td>{{ formatDate(resereve.reservation_start_time) }}</td>
+                  <td>{{ formatDate(resereve.reservation_end_time) }}</td>
+                  <td><button class="btn btn-danger" @click="deleteTarget = resereve.id; resereveDeleteModal = true">削除</button></td>
+                </tr>
+              </tbody>
             </table>
             <div v-if="reserveList == false">
-              <div class="col-12 text-center">
-                 <div class="border" style="padding:150px;">
-               　　　 <h4>データがありません</h4>
-               　</div>
+              <div class="border" style="padding:150px;">
+                <h4>データがありません</h4>
               </div>
             </div>
           </div>
         </div>
       </div>
-   </div>
+    </div>
      
   <delete-modal v-if="resereveDeleteModal" @cancel="resereveDeleteModal = false; deleteTarget = ''" @ok="onDeleteReserve(deleteTarget); resereveDeleteModal = false;"></delete-modal>
-  
   <reserve-modal v-if="resereveResponseModal" @cancel="this.resereveResponseModal = false;" @form="this.inputFormValue($event); this.resereveResponseModal = false;"></reserve-modal>
-</div>
+
+  </div>
 
 </template>
 
@@ -248,24 +245,24 @@ export default {
 #app {
 }
 
-.chart_bar {
-   width: 1200px;
-   height: 500px;
-} 
+/*.chart_bar {*/
+/*   width: 1200px;*/
+/*   height: 500px;*/
+/*} */
 
-#calendar-wrapper {
-  width: 50%;
+/*#calendar-wrapper {*/
+/*  width: 50%;*/
   
-}
+/*}*/
 
-#calendar-wrapper .vc-container {
-  --day-content-height: 110px;
-  --day-content-width: 110px;
-}
+/*#calendar-wrapper .vc-container {*/
+/*  --day-content-height: 110px;*/
+/*  --day-content-width: 110px;*/
+/*}*/
 
-#calendar-wrapper .vc-text-sm {
-  font-size: 21px;
-}
+/*#calendar-wrapper .vc-text-sm {*/
+/*  font-size: 21px;*/
+/*}*/
 
 
  

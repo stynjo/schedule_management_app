@@ -1,36 +1,34 @@
 <template>
   <div id="attendanece">
     <flash-message ref="flashMessage"></flash-message>
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-6">
-            <div id="attendance-table">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>名前</th>
-                    <th v-for="targetTime in attendanceTargerTimes">{{ targetTime }}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="user in users" :key="user.id">
-                    <td>{{ user.name  }}</td>
-                    <td v-for="targetTime in attendanceTargerTimes" class="attend" :class="getAttendanceCssClass(user, targetTime)">
-                      <div class="chart">&nbsp;</div>
-                    </td>
-                  </tr>
-                </tbody>
-                </table>
-            </div>
+    <div class="row">
+      <div class="col-6">
+        <div id="attendance-table">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>名前</th>
+                <th v-for="targetTime in attendanceTargerTimes">{{ targetTime }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="user in users" :key="user.id">
+                <td>{{ user.name  }}</td>
+                <td v-for="targetTime in attendanceTargerTimes" class="attend" :class="getAttendanceCssClass(user, targetTime)">
+                  <div class="chart">&nbsp;</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div class="col-4">
+      </div>
+      <div class="row">
+        <div class="col-12">
           <div class="d-flex flex-column">
-            <div id="calendar-wrapper">
-              <v-calendar
-              :columns="$screens({ default: 1, lg: 1 })"
-              @dayclick='dayClicked'>
-              </v-calendar>
-            </div>
+            <v-calendar
+            :columns="$screens({ default: 1, lg: 1 })"
+            @dayclick='dayClicked'>
+            </v-calendar>
           </div>
           <div class="d-flex flex-column">
             <table class="table">
@@ -53,32 +51,31 @@
                     hide-disabled-hours
                     hide-disabled-minutes
                     ref="startTime">
-                 </vue-timepicker></td>
-                 <td><vue-timepicker
-                   v-model="endTimeHash[user.id]"
-                   :hour-range="[18, 24, [18, 24]]"
-                   :minute-range="[0, 30]"
-                   hide-disabled-hours
-                   hide-disabled-minutes
-                   ref="endTime">
-                 </vue-timepicker></td>
-                 <td><button class="btn btn-primary" @click="onCreateAttendance(user.id)">更新</button></td>
-                 <td><button class="btn btn-danger" @click="deleteTarget = user.id; attendanceDeleteModal = true">削除</button></td>
-               </tr>
+                  </vue-timepicker></td>
+                  <td><vue-timepicker
+                    v-model="endTimeHash[user.id]"
+                    :hour-range="[18, 24, [18, 24]]"
+                    :minute-range="[0, 30]"
+                    hide-disabled-hours
+                    hide-disabled-minutes
+                    ref="endTime">
+                  </vue-timepicker></td>
+                  <td><button class="btn btn-primary" @click="onCreateAttendance(user.id)">更新</button></td>
+                  <td><button class="btn btn-danger" @click="deleteTarget = user.id; attendanceDeleteModal = true">削除</button></td>
+                </tr>
               </tbody>
             </table>
           </div>
+        </div>
+      </div>
+
+      <delete-modal v-if="attendanceDeleteModal" @cancel="attendanceDeleteModal = false; deleteTarget = ''" @ok="onDeleteAttendance(deleteTarget); attendanceDeleteModal = false;"></delete-modal>
+      <div class="csv">
+        <input type="file" @change="loadCsvFile" /></br>
+          {{ message }}
       </div>
     </div>
   </div>
-  <delete-modal v-if="attendanceDeleteModal" @cancel="attendanceDeleteModal = false; deleteTarget = ''" @ok="onDeleteAttendance(deleteTarget); attendanceDeleteModal = false;"></delete-modal>
-  <div class="csv">
-    <input type="file" @change="loadCsvFile" /></br>
-      {{ message }}
-  </div>
-</div>
- 
-      
 </template>
 
 <script>
@@ -285,13 +282,13 @@ export default {
 
 <style>
   
-#calendar-wrapper .vc-container {
-  --day-content-height: 100px;
-  --day-content-width: 100px;
-}
-#calendar-wrapper .vc-text-sm {
-  font-size: 21px;
-}
+/*#calendar-wrapper .vc-container {*/
+/*  --day-content-height: 100px;*/
+/*  --day-content-width: 100px;*/
+/*}*/
+/*#calendar-wrapper .vc-text-sm {*/
+/*  font-size: 21px;*/
+/*}*/
 #attendance-table td.attend {
   padding: 12px 0;
 }
