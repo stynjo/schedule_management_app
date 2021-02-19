@@ -38,54 +38,52 @@
                 </v-calendar>
               </div>
             </div>
-            <div class="row">
-              <div class="col-12">
-                <div class="d-flex flex-column">
-                  <table class="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th>No</th>
-                        <th>名前</th>
-                        <th>出勤時間 / 選択日{{ attendanceDate }}</th>
-                        <th>退勤時間</th>
-                        <th></th>
-                        <th></th>
-                      </tr>
-                    </thead>
-                    <tbody class="user-list">
-                      <tr v-for="user in users" :key="user.id">
-                        <th>{{ user.id }}</th>
-                        <td>{{ user.name  }}</td>
-                        <td><vue-timepicker
-                          v-model="startTimeHash[user.id]"
-                          :hour-range="[18, 24, [18, 24]]"
-                          :minute-range="[0, 30]"
-                          hide-disabled-hours
-                          hide-disabled-minutes
-                          ref="startTime">
-                        </vue-timepicker></td>
-                        <td><vue-timepicker
-                          v-model="endTimeHash[user.id]"
-                          :hour-range="[18, 24, [18, 24]]"
-                          :minute-range="[0, 30]"
-                          hide-disabled-hours
-                          hide-disabled-minutes
-                          ref="endTime">
-                        </vue-timepicker></td>
-                        <td><button class="btn btn-primary" @click="onCreateAttendance(user.id)">更新</button></td>
-                        <td><button class="btn btn-danger" @click="deleteTarget = user.id; attendanceDeleteModal = true">削除</button></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
-       <delete-modal v-if="attendanceDeleteModal" @cancel="attendanceDeleteModal = false; deleteTarget = ''" @ok="onDeleteAttendance(deleteTarget); attendanceDeleteModal = false;"></delete-modal>
-     </div>
+      </div>
+    </div> 
+    <div class="row">
+      <div class="col-12">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>名前</th>
+              <th>出勤時間 / 選択日{{ attendanceDate }}</th>
+              <th>退勤時間</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody class="user-list">
+            <tr v-for="user in users" :key="user.id">
+              <th>{{ user.id }}</th>
+              <td>{{ user.name  }}</td>
+              <td><vue-timepicker
+                v-model="startTimeHash[user.id]"
+                :hour-range="[18, 24, [18, 24]]"
+                :minute-range="[0, 30]"
+                hide-disabled-hours
+                hide-disabled-minutes
+                ref="startTime">
+              </vue-timepicker></td>
+              <td><vue-timepicker
+                v-model="endTimeHash[user.id]"
+                :hour-range="[18, 24, [18, 24]]"
+                :minute-range="[0, 30]"
+                hide-disabled-hours
+                hide-disabled-minutes
+                ref="endTime">
+              </vue-timepicker></td>
+              <td><button class="btn btn-primary" @click="onCreateAttendance(user.id)">更新</button></td>
+              <td><button class="btn btn-danger" @click="deleteTarget = user.id; attendanceDeleteModal = true">削除</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>  
+    <delete-modal v-if="attendanceDeleteModal" @cancel="attendanceDeleteModal = false; deleteTarget = ''" @ok="onDeleteAttendance(deleteTarget); attendanceDeleteModal = false;"></delete-modal>
+  </div>
 </template>
 
 <script>
