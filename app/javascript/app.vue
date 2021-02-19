@@ -10,53 +10,47 @@
       　<div class="row">
           <div class="col-12">
             <div id="calendar-wrapper">
-              <div class="d-flex flex-column">
-                <v-calendar
-                @dayclick='dayClicked'
-                :columns="$screens({ default: 1, lg: 2 })"
-                :rows="$screens({ default: 1, lg: 2 })"
-                ></v-calendar>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-12">
-                <div class="d-flex flex-column">
-                  <table class="table table-striped">
-                    <thead class="thead-dark">
-                      <tr>
-                        <th scope="col">予約名</th>
-                        <th scope="col">人数</th>
-                        <th scope="col">開始時間</th>
-                        <th scope="col">終了時間</th>
-                        <th></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="resereve in reserveList" :key="resereve.id">
-                        <td>{{ resereve.reserve_name }}</td>
-                        <td>{{ resereve.number_of_people }}</td>
-                        <td>{{ formatDate(resereve.reservation_start_time) }}</td>
-                        <td>{{ formatDate(resereve.reservation_end_time) }}</td>
-                        <td><button class="btn btn-danger" @click="deleteTarget = resereve.id; resereveDeleteModal = true">削除</button></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div v-if="reserveList == false">
-                    <div class="border" style="padding:150px;">
-                      <h4>データがありません</h4>
-                    </div>
-                  </div>
-                </div>
-                </div>
-              </div>
+              <v-calendar
+              @dayclick='dayClicked'
+              :columns="$screens({ default: 1, lg: 2 })"
+              :rows="$screens({ default: 1, lg: 2 })"
+              ></v-calendar>
             </div>
           </div>
+        </div>
+      </div>
+    </div>  
+    <div class="row">
+      <div class="col-12">
+        <table class="table table-striped">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">予約名</th>
+              <th scope="col">人数</th>
+              <th scope="col">開始時間</th>
+              <th scope="col">終了時間</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="resereve in reserveList" :key="resereve.id">
+              <td>{{ resereve.reserve_name }}</td>
+              <td>{{ resereve.number_of_people }}</td>
+              <td>{{ formatDate(resereve.reservation_start_time) }}</td>
+              <td>{{ formatDate(resereve.reservation_end_time) }}</td>
+              <td><button class="btn btn-danger" @click="deleteTarget = resereve.id; resereveDeleteModal = true">削除</button></td>
+            </tr>
+          </tbody>
+        </table>
+        <div v-if="reserveList == false">
+          <div class="border" style="padding:150px;">
+            <h4>データがありません</h4>
+          </div>
+        </div>
       </div>
     </div>
-     
     <delete-modal v-if="resereveDeleteModal" @cancel="resereveDeleteModal = false; deleteTarget = ''" @ok="onDeleteReserve(deleteTarget); resereveDeleteModal = false;"></delete-modal>
     <reserve-modal v-if="resereveResponseModal" @cancel="this.resereveResponseModal = false;" @form="this.inputFormValue($event); this.resereveResponseModal = false;"></reserve-modal>
-
   </div>
 
 </template>
