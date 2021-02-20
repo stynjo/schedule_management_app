@@ -4,27 +4,29 @@
     <div class="row">
       <div class="col-6">
         <div id="attendance-table">
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th>名前</th>
-                <th v-for="targetTime in attendanceTargerTimes">{{ targetTime }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="user in users" :key="user.id">
-                <td>{{ user.name  }}</td>
-                <td v-for="targetTime in attendanceTargerTimes" class="attend" :class="getAttendanceCssClass(user, targetTime)">
-                  <div class="chart">&nbsp;</div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-          <div class="csv">
-            <input type="file" @change="loadCsvFile" /></br>
-            {{ message }}
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>名前</th>
+                  <th v-for="targetTime in attendanceTargerTimes">{{ targetTime }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="user in users" :key="user.id">
+                  <td>{{ user.name  }}</td>
+                  <td v-for="targetTime in attendanceTargerTimes" class="attend" :class="getAttendanceCssClass(user, targetTime)">
+                    <div class="chart">&nbsp;</div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
+            <div class="csv">
+              <input type="file" @change="loadCsvFile" /></br>
+              {{ message }}
+            </div>
+        </div>
       </div>
       <div class="col-6">
         <div class="row">
