@@ -5,8 +5,8 @@
       <div class="col-6">
         <div id="attendance-table">
           <div class="table-responsive">
-            <table class="table table-bordered">
-              <thead>
+            <table class="table table-sm table-bordered">
+              <thead class="thead-dark">
                 <tr>
                   <th>名前</th>
                   <th v-for="targetTime in attendanceTargerTimes">{{ targetTime }}</th>
@@ -47,7 +47,7 @@
     <div class="row">
       <div class="col-12">
         <table class="table table-bordered">
-          <thead>
+          <thead class="thead-dark">
             <tr>
               <th>No</th>
               <th>名前</th>

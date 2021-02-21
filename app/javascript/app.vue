@@ -43,7 +43,7 @@
           </tbody>
         </table>
         <div v-if="reserveList == false">
-          <div class="border" style="padding:150px;">
+          <div class="border" style="padding:150px; text-align: center">
             <h4>データがありません</h4>
           </div>
         </div>
@@ -194,21 +194,21 @@ export default {
         labels: ['18時', '19時', '20時', '21時', '22時', '23時'],
         datasets: [
           {
-            label: 'Bar Dataset',
-            data: reserveData,
-            backgroundColor:
-              'rgba(255, 99, 132, 0.2)',
-            borderColor:
-              'rgba(255, 99, 132, 1)',
-            borderWidth: 1
-          },
-          {
             label: 'Line Dataset',
             data: emloyeeData,
-            borderColor: '#CFD8DC',
+            borderColor: '#FF82B2',
             fill: false,
             type: 'line',
             lineTension: 0.3,
+          },
+          {
+            label: 'Bar Dataset',
+            data: reserveData,
+            backgroundColor:
+              '#75A9FF',
+            borderColor:
+              '#75A9FF',
+            borderWidth: 1
           }
         ]
       },
@@ -225,10 +225,9 @@ export default {
           yAxes: [
             {
               ticks: {
-                beginAtZero: true, 
-                min: 0,
-                max: 50,
-                stepSize: 5,
+                suggestedMin: 0,
+                suggestedMax: 100,
+                stepSize: 5
               }
             }
           ]
