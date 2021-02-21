@@ -2,57 +2,56 @@
   <div id="app">
     <button type="button" class="btn btn-info" @click="openReserveModal()">予約登録フォーム</button>
     <flash-message ref="flashMessage"></flash-message>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-8">
-          <radar-chart class="chart_bar" :chart-data="chartData" :options="options"></radar-chart>
-        </div>
-     　  <div class="col-4">
-     　    <div id="calendar-wrapper">
-　　　　    <div class="d-flex flex-column">　
+    <div class="row">
+      <div class="col-6">
+        <radar-chart class="chart_bar" :chart-data="chartData" :options="options"></radar-chart>
+      </div>
+      <div class="col-6">
+      　<div class="row">
+          <div class="col-12">
+            <div id="calendar-wrapper">
               <v-calendar
               @dayclick='dayClicked'
-              is-expanded
+              :columns="$screens({ default: 1, lg: 2 })"
+              :rows="$screens({ default: 1, lg: 2 })"
               ></v-calendar>
-            </div>
-          </div>
-          <div class="d-flex flex-column">　
-            <table class="table table-striped">
-              <thead class="thead-dark">
-                <tr>
-                  <th scope="col">予約名</th>
-                  <th scope="col">人数</th>
-                  <th scope="col">開始時間</th>
-                  <th scope="col">終了時間</th>
-                  <th></th>
-                </tr>
-              </thead>
-                <tbody>
-                  <tr v-for="resereve in reserveList" :key="resereve.id">
-                    <td>{{ resereve.reserve_name }}</td>
-                    <td>{{ resereve.number_of_people }}</td>
-                    <td>{{ formatDate(resereve.reservation_start_time) }}</td>
-                    <td>{{ formatDate(resereve.reservation_end_time) }}</td>
-                    <td><button class="btn btn-danger" @click="deleteTarget = resereve.id; resereveDeleteModal = true">削除</button></td>
-                  </tr>
-                </tbody>
-            </table>
-            <div v-if="reserveList == false">
-              <div class="col-12 text-center">
-                 <div class="border" style="padding:150px;">
-               　　　 <h4>データがありません</h4>
-               　</div>
-              </div>
             </div>
           </div>
         </div>
       </div>
-   </div>
-     
-  <delete-modal v-if="resereveDeleteModal" @cancel="resereveDeleteModal = false; deleteTarget = ''" @ok="onDeleteReserve(deleteTarget); resereveDeleteModal = false;"></delete-modal>
-  
-  <reserve-modal v-if="resereveResponseModal" @cancel="this.resereveResponseModal = false;" @form="this.inputFormValue($event); this.resereveResponseModal = false;"></reserve-modal>
-</div>
+    </div>  
+    <div class="row">
+      <div class="col-12">
+        <table class="table table-striped">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">予約名</th>
+              <th scope="col">人数</th>
+              <th scope="col">開始時間</th>
+              <th scope="col">終了時間</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="resereve in reserveList" :key="resereve.id">
+              <td>{{ resereve.reserve_name }}</td>
+              <td>{{ resereve.number_of_people }}</td>
+              <td>{{ formatDate(resereve.reservation_start_time) }}</td>
+              <td>{{ formatDate(resereve.reservation_end_time) }}</td>
+              <td><button class="btn btn-danger" @click="deleteTarget = resereve.id; resereveDeleteModal = true">削除</button></td>
+            </tr>
+          </tbody>
+        </table>
+        <div v-if="reserveList == false">
+          <div class="border" style="padding:150px; text-align: center">
+            <h4>データがありません</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+    <delete-modal v-if="resereveDeleteModal" @cancel="resereveDeleteModal = false; deleteTarget = ''" @ok="onDeleteReserve(deleteTarget); resereveDeleteModal = false;"></delete-modal>
+    <reserve-modal v-if="resereveResponseModal" @cancel="this.resereveResponseModal = false;" @form="this.inputFormValue($event); this.resereveResponseModal = false;"></reserve-modal>
+  </div>
 
 </template>
 
@@ -190,25 +189,26 @@ export default {
       return format;
     },
     updateChartData(reserveData,emloyeeData) {
+      console.log("aaaaa")
       this.chartData = {
         labels: ['18時', '19時', '20時', '21時', '22時', '23時'],
         datasets: [
           {
-            label: 'Bar Dataset',
-            data: reserveData,
-            backgroundColor:
-              'rgba(255, 99, 132, 0.2)',
-            borderColor:
-              'rgba(255, 99, 132, 1)',
-            borderWidth: 1
-          },
-          {
             label: 'Line Dataset',
             data: emloyeeData,
-            borderColor: '#CFD8DC',
+            borderColor: '#FF82B2',
             fill: false,
             type: 'line',
             lineTension: 0.3,
+          },
+          {
+            label: 'Bar Dataset',
+            data: reserveData,
+            backgroundColor:
+              '#75A9FF',
+            borderColor:
+              '#75A9FF',
+            borderWidth: 1
           }
         ]
       },
@@ -225,9 +225,9 @@ export default {
           yAxes: [
             {
               ticks: {
-                beginAtZero: true, 
-                min: 0,
-                max: 50 
+                suggestedMin: 0,
+                suggestedMax: 100,
+                stepSize: 5
               }
             }
           ]
@@ -248,24 +248,32 @@ export default {
 #app {
 }
 
-.chart_bar {
-   width: 1200px;
-   height: 500px;
-} 
+/*.chart_bar {*/
+/*   width: 1200px;*/
+/*   height: 500px;*/
+/*} */
 
-#calendar-wrapper {
-  width: 50%;
+/*#calendar-wrapper .vc-container {*/
+/*  --day-content-height: 90px;*/
+/*  --day-content-width: 150px;*/
+/*}*/
+/*#calendar-wrapper .vc-text-sm {*/
+/*  font-size: 20px;*/
+/*}*/
+
+/*#calendar-wrapper {*/
+/*  width: 50%;*/
   
-}
+/*}*/
 
-#calendar-wrapper .vc-container {
-  --day-content-height: 110px;
-  --day-content-width: 110px;
-}
+/*#calendar-wrapper .vc-container {*/
+/*  --day-content-height: 110px;*/
+/*  --day-content-width: 110px;*/
+/*}*/
 
-#calendar-wrapper .vc-text-sm {
-  font-size: 21px;
-}
+/*#calendar-wrapper .vc-text-sm {*/
+/*  font-size: 21px;*/
+/*}*/
 
 
  

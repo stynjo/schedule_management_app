@@ -4,9 +4,9 @@ User.create!(name: "Sample User",
              password_confirmation: "password",
              admin: true)
              
-20.times do |n|
+10.times do |n|
   name  = Gimei.kanji 
-  email = "sample#{n+6}@example.com"
+  email = "sample#{n+2}@example.com"
   password = "password"
   User.create!(name: name,
                email: email,

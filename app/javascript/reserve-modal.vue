@@ -3,46 +3,70 @@
     <div class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container">
-
           <div class="modal-header">
             <slot name="header">
+              予約登録フォーム
             </slot>
           </div>
 
           <div class="modal-body">
-            予約日
-            <v-date-picker
-              :popover="popover"
-              v-model="resereveDate">
-              <template v-slot="{ inputValue, inputEvents }">
-                <input :value="inputValue"  v-on="inputEvents" />
-              </template>
-            </v-date-picker>
-            予約時間
-            <vue-timepicker
-               v-model="startTime"
-              :hour-range="[18, 24, [18, 24]]"
-              :minute-range="[0, 30]"
-              hide-disabled-hours
-              hide-disabled-minutes></vue-timepicker>
-            ~
-            <vue-timepicker
-               v-model="endTime"
-              :hour-range="[18, 24, [18, 24]]"
-              :minute-range="[0, 30]"
-              hide-disabled-hours
-              hide-disabled-minutes></vue-timepicker></br>
-              
-            予約名<input type="text" v-model="resereveName">  様
-            予約人数<input type="number"  v-model="number">  名</br>
-            <input type="submit" value="登録する" @click="submit">
+            <div class="row">
+              <div class="col-2">
+                予約日
+              </div>
+              <div class="col-10">
+                 <v-date-picker
+                    :popover="popover"
+                    v-model="resereveDate">
+                    <template v-slot="{ inputValue, inputEvents }">
+                      <input :value="inputValue"  v-on="inputEvents" />
+                    </template>
+                  </v-date-picker>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-2">
+                予約時間
+              </div>
+              <div class="col-10">
+                <vue-timepicker
+                  v-model="startTime"
+                  :hour-range="[18, 24, [18, 24]]"
+                  :minute-range="[0, 30]"
+                  hide-disabled-hours
+                  hide-disabled-minutes></vue-timepicker>
+                ~
+                <vue-timepicker
+                   v-model="endTime"
+                  :hour-range="[18, 24, [18, 24]]"
+                  :minute-range="[0, 30]"
+                  hide-disabled-hours
+                  hide-disabled-minutes></vue-timepicker>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-2"> 
+                予約名
+              </div>
+              <div class="col-10"> 
+                <input type="text" v-model="resereveName">  様
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-2"> 
+                予約人数
+              </div>
+              <div class="col-10"> 
+                <input type="number"  v-model="number">  名
+              </div>
+            </div>
           </div>
 
           <div class="modal-footer">
             <slot name="footer">
-              <button type="button" class="btn btn-outline-secondary" @click="$parent.closeReserveModal()">
-                Cancel
-              </button>
+              <td><button class="btn btn-primary" @click="submit">更新</button></td>
+              <td><button class="btn btn-secondary" @click="$parent.closeReserveModal()">キャンセル</button></td>
             </slot>
           </div>
         </div>
