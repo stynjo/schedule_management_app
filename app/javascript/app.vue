@@ -169,6 +169,7 @@ export default {
         if  (res.status === 204) {
            this.showAlert('予約データを削除しました。');
         }
+        this.getReservations()
       })
     },
     formatDate(dateStr) {
@@ -194,7 +195,7 @@ export default {
         labels: ['18時', '19時', '20時', '21時', '22時', '23時'],
         datasets: [
           {
-            label: 'Line Dataset',
+            label: '人員数',
             data: emloyeeData,
             borderColor: '#FF82B2',
             fill: false,
@@ -202,7 +203,7 @@ export default {
             lineTension: 0.3,
           },
           {
-            label: 'Bar Dataset',
+            label: '予約件数',
             data: reserveData,
             backgroundColor:
               '#75A9FF',
