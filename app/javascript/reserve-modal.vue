@@ -58,7 +58,7 @@
                 <h4>予約人数</h4>
               </div>
               <div class="col-8"> 
-                <input type="number"  v-model="number">  名
+                <input type="number" min="1" max="30"  v-model="number">  名
               </div>
             </div>
           </div>

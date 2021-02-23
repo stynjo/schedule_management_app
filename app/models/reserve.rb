@@ -1,4 +1,11 @@
 class Reserve < ApplicationRecord
+  
+  validates :number_of_people, presence: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 30
+  validates :reserve_name, present: true, length: { maximum: 30 }
+  validates :reservation_start_time, present: true
+  validates :reservation_end_time, present: true
+  
+  
   # 予約開始時間、または終了時間が存在しない場合入力は無効
   validate :invalid_without_a_reservation_start_time_or_reservation_end_time
   # 予約開始時間より予約終了時間が早い場合は無効
