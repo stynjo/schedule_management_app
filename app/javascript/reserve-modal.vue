@@ -5,16 +5,16 @@
         <div class="modal-container">
           <div class="modal-header">
             <slot name="header">
-              予約登録フォーム
+              <h3>予約登録フォーム</h3>
             </slot>
           </div>
 
           <div class="modal-body">
             <div class="row">
-              <div class="col-2">
-                予約日
+              <div class="col-4">
+                <h4>予約日</h4>
               </div>
-              <div class="col-10">
+              <div class="col-8">
                  <v-date-picker
                     :popover="popover"
                     v-model="resereveDate">
@@ -25,10 +25,10 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-2">
-                予約時間
+              <div class="col-4">
+                <h4>予約時間</h4>
               </div>
-              <div class="col-10">
+              <div class="col-8">
                 <vue-timepicker
                   v-model="startTime"
                   :hour-range="[18, 24, [18, 24]]"
@@ -45,19 +45,19 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-2"> 
-                予約名
+              <div class="col-4"> 
+                <h4>予約名</h4>
               </div>
-              <div class="col-10"> 
+              <div class="col-8"> 
                 <input type="text" v-model="resereveName">  様
               </div>
             </div>
             
             <div class="row">
-              <div class="col-2"> 
-                予約人数
+              <div class="col-4"> 
+                <h4>予約人数</h4>
               </div>
-              <div class="col-10"> 
+              <div class="col-8"> 
                 <input type="number"  v-model="number">  名
               </div>
             </div>
@@ -145,9 +145,13 @@ export default {
   font-family: Helvetica, Arial, sans-serif;
 }
 
-.modal-header h3 {
-  margin-top: 0;
-  color: #42b983;
+.modal-header  {
+  background-color: #333333;
+  color: white;
+}
+.modal-footer {
+  background-color: #A9A9A9;
+  color: white;
 }
 
 .modal-body {
