@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <button type="button" class="btn btn-info" @click="openReserveModal()">予約登録フォーム</button>
+    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#reserve-modal">予約登録フォーム</button>
     <flash-message ref="flashMessage"></flash-message>
     <div class="row">
       <div class="col-6">
@@ -50,7 +50,7 @@
       </div>
     </div>
     <delete-modal v-if="resereveDeleteModal" @cancel="resereveDeleteModal = false; deleteTarget = ''" @ok="onDeleteReserve(deleteTarget); resereveDeleteModal = false;"></delete-modal>
-    <reserve-modal v-if="resereveResponseModal" @cancel="this.resereveResponseModal = false;" @form="this.inputFormValue($event); this.resereveResponseModal = false;"></reserve-modal>
+    <reserve-modal @form="this.inputFormValue($event); this.resereveResponseModal = false;"></reserve-modal>
   </div>
 
 </template>
@@ -93,19 +93,12 @@ export default {
       reserveList: {},
       resereveDeleteModal: false,
       deleteTarget: '',
-      resereveResponseModal: false,
       formList: {},
     }
   },
   methods: {
     showAlert(message) {
       this.$refs.flashMessage.showFlashMessage(message)
-    },
-    openReserveModal() {
-      this.resereveResponseModal = true
-    },
-    closeReserveModal() {
-      this.resereveResponseModal = false
     },
     dayClicked(day) {
       this.reservationDate = day.id

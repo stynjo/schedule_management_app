@@ -1,78 +1,76 @@
 <template>
-  <transition name="modal">
-    <div class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-container">
-          <div class="modal-header">
-            <slot name="header">
-              <h3>予約登録フォーム</h3>
-            </slot>
-          </div>
+  <div class="modal fade" id="reserve-modal" tabindex="-1" role="dialog" aria-labelledby="reserve-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <slot name="header">
+            <h3>予約登録フォーム</h3>
+          </slot>
+        </div>
 
-          <div class="modal-body">
-            <div class="row">
-              <div class="col-4">
-                <h4>予約日</h4>
-              </div>
-              <div class="col-8">
-                 <v-date-picker
-                    :popover="popover"
-                    v-model="resereveDate">
-                    <template v-slot="{ inputValue, inputEvents }">
-                      <input :value="inputValue"  v-on="inputEvents" />
-                    </template>
-                  </v-date-picker>
-              </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-4">
+              <h4>予約日</h4>
             </div>
-            <div class="row">
-              <div class="col-4">
-                <h4>予約時間</h4>
-              </div>
-              <div class="col-8">
-                <vue-timepicker
-                  v-model="startTime"
-                  :hour-range="[18, 24, [18, 24]]"
-                  :minute-range="[0, 30]"
-                  hide-disabled-hours
-                  hide-disabled-minutes></vue-timepicker>
-                ~
-                <vue-timepicker
-                   v-model="endTime"
-                  :hour-range="[18, 24, [18, 24]]"
-                  :minute-range="[0, 30]"
-                  hide-disabled-hours
-                  hide-disabled-minutes></vue-timepicker>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-4"> 
-                <h4>予約名</h4>
-              </div>
-              <div class="col-8"> 
-                <input type="text" v-model="resereveName">  様
-              </div>
-            </div>
-            
-            <div class="row">
-              <div class="col-4"> 
-                <h4>予約人数</h4>
-              </div>
-              <div class="col-8"> 
-                <input type="number" min="1" max="30"  v-model="number">  名
-              </div>
+            <div class="col-8">
+               <v-date-picker
+                  :popover="popover"
+                  v-model="resereveDate">
+                  <template v-slot="{ inputValue, inputEvents }">
+                    <input :value="inputValue"  v-on="inputEvents" />
+                  </template>
+                </v-date-picker>
             </div>
           </div>
+          <div class="row">
+            <div class="col-4">
+              <h4>予約時間</h4>
+            </div>
+            <div class="col-8">
+              <vue-timepicker
+                v-model="startTime"
+                :hour-range="[18, 24, [18, 24]]"
+                :minute-range="[0, 30]"
+                hide-disabled-hours
+                hide-disabled-minutes></vue-timepicker>
+              ~
+              <vue-timepicker
+                 v-model="endTime"
+                :hour-range="[18, 24, [18, 24]]"
+                :minute-range="[0, 30]"
+                hide-disabled-hours
+                hide-disabled-minutes></vue-timepicker>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4"> 
+              <h4>予約名</h4>
+            </div>
+            <div class="col-8"> 
+              <input type="text" v-model="resereveName">  様
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-4"> 
+              <h4>予約人数</h4>
+            </div>
+            <div class="col-8"> 
+              <input type="number" min="1" max="30"  v-model="number">  名
+            </div>
+          </div>
+        </div>
 
-          <div class="modal-footer">
-            <slot name="footer">
-              <td><button class="btn btn-primary" @click="submit">更新</button></td>
-              <td><button class="btn btn-secondary" @click="$parent.closeReserveModal()">キャンセル</button></td>
-            </slot>
-          </div>
+        <div class="modal-footer">
+          <slot name="footer">
+            <td><button class="btn btn-primary" @click="submit">更新</button></td>
+            <td><button class="btn btn-secondary" @click="$parent.closeReserveModal()">キャンセル</button></td>
+          </slot>
         </div>
       </div>
     </div>
-  </transition>
+  </div>
 </template>
 
 <script>
@@ -117,34 +115,6 @@ export default {
 </script>
 
 <style scoped>
-.modal-mask {
-  position: fixed;
-  z-index: 9998;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, .5);
-  display: table;
-  transition: opacity .3s ease;
-}
-
-.modal-wrapper {
-  display: table-cell;
-  vertical-align: middle;
-}
-
-.modal-container {
-  width: 800px;
-  margin: 0px auto;
-  padding: 20px 30px;
-  background-color: #fff;
-  border-radius: 2px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
-  transition: all .3s ease;
-  font-family: Helvetica, Arial, sans-serif;
-}
-
 .modal-header  {
   background-color: #333333;
   color: white;
@@ -152,36 +122,5 @@ export default {
 .modal-footer {
   background-color: #A9A9A9;
   color: white;
-}
-
-.modal-body {
-  margin: 20px 0;
-}
-
-.modal-default-button {
-  float: right;
-}
-
-/*
- * The following styles are auto-applied to elements with
- * transition="modal" when their visibility is toggled
- * by Vue.js.
- *
- * You can easily play with the modal transition by editing
- * these styles.
- */
-
-.modal-enter {
-  opacity: 0;
-}
-
-.modal-leave-active {
-  opacity: 0;
-}
-
-.modal-enter .modal-container,
-.modal-leave-active .modal-container {
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
 }
 </style>
