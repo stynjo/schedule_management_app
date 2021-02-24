@@ -253,7 +253,7 @@ export default {
       })
       .catch(error => {
         console.log(error);
-          this.showAlert('勤怠登録に失敗しました。');y
+          this.showAlert('勤怠登録に失敗しました。');
       });
     },
     getAlluser() {
