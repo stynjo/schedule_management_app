@@ -65,7 +65,7 @@
         <div class="modal-footer">
           <slot name="footer">
             <td><button class="btn btn-primary" @click="submit">更新</button></td>
-            <td><button class="btn btn-secondary" @click="$parent.closeReserveModal()">キャンセル</button></td>
+            <td><button class="btn btn-secondary" data-dismiss="modal">キャンセル</button></td>
           </slot>
         </div>
       </div>
