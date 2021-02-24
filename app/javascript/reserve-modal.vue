@@ -1,6 +1,6 @@
 <template>
   <div class="modal fade" id="reserve-modal" tabindex="-1" role="dialog" aria-labelledby="reserve-modal-label" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <slot name="header">
@@ -64,7 +64,7 @@
 
         <div class="modal-footer">
           <slot name="footer">
-            <td><button class="btn btn-primary" @click="submit">更新</button></td>
+            <td><button class="btn btn-primary" @click="submit" data-dismiss="modal">更新</button></td>
             <td><button class="btn btn-secondary" data-dismiss="modal">キャンセル</button></td>
           </slot>
         </div>
@@ -116,11 +116,11 @@ export default {
 
 <style scoped>
 .modal-header  {
-  background-color: #333333;
+  background-color: #d1ecf1;
   color: white;
 }
-.modal-footer {
-  background-color: #A9A9A9;
-  color: white;
-}
+/*.modal-footer {*/
+/*  background-color: #A9A9A9;*/
+/*  color: white;*/
+/*}*/
 </style>
