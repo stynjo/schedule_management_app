@@ -202,6 +202,7 @@ export default {
         if (res.status === 204) {
           this.showAlert('勤怠登録を削除しました。')
         }
+        this.updateAttendancesByDate();
       })
     },
     updateAttendancesByDate() {
@@ -250,6 +251,7 @@ export default {
          if  (res.status === 201) {
            this.showAlert('勤怠登録を完了しました。');
          }
+        this.updateAttendancesByDate();
       })
       .catch(error => {
         console.log(error);
