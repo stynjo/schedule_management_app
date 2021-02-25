@@ -78,13 +78,13 @@
                 ref="endTime">
               </vue-timepicker></td>
               <td><button class="btn btn-primary" @click="onCreateAttendance(user.id)">更新</button></td>
-              <td><button class="btn btn-danger" @click="deleteTarget = user.id; attendanceDeleteModal = true">削除</button></td>
+              <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#attendance-delete-modal" @click="deleteTarget = user.id;">削除</button></td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
-    <delete-modal v-if="attendanceDeleteModal" @cancel="attendanceDeleteModal = false; deleteTarget = ''" @ok="onDeleteAttendance(deleteTarget); attendanceDeleteModal = false;"></delete-modal>
+    <attendance-delete-modal deleteTarget = '' @ok="onDeleteAttendance(deleteTarget);"></attendance-delete-modal>
   </div>
 </template>
 
@@ -93,6 +93,7 @@ import axios from 'axios';
 import VueTimepicker from 'vue2-timepicker';
 import FlashMessage from 'flash-message.vue'
 import DeleteModal from 'delete-modal.vue'
+import AttendanceDeleteModal from 'attendance-delete-modal.vue'
 
 const token = document.getElementsByName('csrf-token')[0].getAttribute('content')
 axios.defaults.headers.common['X-CSRF-Token'] = token
@@ -118,6 +119,7 @@ export default {
   components: {
     'vue-timepicker': VueTimepicker,
     'delete-modal': DeleteModal,
+    'attendance-delete-modal': AttendanceDeleteModal,
     'flash-message': FlashMessage
   },
   computed: {
