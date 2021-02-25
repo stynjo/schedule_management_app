@@ -7,32 +7,29 @@
             <h3>予約登録フォーム</h3>
           </slot>
         </div>
+
         <div class="modal-body">
           <div class="form-group">
             <div class="row">
               <div class="col-4">
                 <h5>予約日</h5>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-8">
-                 <v-date-picker
-                    :popover="popover"
-                    v-model="resereveDate">
-                    <template v-slot="{ inputValue, inputEvents }">
-                      <input :value="inputValue"  v-on="inputEvents" />
-                    </template>
-                  </v-date-picker>
-              </div>
+                <div class="col-8">
+                   <v-date-picker
+                      :popover="popover"
+                      v-model="resereveDate">
+                      <template v-slot="{ inputValue, inputEvents }">
+                        <input :value="inputValue"  v-on="inputEvents" />
+                      </template>
+                    </v-date-picker>
+                </div>
             </div>
           </div>
           <div class="form-group">
             <div class="row">
               <div class="col-4">
-                <h5>予約時間</h5>
+                <h5>予約開始時刻</h5>
               </div>
-            </div>
-            <div class="row">
               <div class="col-8">
                 <vue-timepicker
                   v-model="startTime"
@@ -40,7 +37,15 @@
                   :minute-range="[0, 30]"
                   hide-disabled-hours
                   hide-disabled-minutes></vue-timepicker>
-                ~
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-4">
+                <h5>予約終了時刻</h5>
+              </div>
+              <div class="col-8">
                 <vue-timepicker
                    v-model="endTime"
                   :hour-range="[18, 24, [18, 24]]"
@@ -55,8 +60,6 @@
               <div class="col-4"> 
                 <h5>予約名</h5>
               </div>
-            </div>
-            <div class="row">
               <div class="col-8"> 
                 <input type="text" v-model="resereveName">  様
               </div>
@@ -67,18 +70,17 @@
               <div class="col-4"> 
                 <h5>予約人数</h5>
               </div>
-            </div>
-            <div class="row">
               <div class="col-8"> 
                 <input type="number" min="1" max="30"  v-model="number">  名
               </div>
             </div>
           </div>
         </div>
+        
 
         <div class="modal-footer">
           <slot name="footer">
-            <td><button class="btn btn-primary" @click="submit" data-dismiss="modal">更新</button></td>
+            <td><button class="btn btn-primary" @click="submit" data-dismiss="modal">登録</button></td>
             <td><button class="btn btn-secondary" data-dismiss="modal">キャンセル</button></td>
           </slot>
         </div>
@@ -105,13 +107,13 @@ export default {
   },
   methods: {
     submit() {
-      // if (!this.startTime || !this.endTime) {
-      //   alert('時刻を設定してください');
-      //   return
-      // } else if(this.startTime > this.endTime) {
-      //   alert('退勤時間より早い出勤時間は設定できません。');
-      //   return
-      // }
+      if (!this.startTime || !this.endTime) {
+        alert('時刻を設定してください');
+        return
+      } else if(this.startTime > this.endTime) {
+        alert('退勤時間より早い出勤時間は設定できません。');
+        return
+      }
       this.changeDateFormat(this.resereveDate)
       this.$parent.onSubmitReserveForm({
         startTime: this.startTime,
@@ -129,12 +131,16 @@ export default {
 </script>
 
 <style scoped>
-/*.modal-header  {*/
-/*  background-color: #000022;*/
-/*  color: white;*/
-/*}*/
-/*.modal-footer {*/
-/*  background-color: #A9A9A9;*/
-/*  color: white;*/
-/*}*/
+.modal-content  {
+  background-color: #EEEEEE;
+}
+
+.modal-header {
+  border-bottom: 0.5px solid #CCCCCC;
+}
+.modal-footer {
+  border-top: 0.5px solid #CCCCCC;
+}
+
+
 </style>
