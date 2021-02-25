@@ -1,63 +1,77 @@
 <template>
   <div class="modal fade" id="reserve-modal" tabindex="-1" role="dialog" aria-labelledby="reserve-modal-label" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
           <slot name="header">
             <h3>予約登録フォーム</h3>
           </slot>
         </div>
-
         <div class="modal-body">
-          <div class="row">
-            <div class="col-4">
-              <h4>予約日</h4>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-4">
+                <h5>予約日</h5>
+              </div>
             </div>
-            <div class="col-8">
-               <v-date-picker
-                  :popover="popover"
-                  v-model="resereveDate">
-                  <template v-slot="{ inputValue, inputEvents }">
-                    <input :value="inputValue"  v-on="inputEvents" />
-                  </template>
-                </v-date-picker>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-4">
-              <h4>予約時間</h4>
-            </div>
-            <div class="col-8">
-              <vue-timepicker
-                v-model="startTime"
-                :hour-range="[18, 24, [18, 24]]"
-                :minute-range="[0, 30]"
-                hide-disabled-hours
-                hide-disabled-minutes></vue-timepicker>
-              ~
-              <vue-timepicker
-                 v-model="endTime"
-                :hour-range="[18, 24, [18, 24]]"
-                :minute-range="[0, 30]"
-                hide-disabled-hours
-                hide-disabled-minutes></vue-timepicker>
+            <div class="row">
+              <div class="col-8">
+                 <v-date-picker
+                    :popover="popover"
+                    v-model="resereveDate">
+                    <template v-slot="{ inputValue, inputEvents }">
+                      <input :value="inputValue"  v-on="inputEvents" />
+                    </template>
+                  </v-date-picker>
+              </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-4"> 
-              <h4>予約名</h4>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-4">
+                <h5>予約時間</h5>
+              </div>
             </div>
-            <div class="col-8"> 
-              <input type="text" v-model="resereveName">  様
+            <div class="row">
+              <div class="col-8">
+                <vue-timepicker
+                  v-model="startTime"
+                  :hour-range="[18, 24, [18, 24]]"
+                  :minute-range="[0, 30]"
+                  hide-disabled-hours
+                  hide-disabled-minutes></vue-timepicker>
+                ~
+                <vue-timepicker
+                   v-model="endTime"
+                  :hour-range="[18, 24, [18, 24]]"
+                  :minute-range="[0, 30]"
+                  hide-disabled-hours
+                  hide-disabled-minutes></vue-timepicker>
+              </div>
             </div>
           </div>
-          
-          <div class="row">
-            <div class="col-4"> 
-              <h4>予約人数</h4>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-4"> 
+                <h5>予約名</h5>
+              </div>
             </div>
-            <div class="col-8"> 
-              <input type="number" min="1" max="30"  v-model="number">  名
+            <div class="row">
+              <div class="col-8"> 
+                <input type="text" v-model="resereveName">  様
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-4"> 
+                <h5>予約人数</h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-8"> 
+                <input type="number" min="1" max="30"  v-model="number">  名
+              </div>
             </div>
           </div>
         </div>
@@ -115,10 +129,10 @@ export default {
 </script>
 
 <style scoped>
-.modal-header  {
-  background-color: #d1ecf1;
-  color: white;
-}
+/*.modal-header  {*/
+/*  background-color: #000022;*/
+/*  color: white;*/
+/*}*/
 /*.modal-footer {*/
 /*  background-color: #A9A9A9;*/
 /*  color: white;*/
