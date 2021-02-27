@@ -43,7 +43,39 @@
           </div>
         </div>
       </div>
-    </div> 
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div id="attendance-table">
+          <div class="table-responsive">
+            <table class="table table-sm table-bordered">
+              <thead class="thead-dark">
+                <tr>
+                  <th>名前</th>
+                  <th v-for="targetTime in attendanceTargerTimes">{{ targetTime }}</th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="user in users" :key="user.id">
+                  <td>{{ user.name  }}</td>
+                  <td v-for="targetTime in attendanceTargerTimes" class="attend" :class="getAttendanceCssClass(user, targetTime)">
+                    <div class="chart">&nbsp;</div>
+                  </td>
+                  <td><button class="btn btn-primary" @click="onCreateAttendance(user.id)">更新</button></td>
+                  <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#attendance-delete-modal" @click="deleteTarget = user.id;">削除</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+            <div class="csv">
+              <input type="file" @change="loadCsvFile" /></br>
+              {{ message }}
+            </div>
+        </div>
+      </div>
+    </div>
     <div class="row">
       <div class="col-12">
         <table class="table table-bordered">
