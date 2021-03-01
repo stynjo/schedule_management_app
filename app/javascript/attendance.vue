@@ -40,7 +40,7 @@
                   <td v-for="targetTime in attendanceTargerTimes" class="attend" :class="getAttendanceCssClass(user, targetTime)">
                     <div class="chart">&nbsp;</div>
                   </td>
-                  <td><button class="btn btn-primary" @click="onCreateAttendance(user.id)">更新</button></td>
+                  <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#attendance-modal">登録</button></td>
                   <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#attendance-delete-modal" @click="deleteTarget = user.id;">削除</button></td>
                 </tr>
               </tbody>
@@ -53,56 +53,18 @@
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-12">
-        <table class="table table-bordered">
-          <thead class="thead-dark">
-            <tr>
-              <th>No</th>
-              <th>名前</th>
-              <th>出勤時間 / 選択日{{ attendanceDate }}</th>
-              <th>退勤時間</th>
-              <th></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody class="user-list">
-            <tr v-for="user in users" :key="user.id">
-              <th>{{ user.id }}</th>
-              <td>{{ user.name  }}</td>
-              <td><vue-timepicker
-                v-model="startTimeHash[user.id]"
-                :hour-range="[18, 24, [18, 24]]"
-                :minute-range="[0, 30]"
-                hide-disabled-hours
-                hide-disabled-minutes
-                ref="startTime">
-              </vue-timepicker></td>
-              <td><vue-timepicker
-                v-model="endTimeHash[user.id]"
-                :hour-range="[18, 24, [18, 24]]"
-                :minute-range="[0, 30]"
-                hide-disabled-hours
-                hide-disabled-minutes
-                ref="endTime">
-              </vue-timepicker></td>
-              <td><button class="btn btn-primary" @click="onCreateAttendance(user.id)">更新</button></td>
-              <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#attendance-delete-modal" @click="deleteTarget = user.id;">削除</button></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
     <attendance-delete-modal deleteTarget = '' @ok="onDeleteAttendance(deleteTarget);"></attendance-delete-modal>
   </div>
+  
 </template>
 
 <script>
-import axios from 'axios';
-import Chart from 'chart.vue';
-import VueTimepicker from 'vue2-timepicker';
+import axios from 'axios'
+import Chart from 'chart.vue'
+import VueTimepicker from 'vue2-timepicker'
 import FlashMessage from 'flash-message.vue'
 import DeleteModal from 'delete-modal.vue'
+import AttendanceModal from 'attendance-modal.vue'
 import AttendanceDeleteModal from 'attendance-delete-modal.vue'
 
 const token = document.getElementsByName('csrf-token')[0].getAttribute('content')
@@ -131,6 +93,7 @@ export default {
   components: {
     'vue-timepicker': VueTimepicker,
     'delete-modal': DeleteModal,
+    'attendance-modal': AttendanceModal,
     'attendance-delete-modal': AttendanceDeleteModal,
     'radar-chart': Chart,
     'flash-message': FlashMessage
