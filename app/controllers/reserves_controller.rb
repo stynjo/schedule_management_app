@@ -1,13 +1,5 @@
 class ReservesController < ApplicationController
   protect_from_forgery with: :null_session
-    def create
-      @reserve = Reserve.new(resereve_params)
-      if @reserve.save
-        render json: @resereve, status: :created
-      else
-        render json: @reserve, status: :unprocessable_entity
-      end
-    end
     
     def index
       @reservation_date_string = params[:reservationDate]
@@ -39,6 +31,15 @@ class ReservesController < ApplicationController
         reserve_lists.push(reserve)
       end
       render json: reserve_lists
+    end
+    
+    def create
+      @reserve = Reserve.new(resereve_params)
+      if @reserve.save
+        render json: @resereve, status: :created
+      else
+        render json: @reserve, status: :unprocessable_entity
+      end
     end
     
     def destroy
