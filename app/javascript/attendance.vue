@@ -3,30 +3,7 @@
     <flash-message ref="flashMessage"></flash-message>
     <div class="row">
       <div class="col-6">
-        <div id="attendance-table">
-          <div class="table-responsive">
-            <table class="table table-sm table-bordered">
-              <thead class="thead-dark">
-                <tr>
-                  <th>名前</th>
-                  <th v-for="targetTime in attendanceTargerTimes">{{ targetTime }}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="user in users" :key="user.id">
-                  <td>{{ user.name  }}</td>
-                  <td v-for="targetTime in attendanceTargerTimes" class="attend" :class="getAttendanceCssClass(user, targetTime)">
-                    <div class="chart">&nbsp;</div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-            <div class="csv">
-              <input type="file" @change="loadCsvFile" /></br>
-              {{ message }}
-            </div>
-        </div>
+        <radar-chart class="chart_bar" :chart-data="chartData" :options="options"></radar-chart>
       </div>
       <div class="col-6">
         <div class="row">
@@ -43,56 +20,52 @@
           </div>
         </div>
       </div>
-    </div> 
+    </div>
     <div class="row">
       <div class="col-12">
-        <table class="table table-bordered">
-          <thead class="thead-dark">
-            <tr>
-              <th>No</th>
-              <th>名前</th>
-              <th>出勤時間 / 選択日{{ attendanceDate }}</th>
-              <th>退勤時間</th>
-              <th></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody class="user-list">
-            <tr v-for="user in users" :key="user.id">
-              <th>{{ user.id }}</th>
-              <td>{{ user.name  }}</td>
-              <td><vue-timepicker
-                v-model="startTimeHash[user.id]"
-                :hour-range="[18, 24, [18, 24]]"
-                :minute-range="[0, 30]"
-                hide-disabled-hours
-                hide-disabled-minutes
-                ref="startTime">
-              </vue-timepicker></td>
-              <td><vue-timepicker
-                v-model="endTimeHash[user.id]"
-                :hour-range="[18, 24, [18, 24]]"
-                :minute-range="[0, 30]"
-                hide-disabled-hours
-                hide-disabled-minutes
-                ref="endTime">
-              </vue-timepicker></td>
-              <td><button class="btn btn-primary" @click="onCreateAttendance(user.id)">更新</button></td>
-              <td><button class="btn btn-danger" @click="deleteTarget = user.id; attendanceDeleteModal = true">削除</button></td>
-            </tr>
-          </tbody>
-        </table>
+        <div id="attendance-table">
+          <div class="table-responsive">
+            <table class="table table-sm table-bordered">
+              <thead class="thead-dark">
+                <tr>
+                  <th>名前</th>
+                  <th v-for="targetTime in attendanceTargerTimes">{{ targetTime }}</th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="user in users" :key="user.id">
+                  <td>{{ user.name  }}</td>
+                  <td v-for="targetTime in attendanceTargerTimes" class="attend" :class="getAttendanceCssClass(user, targetTime)">
+                    <div class="chart">&nbsp;</div>
+                  </td>
+                  <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#attendance-modal">登録</button></td>
+                  <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#attendance-delete-modal" @click="deleteTarget = user.id;">削除</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+            <div class="csv">
+              <input type="file" @change="loadCsvFile" /></br>
+              {{ message }}
+            </div>
+        </div>
       </div>
     </div>
-    <delete-modal v-if="attendanceDeleteModal" @cancel="attendanceDeleteModal = false; deleteTarget = ''" @ok="onDeleteAttendance(deleteTarget); attendanceDeleteModal = false;"></delete-modal>
+    <attendance-delete-modal deleteTarget = '' @ok="onDeleteAttendance(deleteTarget);"></attendance-delete-modal>
   </div>
+  
 </template>
 
 <script>
-import axios from 'axios';
-import VueTimepicker from 'vue2-timepicker';
+import axios from 'axios'
+import Chart from 'chart.vue'
+import VueTimepicker from 'vue2-timepicker'
 import FlashMessage from 'flash-message.vue'
 import DeleteModal from 'delete-modal.vue'
+import AttendanceModal from 'attendance-modal.vue'
+import AttendanceDeleteModal from 'attendance-delete-modal.vue'
 
 const token = document.getElementsByName('csrf-token')[0].getAttribute('content')
 axios.defaults.headers.common['X-CSRF-Token'] = token
@@ -112,12 +85,17 @@ export default {
       deleteTarget: '',
       flashMessage: '',
       attendanceListStart: [],
-      attendanceListEnd: []
+      attendanceListEnd: [],
+      chartData: {},
+      options: {}
     }
   },
   components: {
     'vue-timepicker': VueTimepicker,
     'delete-modal': DeleteModal,
+    'attendance-modal': AttendanceModal,
+    'attendance-delete-modal': AttendanceDeleteModal,
+    'radar-chart': Chart,
     'flash-message': FlashMessage
   },
   computed: {
@@ -136,16 +114,34 @@ export default {
   },
   methods: {
     dayClicked(day) {
-      this.attendanceDate = day.id
+      this.attendanceDate = day.id;
       // 選択された日付の内容で勤怠一覧を更新する
-      this.updateAttendancesByDate()
+      this.updateAttendancesByDate();
+      this.getReservations();
+    },
+    getReservations() {
+       Promise.all([
+         //時間あたりの予約数取得
+        axios.get(`/reserves/index`, {
+          params: { reservationDate: this.attendanceDate }}),
+         //時間あたりの人員数取得
+        axios.get(`/attendances/index`, {
+          params: { reservationDate: this.attendanceDate }}),
+          //その日の予約データ取得
+        axios.get(`/reserves/date`, {
+          params: { reservationDate: this.attendanceDate }})
+      ])
+      .then(responses => {
+        responses.forEach(res => console.log(res.data));
+        var reserveData = responses[0].data;
+        var emloyeeData = responses[1].data;
+        this.updateChartData(reserveData,emloyeeData);
+      });
     },
     loadCsvFile: function(e) {
-      // 選択された File の情報を保存しておく
       e.preventDefault();
       let files = e.target.files;
       this.uploadFile = files[0];
-      
       
       if (!this.uploadFile.type.match("text/csv")) {
         this.message = "CSVファイルを選択してください";
@@ -157,19 +153,19 @@ export default {
       this.message = '';
      
       axios
-        .post(`/attendances/import/`, formData)
-        .then(res => {
-          console.log(res.data);
-          if (res.data === true) {
-            this.showAlert('勤怠登録が完了しました。')
-          }
-        })
-        .catch(error => {
-          console.log(error);
-          if (error === error) {
-            this.showAlert('勤怠登録に失敗しました。')
-          }
-        });
+      .post(`/attendances/import/`, formData)
+      .then(res => {
+        console.log(res.data);
+        if (res.data === true) {
+          this.showAlert('勤怠登録が完了しました。')
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        if (error === error) {
+          this.showAlert('勤怠登録に失敗しました。')
+        }
+      });
     },
     onCreateAttendance(userId) {
       let startTime = this.startTimeHash[userId];
@@ -202,6 +198,7 @@ export default {
         if (res.status === 204) {
           this.showAlert('勤怠登録を削除しました。')
         }
+        this.updateAttendancesByDate();
       })
     },
     updateAttendancesByDate() {
@@ -250,6 +247,7 @@ export default {
          if  (res.status === 201) {
            this.showAlert('勤怠登録を完了しました。');
          }
+        this.updateAttendancesByDate();
       })
       .catch(error => {
         console.log(error);
@@ -272,6 +270,51 @@ export default {
     },
     showAlert(message) {
       this.$refs.flashMessage.showFlashMessage(message)
+    },
+    updateChartData(reserveData,emloyeeData) {
+      this.chartData = {
+        labels: ['18時', '19時', '20時', '21時', '22時', '23時'],
+        datasets: [
+          {
+            label: '人員数',
+            data: emloyeeData,
+            borderColor: '#FF82B2',
+            fill: false,
+            type: 'line',
+            lineTension: 0.3,
+          },
+          {
+            label: '予約件数',
+            data: reserveData,
+            backgroundColor:
+              '#75A9FF',
+            borderColor:
+              '#75A9FF',
+            borderWidth: 1
+          }
+        ]
+      },
+      this.options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        legend: {
+          position: "bottom"
+        },
+        layout: {
+          padding: 20
+        },
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                suggestedMin: 0,
+                suggestedMax: 100,
+                stepSize: 5
+              }
+            }
+          ]
+        }
+      }
     }
   },
   mounted: function () {

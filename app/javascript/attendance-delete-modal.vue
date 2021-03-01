@@ -1,12 +1,7 @@
 <template>
-  <div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="delete-modal-label" aria-hidden="true">
+  <div class="modal fade" id="attendance-delete-modal" tabindex="-1" role="dialog" aria-labelledby="attendance-delete-modal-label" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
-        <div class="modal-header">
-          <slot name="header">
-            <i class="bi bi-exclamation-triangle" style="font-size: 1rem;">予約を削除します</i>
-          </slot>
-        </div>
         <div class="modal-body" style="text-align:center;">
            <h5>本当に削除しますか?</h5>
         </div>
