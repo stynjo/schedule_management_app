@@ -6,3 +6,5 @@ FactoryBot.define do
     reservation_end_time { 'Mon, 01 Feb 2021 20:00:00 JST +09:00' }
   end
 end
+
+
