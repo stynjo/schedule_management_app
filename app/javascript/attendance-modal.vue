@@ -1,5 +1,5 @@
 <template>
-  <div class="modal fade" id="#attendance-modal" tabindex="-1" role="dialog" aria-labelledby="#attendance-modal-label" aria-hidden="true">
+  <div class="modal fade" id="attendance-modal" tabindex="-1" role="dialog" aria-labelledby="#attendance-modal-label" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -16,7 +16,8 @@
               </div>
                 <div class="col-8">
                    <v-date-picker
-                      :popover="popover">
+                      :popover="popover"
+                      v-model="attendanceDate">
                     </v-date-picker>
                 </div>
             </div>
@@ -28,6 +29,7 @@
               </div>
               <div class="col-8">
                 <vue-timepicker
+                  v-model="startTime"
                   :hour-range="[18, 24, [18, 24]]"
                   :minute-range="[0, 30]"
                   hide-disabled-hours
@@ -42,6 +44,7 @@
               </div>
               <div class="col-8">
                 <vue-timepicker
+                  v-model="endTime"
                   :hour-range="[18, 24, [18, 24]]"
                   :minute-range="[0, 30]"
                   hide-disabled-hours
@@ -70,14 +73,30 @@ export default {
   },
   data() {
     return {
-      popover: null
+      popover: null,
+      attendanceDate: null,
+      startTime: '',
+      endTime: ''
     }
   },
   methods: {
     submit() {
+      if (!this.startTime || !this.endTime) {
+        alert('時刻を設定してください');
+        return
+      } else if(this.startTime > this.endTime) {
+        alert('退勤時間より早い出勤時間は設定できません。');
+        return
+      }
+      this.changeDateFormat(this.attendanceDate)
+      this.$parent.onSubmitAttendanceForm({
+        startTime: this.startTime,
+        endTime: this.endTime,
+        attendanceDate: this.attendanceDate
+      })
     },
     changeDateFormat(day){
-      this.resereveDate = `${day.getFullYear()}/${day.getMonth() + 1}/${day.getDate()}`
+      this.attendanceDate = `${day.getFullYear()}/${day.getMonth() + 1}/${day.getDate()}`
     }
   }
 }
@@ -94,4 +113,6 @@ export default {
 .modal-footer {
   border-top: 0.5px solid #CCCCCC;
 }
+
+
 </style>

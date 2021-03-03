@@ -53,7 +53,8 @@
         </div>
       </div>
     </div>
-    <attendance-delete-modal deleteTarget = '' @ok="onDeleteAttendance(deleteTarget);"></attendance-delete-modal>
+    <attendance-modal deleteTarget='' @ok="onCreateAttendance(deleteTarget);"></attendance-modal>
+    <attendance-delete-modal deleteTarget='' @ok="onDeleteAttendance(deleteTarget);"></attendance-delete-modal>
   </div>
   
 </template>
