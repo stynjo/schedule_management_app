@@ -29,11 +29,11 @@ RSpec.describe Reserve, type: :model do
       reserve.valid?
       expect(reserve.errors[:number_of_people]).to include("must be less than 31")
     end
-    # it '予約開始時間が存在しない場合は無効であること' do
-    #   reserve = FactoryBot.build(:reserve, reservation_start_time: nil)
-    #   reserve.valid?
-    #   expect(reserve.errors[:invalid_without_a_reservation_start_time_or_reservation_end_time]).to include("入力が正しくありません")
-    # end
+    it '予約開始時間が存在しない場合は無効であること' do
+      reserve = FactoryBot.build(:reserve, reservation_start_time: nil)
+      reserve.valid?
+      expect(reserve.errors[:invalid_without_a_reservation_start_time_or_reservation_end_time]).to include("入力が正しくありません")
+    end
   end
   
 end
