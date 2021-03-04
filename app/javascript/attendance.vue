@@ -40,7 +40,7 @@
                   <td v-for="targetTime in attendanceTargerTimes" class="attend" :class="getAttendanceCssClass(user, targetTime)">
                     <div class="chart">&nbsp;</div>
                   </td>
-                  <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#attendance-modal">登録</button></td>
+                  <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#attendance-modal" @click="registrationTarget = user.id;">登録</button></td>
                   <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#attendance-delete-modal" @click="deleteTarget = user.id;">削除</button></td>
                 </tr>
               </tbody>
@@ -56,7 +56,7 @@
     <attendance-modal deleteTarget='' @ok="onCreateAttendance(deleteTarget);"></attendance-modal>
     <attendance-delete-modal deleteTarget='' @ok="onDeleteAttendance(deleteTarget);"></attendance-delete-modal>
   </div>
-  
+
 </template>
 
 <script>
@@ -84,6 +84,7 @@ export default {
       uploadFile: null,
       attendanceDeleteModal: false,
       deleteTarget: '',
+      registrationTarget: '',
       flashMessage: '',
       attendanceListStart: [],
       attendanceListEnd: [],
@@ -143,16 +144,16 @@ export default {
       e.preventDefault();
       let files = e.target.files;
       this.uploadFile = files[0];
-      
+
       if (!this.uploadFile.type.match("text/csv")) {
         this.message = "CSVファイルを選択してください";
         return;
       }
-    
+
       let formData = new FormData();
       formData.append('file', this.uploadFile);
       this.message = '';
-     
+
       axios
       .post(`/attendances/import/`, formData)
       .then(res => {
@@ -168,9 +169,16 @@ export default {
         }
       });
     },
-    onCreateAttendance(userId) {
-      let startTime = this.startTimeHash[userId];
-      let endTime = this.endTimeHash[userId];
+    // onSubmitAttendanceForm(formValue) {
+    //   this.attendanceDate = formValue.attendanceDate
+    //   this.startTimeHash = formValue.startTime[this.registrationTarget]
+    //   this.endTimeHashndTime = formValue.endTime[this.registrationTarget]
+    //   this.onCreateAttendance(this.registrationTarget)
+    // },
+    onCreateAttendance(formValue) {
+      this.attendanceDate = formValue.attendanceDate;
+      let startTime = formValue.startTime;
+      let endTime = formValue.endTime;
       if (startTime instanceof Object) { startTime = `${startTime.HH}:${startTime.mm}` }
       if (endTime instanceof Object) { endTime = `${endTime.HH}:${endTime.mm}` }
       if (!startTime || !endTime) {
@@ -183,7 +191,7 @@ export default {
       let startTimeStr = `${this.attendanceDate} ${startTime}`
       let endTimeStr = `${this.attendanceDate} ${endTime}`
       // 問題なければAPI叩いて勤怠登録する
-      this.updateAttendance(userId, startTimeStr, endTimeStr)
+      this.updateAttendance(this.registrationTarget, startTimeStr, endTimeStr)
     },
     onDeleteAttendance(userId) {
       let startTime = this.startTimeHash[userId];
@@ -207,8 +215,8 @@ export default {
       let endTimeHash = {}
       let attendanceIdHash = {}
       // vue-timepickerをリセット
-      this.$refs.startTime.forEach(e => {e.clearTime()})
-      this.$refs.endTime.forEach(e => { e.clearTime() })
+      // this.$refs.startTime.forEach(e => {e.clearTime()})
+      // this.$refs.endTime.forEach(e => { e.clearTime() })
       // 入力済みの勤怠情報を取得してthis.startTimeHash/endTimeHashの内容を更新する
       axios.get(`/attendances/date/${this.attendanceDate}`)
       .then(res => {
@@ -233,7 +241,7 @@ export default {
           finished_at: endTime,
         }
       };
-      
+
       if (this.attendanceIdHash[userId]) {
         // attendanceIdが存在する = 更新処理とする
         httpMethod = 'put';
@@ -338,7 +346,7 @@ export default {
 </script>
 
 <style>
-  
+
 /*#calendar-wrapper .vc-container {*/
 /*  --day-content-height: 90px;*/
 /*  --day-content-width: 150px;*/
@@ -353,6 +361,6 @@ export default {
 #attendance-table td.attend.attended .chart {
   background-color: #fc693b;
   background-image:
-	repeating-linear-gradient(-45deg,#fff, #fff 7px,transparent 0, transparent 11px);
+    repeating-linear-gradient(-45deg,#fff, #fff 7px,transparent 0, transparent 11px);
 }
 </style>
