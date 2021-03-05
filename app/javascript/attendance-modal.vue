@@ -89,7 +89,7 @@ export default {
         return
       }
       this.changeDateFormat(this.attendanceDate)
-      this.$parent.onSubmitAttendanceForm({
+      this.$parent.onCreateAttendance({
         startTime: this.startTime,
         endTime: this.endTime,
         attendanceDate: this.attendanceDate

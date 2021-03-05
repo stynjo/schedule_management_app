@@ -169,12 +169,6 @@ export default {
         }
       });
     },
-    // onSubmitAttendanceForm(formValue) {
-    //   this.attendanceDate = formValue.attendanceDate
-    //   this.startTimeHash = formValue.startTime[this.registrationTarget]
-    //   this.endTimeHashndTime = formValue.endTime[this.registrationTarget]
-    //   this.onCreateAttendance(this.registrationTarget)
-    // },
     onCreateAttendance(formValue) {
       this.attendanceDate = formValue.attendanceDate;
       let startTime = formValue.startTime;
@@ -190,7 +184,11 @@ export default {
       }
       let startTimeStr = `${this.attendanceDate} ${startTime}`
       let endTimeStr = `${this.attendanceDate} ${endTime}`
-      // 問題なければAPI叩いて勤怠登録する
+      
+      // this.attendanceDateが変換されてしまってるので、戻す
+      let reAttendanceDate = this.attendanceDate.replace(/\u002f/g , "-");
+      this.attendanceDate = reAttendanceDate
+      
       this.updateAttendance(this.registrationTarget, startTimeStr, endTimeStr)
     },
     onDeleteAttendance(userId) {
@@ -214,9 +212,11 @@ export default {
       let startTimeHash = {}
       let endTimeHash = {}
       let attendanceIdHash = {}
+      
       // vue-timepickerをリセット
       // this.$refs.startTime.forEach(e => {e.clearTime()})
       // this.$refs.endTime.forEach(e => { e.clearTime() })
+      
       // 入力済みの勤怠情報を取得してthis.startTimeHash/endTimeHashの内容を更新する
       axios.get(`/attendances/date/${this.attendanceDate}`)
       .then(res => {
