@@ -1,6 +1,26 @@
 <template>
   <div id="attendanece">
-    <flash-message ref="flashMessage"></flash-message>
+    <table class="table table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <th colspan="2"><h5>勤怠編集ページ</h5></th>
+         </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="text-center">
+             <h5>一括勤怠登録 : <input type="file" @change="loadCsvFile" /></h5>
+             {{ message }}
+          </td>
+          <td class="text-center"><h3>{{ attendanceDate }}</h3></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="row">
+      <div class="col-12">
+        <flash-message ref="flashMessage"></flash-message>
+      </div>
+    </div>
     <div class="row">
       <div class="col-6">
         <radar-chart class="chart_bar" :chart-data="chartData" :options="options"></radar-chart>
@@ -46,10 +66,7 @@
               </tbody>
             </table>
           </div>
-            <div class="csv">
-              <input type="file" @change="loadCsvFile" /></br>
-              {{ message }}
-            </div>
+
         </div>
       </div>
     </div>
@@ -185,7 +202,7 @@ export default {
       let startTimeStr = `${this.attendanceDate} ${startTime}`
       let endTimeStr = `${this.attendanceDate} ${endTime}`
       
-      // this.attendanceDateが変換されてしまってるので、戻す
+      // this.attendanceDateが変換されてしまってるので戻す
       let reAttendanceDate = this.attendanceDate.replace(/\u002f/g , "-");
       this.attendanceDate = reAttendanceDate
       
@@ -277,8 +294,8 @@ export default {
       };
       return `${zeroPadding(datetime.getHours(), 2)}:${zeroPadding(datetime.getMinutes(), 2)}`;
     },
-    showAlert(message) {
-      this.$refs.flashMessage.showFlashMessage(message)
+    showAlert(message, type) {
+      this.$refs.flashMessage.showFlashMessage(message, type)
     },
     updateChartData(reserveData,emloyeeData) {
       this.chartData = {

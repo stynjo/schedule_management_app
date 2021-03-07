@@ -10,27 +10,21 @@
   </head>
 
   <body>
-    <header class="p-5 mb-2 bg-dark text-white">
-     <% if user_signed_in? %>
-     <div class="float-right">
-          <div class="row">
-            <div class="mx-1">
-               <%= link_to '予約状況', user_path(current_user), data: {"turbolinks" => false}, class: "btn btn-cblue" %>
-            </div>
-            <div class="mx-1">
-               <%= link_to '勤怠編集ページ', attendances_path, data: {"turbolinks" => false}, class: "btn btn-cred" %>
-            </div>
-            <% if current_user.admin %>
-            <div class="mx-1">
-               <%= link_to '新規ユーザー作成', new_user_registration_path, class: "btn btn-cgreen"%>
-            </div>
-            <% end %>
-            <div class="mx-1">
-               <%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: "btn btn-secondary" %>
-            </div>
-          </div>
+    <header class="p-3 mb-2 bg-dark text-white clearfix">
+    <% if user_signed_in? %>
+      <div class="row">
+        <div class="col-8 text-center">
+           <h3>ログインユーザー : 「<%= @user.name %>」</h3> 
         </div>
-    
+        <div class="col-4 text-right">
+          <%= link_to '予約状況', user_path(current_user), data: {"turbolinks" => false}, class: "btn btn-cblue m-1" %>
+          <%= link_to '勤怠編集ページ', attendances_path, data: {"turbolinks" => false}, class: "btn btn-cred m-1" %>
+          <% if current_user.admin %>
+            <%= link_to '新規ユーザー作成', new_user_registration_path, data: {"turbolinks" => false}, class: "btn btn-cgreen m-1"%>
+          <% end %>
+          <%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: "btn btn-secondary m-1" %>  
+        </div>
+    </div> 
       <% else %>
       
         <div class="float-right">
