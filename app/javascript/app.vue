@@ -1,6 +1,20 @@
 <template>
   <div id="app">
-    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#reserve-modal">予約登録フォーム</button>
+    <table class="table table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <th colspan="2"><h5>予約ページ</h5></th>
+         </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="text-center">
+             <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#reserve-modal">予約登録フォーム</button>
+          </td>
+          <td class="text-center"><h3>{{ reservationDate }}</h3></td>
+        </tr>
+      </tbody>
+    </table>
     <flash-message ref="flashMessage"></flash-message>
     <div class="row">
       <div class="col-6">
