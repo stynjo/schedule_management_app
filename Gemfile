@@ -23,6 +23,7 @@ gem 'gimei'
 gem 'pry-rails'
 gem 'whenever', require: false
 gem 'slack-api'
+gem 'dotenv-rails'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
