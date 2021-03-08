@@ -1,6 +1,11 @@
 class AttendancesController < ApplicationController
   
   def show
+    if user_signed_in? 
+      @user = User.find(current_user.id)
+    else
+      redirect_to(new_user_session)
+    end
   end
   
   def index

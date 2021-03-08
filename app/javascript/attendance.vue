@@ -1,6 +1,26 @@
 <template>
   <div id="attendanece">
-    <flash-message ref="flashMessage"></flash-message>
+    <table class="table table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <th colspan="2"><h5>勤怠編集ページ</h5></th>
+         </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="text-center">
+             <h5>一括勤怠登録 : <input type="file" @change="loadCsvFile" /></h5>
+             {{ message }}
+          </td>
+          <td class="text-center"><h3>{{ attendanceDate }}</h3></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="row">
+      <div class="col-12">
+        <flash-message ref="flashMessage"></flash-message>
+      </div>
+    </div>
     <div class="row">
       <div class="col-6">
         <radar-chart class="chart_bar" :chart-data="chartData" :options="options"></radar-chart>
@@ -46,10 +66,7 @@
               </tbody>
             </table>
           </div>
-            <div class="csv">
-              <input type="file" @change="loadCsvFile" /></br>
-              {{ message }}
-            </div>
+
         </div>
       </div>
     </div>
@@ -169,12 +186,6 @@ export default {
         }
       });
     },
-    // onSubmitAttendanceForm(formValue) {
-    //   this.attendanceDate = formValue.attendanceDate
-    //   this.startTimeHash = formValue.startTime[this.registrationTarget]
-    //   this.endTimeHashndTime = formValue.endTime[this.registrationTarget]
-    //   this.onCreateAttendance(this.registrationTarget)
-    // },
     onCreateAttendance(formValue) {
       this.attendanceDate = formValue.attendanceDate;
       let startTime = formValue.startTime;
@@ -190,7 +201,11 @@ export default {
       }
       let startTimeStr = `${this.attendanceDate} ${startTime}`
       let endTimeStr = `${this.attendanceDate} ${endTime}`
-      // 問題なければAPI叩いて勤怠登録する
+      
+      // this.attendanceDateが変換されてしまってるので戻す
+      let reAttendanceDate = this.attendanceDate.replace(/\u002f/g , "-");
+      this.attendanceDate = reAttendanceDate
+      
       this.updateAttendance(this.registrationTarget, startTimeStr, endTimeStr)
     },
     onDeleteAttendance(userId) {
@@ -214,9 +229,11 @@ export default {
       let startTimeHash = {}
       let endTimeHash = {}
       let attendanceIdHash = {}
+      
       // vue-timepickerをリセット
       // this.$refs.startTime.forEach(e => {e.clearTime()})
       // this.$refs.endTime.forEach(e => { e.clearTime() })
+      
       // 入力済みの勤怠情報を取得してthis.startTimeHash/endTimeHashの内容を更新する
       axios.get(`/attendances/date/${this.attendanceDate}`)
       .then(res => {
@@ -277,8 +294,8 @@ export default {
       };
       return `${zeroPadding(datetime.getHours(), 2)}:${zeroPadding(datetime.getMinutes(), 2)}`;
     },
-    showAlert(message) {
-      this.$refs.flashMessage.showFlashMessage(message)
+    showAlert(message, type) {
+      this.$refs.flashMessage.showFlashMessage(message, type)
     },
     updateChartData(reserveData,emloyeeData) {
       this.chartData = {

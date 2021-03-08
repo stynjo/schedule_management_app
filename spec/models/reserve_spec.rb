@@ -38,5 +38,16 @@ RSpec.describe Reserve, type: :model do
       reserve.valid?
       expect(reserve.errors[:base]).to include("入力が正しくありません")
     end
+    
+    it '予約終了時間が存在しない場合は無効であること' do
+      reserve = FactoryBot.build(:reserve, reservation_end_time: nil)
+      reserve.valid?
+      expect(reserve.errors[:base]).to include("入力が正しくありません")
+    end
+    it '予約終了時間が予約開始時間より早いと無効であること' do
+      reserve = FactoryBot.build(:reserve, reservation_start_time: 'Mon, 01 Feb 2021 19:00:00 JST +09:00', reservation_end_time: 'Mon, 01 Feb 2021 18:00:00 JST +09:00')
+      reserve.valid?
+      expect(reserve.errors[:base]).to include("予約開始時間より早い終了時間は無効です")
+    end
   end
 end
