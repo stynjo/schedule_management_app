@@ -107,7 +107,13 @@ export default {
       reserveList: {},
       deleteTarget: '',
       formList: {},
-      displayDate: null
+    }
+  },
+  computed: {
+    displayDate: function() {
+      if (!this.reservationDate) return ''
+
+      return this.reservationDate.replace(/-0?/g, '/')
     }
   },
   methods: {
@@ -116,7 +122,6 @@ export default {
     },
     dayClicked(day) {
       this.reservationDate = day.id
-      this.displayDate = day.id
       this.getReservations()
     },
     getReservations() {
@@ -246,7 +251,6 @@ export default {
   mounted() {
     let today = new Date();
     this.reservationDate = `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`
-    this.displayDate = this.reservationDate.replace(/\u002f/g , "-");
     this.getReservations()
   }
 }
