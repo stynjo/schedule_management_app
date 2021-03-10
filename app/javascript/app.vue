@@ -8,7 +8,7 @@
       </thead>
       <tbody>
         <tr>
-          <td class="text-center">
+          <td class="text-center w-50">
              <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#reserve-modal">予約登録フォーム</button>
           </td>
           <td class="text-center"><h3>{{ displayDate }}</h3></td>
