@@ -25,4 +25,25 @@ RSpec.describe "attendance", type: :request do
       expect(response).to have_http_status(200)
     end
   end
+  
+  describe 'POST /create' do
+    context 'パラメータが妥当な場合' do
+      let(:user_params) { attributes_for(:user) }
+        before do 
+          post user_registration_path, params: { user: user_params }
+        end
+        it '勤怠が登録されること' do
+          post '/attendances', params: { attendance: FactoryBot.attributes_for(:attendance) }
+          expect(response).to have_http_status(201)
+        end
+    end
+    context 'パラメータが不正な場合' do
+      it '勤怠が登録されないこと'do
+        expect do
+          post '/attendances', params: { attendance: FactoryBot.attributes_for(:attendance, started_at: nil) }
+        end.to_not change(Reserve, :count)
+      end
+    end
+  end
+  
 end
