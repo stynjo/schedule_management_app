@@ -18,4 +18,11 @@ RSpec.describe "attendance", type: :request do
       expect(response).to have_http_status(200)
     end
   end
+  
+  describe "GET/date", type: :request do
+    it "リクエストが成功すること" do
+      get '/attendances/date/2021-03-01', params: { date: "2021/3/1"}
+      expect(response).to have_http_status(200)
+    end
+  end
 end
