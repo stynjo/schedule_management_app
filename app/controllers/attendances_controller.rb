@@ -4,7 +4,7 @@ class AttendancesController < ApplicationController
     if user_signed_in? 
       @user = User.find(current_user.id)
     else
-      redirect_to(new_user_session)
+      redirect_to(new_user_session_path)
     end
   end
   
