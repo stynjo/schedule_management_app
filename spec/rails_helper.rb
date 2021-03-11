@@ -37,6 +37,9 @@ RSpec.configure do |config|
   config.include Devise::Test::IntegrationHelpers, type: :request #sign_inヘルパーを提供してくれます
   config.include FactoryBot::Syntax::Methods #ついでにFactoryBotもincludeしておきます
 
+  # config.include Devise::Test::ControllerHelpers, type: :controller
+  # config.include ControllerMacros, type: :controller
+
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
@@ -44,6 +47,8 @@ RSpec.configure do |config|
 
   # You can uncomment this line to turn off ActiveRecord support entirely.
   # config.use_active_record = false
+  
+
 
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and
@@ -65,3 +70,6 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 end
+
+# require 'devise'
+# require File.expand_path("spec/support/controller_macros.rb")

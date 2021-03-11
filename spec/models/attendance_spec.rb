@@ -1,6 +1,13 @@
 require 'rails_helper'
 
-RSpec.describe Attendance, type: :model do
+RSpec.describe Attendance, type: :request do
+  describe 'CSV' do
+    let(:csv_file) { '勤怠登録.csv' }
+    it '一括勤怠登録に成功すること' do
+      post '/attendances/import', params: { csv_file: fixture_file_upload(csv_file, '勤怠登録/csv') }
+      expect(response).to be_successful
+    end
+  end
   describe '異常系テスト' do
     it '出勤時間が存在しない場合入力は無効' do
       attendance = FactoryBot.build(:attendance, started_at: nil)
