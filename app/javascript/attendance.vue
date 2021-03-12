@@ -8,7 +8,7 @@
       </thead>
       <tbody>
         <tr>
-          <td class="text-center">
+          <td class="text-center w-75">
              <h5>一括勤怠登録 : <input type="file" @change="loadCsvFile" /></h5>
              {{ message }}
           </td>
