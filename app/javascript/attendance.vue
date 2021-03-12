@@ -187,25 +187,15 @@ export default {
       });
     },
     onCreateAttendance(formValue) {
-      this.attendanceDate = formValue.attendanceDate;
       let startTime = formValue.startTime;
       let endTime = formValue.endTime;
       if (startTime instanceof Object) { startTime = `${startTime.HH}:${startTime.mm}` }
       if (endTime instanceof Object) { endTime = `${endTime.HH}:${endTime.mm}` }
-      if (!startTime || !endTime) {
-        alert('時刻を設定してください');
-        return
-      } else if(startTime > endTime) {
-        alert('退勤時間より早い出勤時間は設定できません。');
-        return
-      }
+
       let startTimeStr = `${this.attendanceDate} ${startTime}`
       let endTimeStr = `${this.attendanceDate} ${endTime}`
       
-      // this.attendanceDateが変換されてしまってるので戻す
-      let reAttendanceDate = this.attendanceDate.replace(/\u002f/g , "-");
-      this.attendanceDate = reAttendanceDate
-      
+  
       this.updateAttendance(this.registrationTarget, startTimeStr, endTimeStr)
     },
     onDeleteAttendance(userId) {
@@ -346,7 +336,7 @@ export default {
   mounted: function () {
     this.getAlluser();
     let today = new Date();
-    this.attendanceDate = `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`
+    this.attendanceDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`
     this.getReservations();
 
     // 勤怠時刻の一覧を用意する
