@@ -5,7 +5,7 @@ protected
 
     def configure_permitted_parameters
       # sign_upのときに、nameをストロングパラメータに追加する
-      devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :email])
+      devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :email,:admin])
       # account_updateのときに、nameをストロングパラメータに追加する
       devise_parameter_sanitizer.permit(:account_update, keys: [:name, :email])
     end
