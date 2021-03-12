@@ -64,6 +64,7 @@ class AttendancesController < ApplicationController
   
   def update
     attendance = Attendance.find_by(id: params[:attendance][:user_id])
+    binding.pry
     if attendance.update_attributes(attendance_params)
       render json: attendance, status: :created
     elsif 

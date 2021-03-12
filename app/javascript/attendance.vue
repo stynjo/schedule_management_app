@@ -259,7 +259,7 @@ export default {
         }
       };
 
-      if (this.attendanceIdHash[userId]) {
+      if (this.attendanceIdHash[userId] ) {
         // attendanceIdが存在する = 更新処理とする
         httpMethod = 'put';
       }
