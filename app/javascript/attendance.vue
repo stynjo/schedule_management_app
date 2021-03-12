@@ -12,7 +12,7 @@
              <h5>一括勤怠登録 : <input type="file" @change="loadCsvFile" /></h5>
              {{ message }}
           </td>
-          <td class="text-center"><h3>{{ attendanceDate }}</h3></td>
+          <td class="text-center"><h3>{{ displayDate }}</h3></td>
         </tr>
       </tbody>
     </table>
@@ -118,6 +118,10 @@ export default {
     'flash-message': FlashMessage
   },
   computed: {
+    displayDate: function() {
+      if (!this.attendanceDate) return ''
+      return this.attendanceDate.replace(/-0?/g, '/')
+    },
     getAttendanceCssClass() {
       return function(user, targetTime) {
         const startTime = this.startTimeHash[user.id]
