@@ -74,14 +74,10 @@ export default {
         alert('退勤時間より早い出勤時間は設定できません。');
         return
       }
-      this.changeDateFormat(this.attendanceDate)
       this.$parent.onCreateAttendance({
         startTime: this.startTime,
         endTime: this.endTime
       })
-    },
-    changeDateFormat(day){
-      this.attendanceDate = `${day.getFullYear()}/${day.getMonth() + 1}/${day.getDate()}`
     }
   }
 }
