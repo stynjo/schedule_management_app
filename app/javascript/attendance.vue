@@ -338,6 +338,7 @@ export default {
     let today = new Date();
     this.attendanceDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`
     this.getReservations();
+    this.updateAttendancesByDate()
 
     // 勤怠時刻の一覧を用意する
     const vueObj = this
