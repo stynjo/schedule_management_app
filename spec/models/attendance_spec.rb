@@ -4,8 +4,8 @@ RSpec.describe Attendance, type: :request do
   describe 'CSV' do
     let(:csv_file) { '勤怠登録.csv' }
     it '一括勤怠登録に成功すること' do
-      post '/attendances/import', params: { csv_file: fixture_file_upload(csv_file, '勤怠登録/csv') }
-      expect(response).to be_successful
+      post '/attendances/import', params: { file: fixture_file_upload(csv_file, 'text/csv') }
+      expect(response).to be_truthy
     end
   end
   describe '異常系テスト' do

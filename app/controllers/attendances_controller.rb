@@ -4,7 +4,7 @@ class AttendancesController < ApplicationController
     if user_signed_in? 
       @user = User.find(current_user.id)
     else
-      redirect_to(new_user_session)
+      redirect_to(new_user_session_path)
     end
   end
   
@@ -64,6 +64,7 @@ class AttendancesController < ApplicationController
   
   def update
     attendance = Attendance.find_by(id: params[:attendance][:user_id])
+    binding.pry
     if attendance.update_attributes(attendance_params)
       render json: attendance, status: :created
     elsif 
