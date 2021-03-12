@@ -12,19 +12,6 @@
           <div class="form-group">
             <div class="row">
               <div class="col-4">
-                <h5>出勤日</h5>
-              </div>
-                <div class="col-8">
-                   <v-date-picker
-                      :popover="popover"
-                      v-model="attendanceDate">
-                    </v-date-picker>
-                </div>
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="row">
-              <div class="col-4">
                 <h5>出勤時間</h5>
               </div>
               <div class="col-8">
@@ -74,7 +61,6 @@ export default {
   data() {
     return {
       popover: null,
-      attendanceDate: null,
       startTime: '',
       endTime: ''
     }
@@ -88,15 +74,10 @@ export default {
         alert('退勤時間より早い出勤時間は設定できません。');
         return
       }
-      this.changeDateFormat(this.attendanceDate)
       this.$parent.onCreateAttendance({
         startTime: this.startTime,
-        endTime: this.endTime,
-        attendanceDate: this.attendanceDate
+        endTime: this.endTime
       })
-    },
-    changeDateFormat(day){
-      this.attendanceDate = `${day.getFullYear()}/${day.getMonth() + 1}/${day.getDate()}`
     }
   }
 }
