@@ -19,9 +19,6 @@
         <div class="col-4 text-right">
           <%= link_to '予約状況', user_path(current_user), data: {"turbolinks" => false}, class: "btn btn-cblue m-1" %>
           <%= link_to '勤怠編集ページ', attendances_path, data: {"turbolinks" => false}, class: "btn btn-cred m-1" %>
-          <% if current_user.admin %>
-            <%= link_to '新規ユーザー作成', new_user_registration_path, data: {"turbolinks" => false}, class: "btn btn-cgreen m-1"%>
-          <% end %>
           <%= link_to 'ログアウト', destroy_user_session_path, method: :delete, class: "btn btn-secondary m-1" %>  
         </div>
     </div> 
@@ -31,6 +28,7 @@
           <div class="row">
             <div class="mx-1">
               <%= link_to 'ログイン', new_user_session_path, class: "btn btn-primary" %>
+              <%= link_to '新規ユーザー作成', new_user_registration_path, data: {"turbolinks" => false}, class: "btn btn-cgreen m-1"%>
             </div>
           </div>
         </div>
