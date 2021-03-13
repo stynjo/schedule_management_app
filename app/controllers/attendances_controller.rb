@@ -27,8 +27,8 @@ class AttendancesController < ApplicationController
   
   # 登録API
   def create
-    @attendances = Attendance.new(attendance_params)
-    if  @attendances.save
+    attendance = Attendance.find_or_initialize_by(user_id: params[:attendance][:user_id], worked_on: [:worked_on])
+    if attendance.update_attributes(attendance_params)
       render json: @attendance, status: :created
     elsif 
       render json: @attendance, status: :unprocessable_entity
@@ -62,17 +62,17 @@ class AttendancesController < ApplicationController
     end
   end
   
-  def update
-    attendance = Attendance.find_by(id: params[:attendance][:user_id])
-    binding.pry
-    if attendance.update_attributes(attendance_params)
-      render json: attendance, status: :created
-    elsif 
-      render json: attendance, status: :unprocessable_entity
-    end
-  end
+  # def update
+  #   attendance = Attendance.find_by(id: params[:attendance][:user_id])
+  #   binding.pry
+  #   if attendance.update_attributes(attendance_params)
+  #     render json: attendance, status: :created
+  #   elsif 
+  #     render json: attendance, status: :unprocessable_entity
+  #   end
+  # end
   
   def attendance_params
-    params.require(:attendance).permit(:user_id, :started_at, :finished_at)
+    params.require(:attendance).permit(:user_id, :started_at, :finished_at, :worked_on)
   end
 end

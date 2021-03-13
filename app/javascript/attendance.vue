@@ -250,13 +250,10 @@ export default {
           user_id: userId,
           started_at: startTime,
           finished_at: endTime,
+          worked_on: this.attendanceDate
         }
       };
 
-      if (this.attendanceIdHash[userId] ) {
-        // attendanceIdが存在する = 更新処理とする
-        httpMethod = 'put';
-      }
       axios.request({
         method: httpMethod,
         url: '/attendances/',
