@@ -1,14 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe "attendance", type: :request do 
+  let(:user_params) { attributes_for(:user) }
+  
   describe "GET/show" do
-    let(:user_params) { attributes_for(:user) }
     before do 
       post user_session_path, params: { user: user_params }
     end
     it "リクエストが成功すること" do
       get '/attendances'
-      expect(response).to have_http_status(200)
+      expect(response).to have_http_status(302)
     end
   end
   
@@ -48,7 +49,6 @@ RSpec.describe "attendance", type: :request do
   
   describe 'DELETE /destroy' do
     context 'パラメータが妥当な場合' do
-      let(:user_params) { attributes_for(:user) }
       before do 
         post user_registration_path, params: { user: user_params }
       end
@@ -59,21 +59,5 @@ RSpec.describe "attendance", type: :request do
       end
     end
   end
-  
-  #   describe 'PUT /update' do
-  #   context 'パラメータが妥当な場合' do
-  #     let(:user_params) { attributes_for(:user) }
-  #     before do 
-  #       post user_registration_path, params: { user: user_params }
-  #     end
-  #     it '勤怠が更新されること' do
-  #       attendance = FactoryBot.create(:attendance)
-  #       put '/attendances', params: { attendance: attendance.user_id }
-  #       expect(response).to have_http_status(204)
-  #     end
-  #   end
-  # end
-  
-  
   
 end
