@@ -66,7 +66,6 @@
               </tbody>
             </table>
           </div>
-
         </div>
       </div>
     </div>
@@ -206,7 +205,7 @@ export default {
       let startTime = this.startTimeHash[userId];
       let endTime = this.endTimeHash[userId];
       if (!startTime || !endTime) {
-        alert('日付を設定してください');
+        alert('勤怠情報がありません。');
         this.deleteTarget = ''
         return
       }

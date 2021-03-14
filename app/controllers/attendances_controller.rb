@@ -27,7 +27,7 @@ class AttendancesController < ApplicationController
   
   # 登録API
   def create
-    attendance = Attendance.find_or_initialize_by(user_id: params[:attendance][:user_id], worked_on: [:worked_on])
+    attendance = Attendance.find_or_initialize_by(user_id: params[:attendance][:user_id], worked_on: params[:attendance][:worked_on])
     if attendance.update_attributes(attendance_params)
       render json: @attendance, status: :created
     elsif 
