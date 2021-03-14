@@ -66,11 +66,10 @@
               </tbody>
             </table>
           </div>
-
         </div>
       </div>
     </div>
-    <attendance-modal deleteTarget='' @ok="onCreateAttendance(deleteTarget);"></attendance-modal>
+    <attendance-modal :createAttendanceDate='displayDate' deleteTarget='' @ok="onCreateAttendance(deleteTarget);"></attendance-modal>
     <attendance-delete-modal deleteTarget='' @ok="onDeleteAttendance(deleteTarget);"></attendance-delete-modal>
   </div>
 
@@ -206,7 +205,7 @@ export default {
       let startTime = this.startTimeHash[userId];
       let endTime = this.endTimeHash[userId];
       if (!startTime || !endTime) {
-        alert('日付を設定してください');
+        alert('勤怠情報がありません。');
         this.deleteTarget = ''
         return
       }
