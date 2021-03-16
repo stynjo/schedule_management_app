@@ -1,24 +1,10 @@
-# README
+## スケジュール管理アプリ  
+従業員の勤怠管理と、予約スケジュールを登録、閲覧できるアプリケーションです。  
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## セットアップ手順  
 
-Things you may want to cover:
 
-* Ruby version
+## 使用技術  
+Ruby on Rails  
+Vue.js  
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
