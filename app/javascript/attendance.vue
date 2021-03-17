@@ -148,9 +148,6 @@ export default {
           params: { reservationDate: this.attendanceDate }}),
          //時間あたりの人員数取得
         axios.get(`/attendances/index`, {
-          params: { reservationDate: this.attendanceDate }}),
-          //その日の予約データ取得
-        axios.get(`/reserves/date`, {
           params: { reservationDate: this.attendanceDate }})
       ])
       .then(responses => {
@@ -240,6 +237,7 @@ export default {
         this.startTimeHash = startTimeHash;
         this.endTimeHash = endTimeHash;
         this.attendanceIdHash = attendanceIdHash;
+        this.getReservations();
       });
     },
     updateAttendance(userId, startTime, endTime) {
