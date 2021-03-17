@@ -237,6 +237,7 @@ export default {
         this.startTimeHash = startTimeHash;
         this.endTimeHash = endTimeHash;
         this.attendanceIdHash = attendanceIdHash;
+        this.getReservations();
       });
     },
     updateAttendance(userId, startTime, endTime) {
