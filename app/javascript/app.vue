@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="reserve">
     <table class="table table-bordered">
       <thead class="thead-dark">
         <tr>
