@@ -10,7 +10,7 @@
         <tr>
           <td class="text-center w-75">
              <h5>一括勤怠登録 : <input type="file" @change="loadCsvFile" /></h5>
-             {{ message }}
+             {{ csvMessage }}
           </td>
           <td class="text-center"><h3>{{ displayDate }}</h3></td>
         </tr>
@@ -89,23 +89,23 @@ axios.defaults.headers.common['X-CSRF-Token'] = token
 export default {
   data(){
     return {
+      users: [],
+      userId: '',
       attendanceDate: '',
       attendanceIdHash: {},
       attendanceTargerTimes: [],
-      users: [],
-      userId: '',
       startTimeHash: {},
       endTimeHash: {},
-      message: "",
+      csvMessage: "",
       uploadFile: null,
-      attendanceDeleteModal: false,
       deleteTarget: '',
+      attendanceDeleteModal: false,
       registrationTarget: '',
-      flashMessage: '',
       attendanceListStart: [],
       attendanceListEnd: [],
       chartData: {},
-      options: {}
+      options: {},
+      flashMessage: '',
     }
   },
   components: {
