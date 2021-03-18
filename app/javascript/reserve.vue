@@ -117,14 +117,15 @@ export default {
     }
   },
   methods: {
+    //予約更新処理の成否アラート
     showAlert(message) {
       this.$refs.flashMessage.showFlashMessage(message)
     },
     dayClicked(day) {
       this.reservationDate = day.id
-      this.getReservations()
+      this.getSchedule()
     },
-    getReservations() {
+    getSchedule() {
        Promise.all([
          //時間あたりの予約数取得
         axios.get(`/reserves/index`, {
@@ -167,7 +168,7 @@ export default {
          if  (res.status === 201) {
            this.showAlert('予約登録を完了しました。');
          }
-         this.getReservations()
+         this.getSchedule()
       })
       .catch(error => {
         console.log(error);
@@ -181,7 +182,7 @@ export default {
         if  (res.status === 204) {
            this.showAlert('予約データを削除しました。');
         }
-        this.getReservations()
+        this.getSchedule()
       })
     },
     formatDate(dateStr) {
@@ -251,7 +252,7 @@ export default {
   mounted() {
     let today = new Date();
     this.reservationDate = `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`
-    this.getReservations()
+    this.getSchedule()
   }
 }
 </script>
