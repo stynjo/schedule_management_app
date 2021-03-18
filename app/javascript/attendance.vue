@@ -139,6 +139,7 @@ export default {
       this.attendanceDate = day.id;
       // 選択された日付の内容で勤怠一覧を更新する
       this.updateAttendancesByDate();
+      //選択された日付の内容でチャートデータを取りに行く
       this.getSchedule();
     },
     getSchedule() {
@@ -154,6 +155,7 @@ export default {
         responses.forEach(res => console.log(res.data));
         var reserveData = responses[0].data;
         var emloyeeData = responses[1].data;
+        // チャートデータをグラフ描画メソッドに渡す
         this.updateChartData(reserveData,emloyeeData);
       });
     },
@@ -161,12 +163,13 @@ export default {
       e.preventDefault();
       let files = e.target.files;
       this.uploadFile = files[0];
-
+      
+      //CSVファイル以外が選択された場合、アラートを表示
       if (!this.uploadFile.type.match("text/csv")) {
         this.message = "CSVファイルを選択してください";
         return;
       }
-
+      
       let formData = new FormData();
       formData.append('file', this.uploadFile);
       this.message = '';
@@ -186,6 +189,7 @@ export default {
         }
       });
     },
+    //勤怠更新に必要なデータを整形
     onCreateAttendance(formValue) {
       let startTime = formValue.startTime;
       let endTime = formValue.endTime;
@@ -215,6 +219,7 @@ export default {
         this.updateAttendancesByDate();
       })
     },
+    //勤怠情報を取得する
     updateAttendancesByDate() {
       let startTimeHash = {}
       let endTimeHash = {}
@@ -236,8 +241,8 @@ export default {
         this.getSchedule();
       });
     },
+    //勤怠情報を更新する
     updateAttendance(userId, startTime, endTime) {
-      let httpMethod = 'post';
       let params = {
         attendance: {
           user_id: userId,
@@ -248,7 +253,7 @@ export default {
       };
 
       axios.request({
-        method: httpMethod,
+        method: 'post',
         url: '/attendances/',
         data: params,
       })
@@ -271,6 +276,7 @@ export default {
         this.users = res.data;
       });
     },
+    //Railsから取得した予約日時から時刻を取り出す
     timeStringByDatetimeStr(src) {
       let datetime = new Date(src);
       let zeroPadding = (src, digit) => {
@@ -281,6 +287,7 @@ export default {
     showAlert(message, type) {
       this.$refs.flashMessage.showFlashMessage(message, type)
     },
+    //予約と出勤データをグラフで描画する
     updateChartData(reserveData,emloyeeData) {
       this.chartData = {
         labels: ['18時', '19時', '20時', '21時', '22時', '23時'],
@@ -336,13 +343,11 @@ export default {
 
     // 勤怠時刻の一覧を用意する
     const vueObj = this
-
     for (var hour = 18; hour <= 24; hour++) {
       ['00', '30'].forEach(minute => {
         vueObj.attendanceTargerTimes.push(`${hour}:${minute}`)
       })
     }
-    console.log('aaa')
   }
 };
 </script>
