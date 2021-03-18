@@ -85,7 +85,7 @@ export default {
         alert('退勤時間より早い出勤時間は設定できません。');
         return
       }
-      this.$parent.onCreateAttendance({
+      this.$parent.onCreateAttendanceData({
         startTime: this.startTime,
         endTime: this.endTime
       })

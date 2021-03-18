@@ -69,7 +69,7 @@
         </div>
       </div>
     </div>
-    <attendance-modal :createAttendanceDate='displayDate' deleteTarget='' @ok="onCreateAttendance(deleteTarget);"></attendance-modal>
+    <attendance-modal :createAttendanceDate='displayDate' deleteTarget='' @ok="onCreateAttendanceData(deleteTarget);"></attendance-modal>
     <attendance-delete-modal deleteTarget='' @ok="onDeleteAttendance(deleteTarget);"></attendance-delete-modal>
   </div>
 
@@ -190,7 +190,7 @@ export default {
       });
     },
     //勤怠更新に必要なデータを整形
-    onCreateAttendance(formValue) {
+    onCreateAttendanceData(formValue) {
       let startTime = formValue.startTime;
       let endTime = formValue.endTime;
       if (startTime instanceof Object) { startTime = `${startTime.HH}:${startTime.mm}` }
