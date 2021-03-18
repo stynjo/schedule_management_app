@@ -256,38 +256,3 @@ export default {
 }
 </script>
 
-<style scoped>
-
-#app {
-}
-
-/*.chart_bar {*/
-/*   width: 1200px;*/
-/*   height: 500px;*/
-/*} */
-
-/*#calendar-wrapper .vc-container {*/
-/*  --day-content-height: 90px;*/
-/*  --day-content-width: 150px;*/
-/*}*/
-/*#calendar-wrapper .vc-text-sm {*/
-/*  font-size: 20px;*/
-/*}*/
-
-/*#calendar-wrapper {*/
-/*  width: 50%;*/
-  
-/*}*/
-
-/*#calendar-wrapper .vc-container {*/
-/*  --day-content-height: 110px;*/
-/*  --day-content-width: 110px;*/
-/*}*/
-
-/*#calendar-wrapper .vc-text-sm {*/
-/*  font-size: 21px;*/
-/*}*/
-
-
- 
-</style>
