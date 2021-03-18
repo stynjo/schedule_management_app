@@ -139,9 +139,9 @@ export default {
       this.attendanceDate = day.id;
       // 選択された日付の内容で勤怠一覧を更新する
       this.updateAttendancesByDate();
-      this.getReservations();
+      this.getSchedule();
     },
-    getReservations() {
+    getSchedule() {
        Promise.all([
          //時間あたりの予約数取得
         axios.get(`/reserves/index`, {
@@ -237,7 +237,7 @@ export default {
         this.startTimeHash = startTimeHash;
         this.endTimeHash = endTimeHash;
         this.attendanceIdHash = attendanceIdHash;
-        this.getReservations();
+        this.getSchedule();
       });
     },
     updateAttendance(userId, startTime, endTime) {
@@ -335,7 +335,7 @@ export default {
     this.getAlluser();
     let today = new Date();
     this.attendanceDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`
-    this.getReservations();
+    this.getSchedule();
     this.updateAttendancesByDate()
 
     // 勤怠時刻の一覧を用意する
