@@ -220,10 +220,6 @@ export default {
       let endTimeHash = {}
       let attendanceIdHash = {}
       
-      // vue-timepickerをリセット
-      // this.$refs.startTime.forEach(e => {e.clearTime()})
-      // this.$refs.endTime.forEach(e => { e.clearTime() })
-      
       // 入力済みの勤怠情報を取得してthis.startTimeHash/endTimeHashの内容を更新する
       axios.get(`/attendances/date/${this.attendanceDate}`)
       .then(res => {
@@ -352,14 +348,6 @@ export default {
 </script>
 
 <style>
-
-/*#calendar-wrapper .vc-container {*/
-/*  --day-content-height: 90px;*/
-/*  --day-content-width: 150px;*/
-/*}*/
-/*#calendar-wrapper .vc-text-sm {*/
-/*  font-size: 21px;*/
-/*}*/
 
 #attendance-table td.attend {
   padding: 12px 0;
