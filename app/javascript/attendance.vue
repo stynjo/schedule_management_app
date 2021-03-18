@@ -121,6 +121,7 @@ export default {
       if (!this.attendanceDate) return ''
       return this.attendanceDate.replace(/-0?/g, '/')
     },
+    //勤怠が存在するならCSSを適応する
     getAttendanceCssClass() {
       return function(user, targetTime) {
         const startTime = this.startTimeHash[user.id]
@@ -284,8 +285,9 @@ export default {
       };
       return `${zeroPadding(datetime.getHours(), 2)}:${zeroPadding(datetime.getMinutes(), 2)}`;
     },
-    showAlert(message, type) {
-      this.$refs.flashMessage.showFlashMessage(message, type)
+    //勤怠更新処理後の成否あアラートメッセージ
+    showAlert(message) {
+      this.$refs.flashMessage.showFlashMessage(message)
     },
     //予約と出勤データをグラフで描画する
     updateChartData(reserveData,emloyeeData) {
