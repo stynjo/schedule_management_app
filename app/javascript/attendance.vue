@@ -10,7 +10,7 @@
         <tr>
           <td class="text-center w-75">
              <h5>一括勤怠登録 : <input type="file" @change="loadCsvFile" /></h5>
-             {{ message }}
+             {{ csvMessage }}
           </td>
           <td class="text-center"><h3>{{ displayDate }}</h3></td>
         </tr>
@@ -69,7 +69,7 @@
         </div>
       </div>
     </div>
-    <attendance-modal :createAttendanceDate='displayDate' deleteTarget='' @ok="onCreateAttendance(deleteTarget);"></attendance-modal>
+    <attendance-modal :createAttendanceDate='displayDate' deleteTarget='' @ok="onCreateAttendanceData(deleteTarget);"></attendance-modal>
     <attendance-delete-modal deleteTarget='' @ok="onDeleteAttendance(deleteTarget);"></attendance-delete-modal>
   </div>
 
@@ -89,23 +89,23 @@ axios.defaults.headers.common['X-CSRF-Token'] = token
 export default {
   data(){
     return {
+      users: [],
+      userId: '',
       attendanceDate: '',
       attendanceIdHash: {},
       attendanceTargerTimes: [],
-      users: [],
-      userId: '',
       startTimeHash: {},
       endTimeHash: {},
-      message: "",
+      csvMessage: "",
       uploadFile: null,
-      attendanceDeleteModal: false,
       deleteTarget: '',
+      attendanceDeleteModal: false,
       registrationTarget: '',
-      flashMessage: '',
       attendanceListStart: [],
       attendanceListEnd: [],
       chartData: {},
-      options: {}
+      options: {},
+      flashMessage: '',
     }
   },
   components: {
@@ -121,6 +121,7 @@ export default {
       if (!this.attendanceDate) return ''
       return this.attendanceDate.replace(/-0?/g, '/')
     },
+    //勤怠が存在するならCSSを適応する
     getAttendanceCssClass() {
       return function(user, targetTime) {
         const startTime = this.startTimeHash[user.id]
@@ -139,9 +140,10 @@ export default {
       this.attendanceDate = day.id;
       // 選択された日付の内容で勤怠一覧を更新する
       this.updateAttendancesByDate();
-      this.getReservations();
+      //選択された日付の内容でチャートデータを取りに行く
+      this.getSchedule();
     },
-    getReservations() {
+    getSchedule() {
        Promise.all([
          //時間あたりの予約数取得
         axios.get(`/reserves/index`, {
@@ -154,6 +156,7 @@ export default {
         responses.forEach(res => console.log(res.data));
         var reserveData = responses[0].data;
         var emloyeeData = responses[1].data;
+        // チャートデータをグラフ描画メソッドに渡す
         this.updateChartData(reserveData,emloyeeData);
       });
     },
@@ -161,12 +164,13 @@ export default {
       e.preventDefault();
       let files = e.target.files;
       this.uploadFile = files[0];
-
+      
+      //CSVファイル以外が選択された場合、アラートを表示
       if (!this.uploadFile.type.match("text/csv")) {
         this.message = "CSVファイルを選択してください";
         return;
       }
-
+      
       let formData = new FormData();
       formData.append('file', this.uploadFile);
       this.message = '';
@@ -186,7 +190,8 @@ export default {
         }
       });
     },
-    onCreateAttendance(formValue) {
+    //勤怠更新に必要なデータを整形
+    onCreateAttendanceData(formValue) {
       let startTime = formValue.startTime;
       let endTime = formValue.endTime;
       if (startTime instanceof Object) { startTime = `${startTime.HH}:${startTime.mm}` }
@@ -215,14 +220,11 @@ export default {
         this.updateAttendancesByDate();
       })
     },
+    //勤怠情報を取得する
     updateAttendancesByDate() {
       let startTimeHash = {}
       let endTimeHash = {}
       let attendanceIdHash = {}
-      
-      // vue-timepickerをリセット
-      // this.$refs.startTime.forEach(e => {e.clearTime()})
-      // this.$refs.endTime.forEach(e => { e.clearTime() })
       
       // 入力済みの勤怠情報を取得してthis.startTimeHash/endTimeHashの内容を更新する
       axios.get(`/attendances/date/${this.attendanceDate}`)
@@ -237,11 +239,11 @@ export default {
         this.startTimeHash = startTimeHash;
         this.endTimeHash = endTimeHash;
         this.attendanceIdHash = attendanceIdHash;
-        this.getReservations();
+        this.getSchedule();
       });
     },
+    //勤怠情報を更新する
     updateAttendance(userId, startTime, endTime) {
-      let httpMethod = 'post';
       let params = {
         attendance: {
           user_id: userId,
@@ -252,7 +254,7 @@ export default {
       };
 
       axios.request({
-        method: httpMethod,
+        method: 'post',
         url: '/attendances/',
         data: params,
       })
@@ -275,6 +277,7 @@ export default {
         this.users = res.data;
       });
     },
+    //Railsから取得した予約日時から時刻を取り出す
     timeStringByDatetimeStr(src) {
       let datetime = new Date(src);
       let zeroPadding = (src, digit) => {
@@ -282,9 +285,11 @@ export default {
       };
       return `${zeroPadding(datetime.getHours(), 2)}:${zeroPadding(datetime.getMinutes(), 2)}`;
     },
-    showAlert(message, type) {
-      this.$refs.flashMessage.showFlashMessage(message, type)
+    //勤怠更新処理後の成否あアラートメッセージ
+    showAlert(message) {
+      this.$refs.flashMessage.showFlashMessage(message)
     },
+    //予約と出勤データをグラフで描画する
     updateChartData(reserveData,emloyeeData) {
       this.chartData = {
         labels: ['18時', '19時', '20時', '21時', '22時', '23時'],
@@ -335,31 +340,21 @@ export default {
     this.getAlluser();
     let today = new Date();
     this.attendanceDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`
-    this.getReservations();
+    this.getSchedule();
     this.updateAttendancesByDate()
 
     // 勤怠時刻の一覧を用意する
     const vueObj = this
-
     for (var hour = 18; hour <= 24; hour++) {
       ['00', '30'].forEach(minute => {
         vueObj.attendanceTargerTimes.push(`${hour}:${minute}`)
       })
     }
-    console.log('aaa')
   }
 };
 </script>
 
 <style>
-
-/*#calendar-wrapper .vc-container {*/
-/*  --day-content-height: 90px;*/
-/*  --day-content-width: 150px;*/
-/*}*/
-/*#calendar-wrapper .vc-text-sm {*/
-/*  font-size: 21px;*/
-/*}*/
 
 #attendance-table td.attend {
   padding: 12px 0;
