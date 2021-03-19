@@ -117,14 +117,15 @@ export default {
     }
   },
   methods: {
+    //予約更新処理の成否アラート
     showAlert(message) {
       this.$refs.flashMessage.showFlashMessage(message)
     },
     dayClicked(day) {
       this.reservationDate = day.id
-      this.getReservations()
+      this.getSchedule()
     },
-    getReservations() {
+    getSchedule() {
        Promise.all([
          //時間あたりの予約数取得
         axios.get(`/reserves/index`, {
@@ -144,6 +145,7 @@ export default {
         this.reserveList = responses[2].data
       })
     },
+    //予約フォームからデータを受け取る
     onSubmitReserveForm(formValue) {
       this.inputStartTime = formValue.startTime
       this.inputEndTime = formValue.endTime
@@ -152,6 +154,7 @@ export default {
       this.reservationEndTime = formValue.reserveDate
       this.createReservation()
     },
+    //予約更新
     createReservation() {
       this.reservationStartTime = (`${this.reservationDate} ${this.inputStartTime}`)
       this.reservationEndTime = (`${this.reservationDate} ${this.inputEndTime}`)
@@ -167,7 +170,7 @@ export default {
          if  (res.status === 201) {
            this.showAlert('予約登録を完了しました。');
          }
-         this.getReservations()
+         this.getSchedule()
       })
       .catch(error => {
         console.log(error);
@@ -181,24 +184,16 @@ export default {
         if  (res.status === 204) {
            this.showAlert('予約データを削除しました。');
         }
-        this.getReservations()
+        this.getSchedule()
       })
     },
     formatDate(dateStr) {
-      return this.dateToStr24HPad0DayOfWeek(new Date(dateStr), 'hh:mm')
+      return this.formatReserveTime(new Date(dateStr), 'hh:mm')
     },
-    dateToStr24HPad0DayOfWeek(date, format) {
-      var weekday = ["日", "月", "火", "水", "木", "金", "土"];
-      if (!format) {
-          format = 'YYYY/MM/DD(WW) hh:mm:ss'
-      }
-      format = format.replace(/YYYY/g, date.getFullYear());
-      format = format.replace(/MM/g, ('0' + (date.getMonth() + 1)).slice(-2));
-      format = format.replace(/DD/g, ('0' + date.getDate()).slice(-2));
-      format = format.replace(/WW/g, weekday[date.getDay()]);
+    //Railsから受け取った予約データから時間だけを取り出す
+    formatReserveTime(date, format) {
       format = format.replace(/hh/g, ('0' + date.getHours()).slice(-2));
       format = format.replace(/mm/g, ('0' + date.getMinutes()).slice(-2));
-      format = format.replace(/ss/g, ('0' + date.getSeconds()).slice(-2));
       return format;
     },
     updateChartData(reserveData,emloyeeData) {
@@ -251,43 +246,8 @@ export default {
   mounted() {
     let today = new Date();
     this.reservationDate = `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}`
-    this.getReservations()
+    this.getSchedule()
   }
 }
 </script>
 
-<style scoped>
-
-#app {
-}
-
-/*.chart_bar {*/
-/*   width: 1200px;*/
-/*   height: 500px;*/
-/*} */
-
-/*#calendar-wrapper .vc-container {*/
-/*  --day-content-height: 90px;*/
-/*  --day-content-width: 150px;*/
-/*}*/
-/*#calendar-wrapper .vc-text-sm {*/
-/*  font-size: 20px;*/
-/*}*/
-
-/*#calendar-wrapper {*/
-/*  width: 50%;*/
-  
-/*}*/
-
-/*#calendar-wrapper .vc-container {*/
-/*  --day-content-height: 110px;*/
-/*  --day-content-width: 110px;*/
-/*}*/
-
-/*#calendar-wrapper .vc-text-sm {*/
-/*  font-size: 21px;*/
-/*}*/
-
-
- 
-</style>
