@@ -145,6 +145,7 @@ export default {
         this.reserveList = responses[2].data
       })
     },
+    //予約フォームからデータを受け取る
     onSubmitReserveForm(formValue) {
       this.inputStartTime = formValue.startTime
       this.inputEndTime = formValue.endTime
@@ -153,6 +154,7 @@ export default {
       this.reservationEndTime = formValue.reserveDate
       this.createReservation()
     },
+    //予約更新
     createReservation() {
       this.reservationStartTime = (`${this.reservationDate} ${this.inputStartTime}`)
       this.reservationEndTime = (`${this.reservationDate} ${this.inputEndTime}`)
@@ -186,20 +188,12 @@ export default {
       })
     },
     formatDate(dateStr) {
-      return this.dateToStr24HPad0DayOfWeek(new Date(dateStr), 'hh:mm')
+      return this.formatReserveTime(new Date(dateStr), 'hh:mm')
     },
-    dateToStr24HPad0DayOfWeek(date, format) {
-      var weekday = ["日", "月", "火", "水", "木", "金", "土"];
-      if (!format) {
-          format = 'YYYY/MM/DD(WW) hh:mm:ss'
-      }
-      format = format.replace(/YYYY/g, date.getFullYear());
-      format = format.replace(/MM/g, ('0' + (date.getMonth() + 1)).slice(-2));
-      format = format.replace(/DD/g, ('0' + date.getDate()).slice(-2));
-      format = format.replace(/WW/g, weekday[date.getDay()]);
+    //Railsから受け取った予約データから時間だけを取り出す
+    formatReserveTime(date, format) {
       format = format.replace(/hh/g, ('0' + date.getHours()).slice(-2));
       format = format.replace(/mm/g, ('0' + date.getMinutes()).slice(-2));
-      format = format.replace(/ss/g, ('0' + date.getSeconds()).slice(-2));
       return format;
     },
     updateChartData(reserveData,emloyeeData) {
