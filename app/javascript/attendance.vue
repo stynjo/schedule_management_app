@@ -80,7 +80,6 @@ import axios from 'axios'
 import Chart from 'chart.vue'
 import VueTimepicker from 'vue2-timepicker'
 import FlashMessage from 'flash-message.vue'
-import DeleteModal from 'delete-modal.vue'
 import AttendanceModal from 'attendance-modal.vue'
 import AttendanceDeleteModal from 'attendance-delete-modal.vue'
 
@@ -110,7 +109,6 @@ export default {
   },
   components: {
     'vue-timepicker': VueTimepicker,
-    'delete-modal': DeleteModal,
     'attendance-modal': AttendanceModal,
     'attendance-delete-modal': AttendanceDeleteModal,
     'radar-chart': Chart,
