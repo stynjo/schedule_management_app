@@ -2,17 +2,17 @@
 従業員の勤怠管理と、予約スケジュールを登録、閲覧できるアプリケーションです。  
 
 ## セットアップ手順  
-開発環境: cloud9 
-OS: Amazon Linux 2
+開発環境: cloud9   
+OS: Amazon Linux 2  
 
-Railsをインストール
+Railsをインストール  
 `gem install rails -v 6.0.3` 
 
-アプリケーションを新規作成
+アプリケーションを新規作成  
 `rails _6.0.3_ new アプリ名`  
 `bundle install`  
 
-yarnインストール
+yarnインストール  
 `npm install -g yarn`  
 
 webpackerをインストール  
@@ -29,6 +29,6 @@ end
 
 
 ## 使用技術  
-Ruby on Rails 6.0.3  
-Vue.js 2.6.11
+Ruby on Rails `v6.0.3`  
+Vue.js `@2.6.11`
 
