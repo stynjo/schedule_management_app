@@ -31,6 +31,8 @@ Rails.application.configure do
 end
 ```  
 
-## 使用技術  
+## 使用技術 
+```markdown 
 Ruby on Rails `v6.0.3`  
 Vue.js `@2.6.11`
+```
