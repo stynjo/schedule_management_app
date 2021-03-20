@@ -3,8 +3,10 @@
 SPAによるチャーと描画により、手早く簡単にスケジュール確認ができます。  
 
 ## セットアップ手順 
-**開発環境: cloud9**   
-**OS: Amazon Linux 2** 
+```markdown  
+開発環境: cloud9  
+OS: Amazon Linux 2  
+ ```
  
  ```markdown.rb
 * Railsをインストール  
