@@ -74,7 +74,7 @@
 import VueTimepicker from 'vue2-timepicker'
 import Chart from 'chart.vue';
 import axios from 'axios';
-import DeleteModal from 'delete-modal.vue'
+import DeleteModal from 'reserve-delete-modal.vue'
 import ReserveModal from 'reserve-modal.vue'
 import FlashMessage from 'flash-message.vue'
 
