@@ -60,7 +60,7 @@
                   <td v-for="targetTime in attendanceTargerTimes" class="attend" :class="getAttendanceCssClass(user, targetTime)">
                     <div class="chart">&nbsp;</div>
                   </td>
-                  <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#attendance-modal" @click="registrationTarget = user.id;">登録</button></td>
+                  <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#attendance-modal" @click="registrationTarget = user.id; registrationTargetName = user.name">登録</button></td>
                   <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#attendance-delete-modal" @click="deleteTarget = user.id;">削除</button></td>
                 </tr>
               </tbody>
@@ -69,7 +69,7 @@
         </div>
       </div>
     </div>
-    <attendance-modal :createAttendanceDate='displayDate' deleteTarget='' @ok="onCreateAttendanceData(deleteTarget);"></attendance-modal>
+    <attendance-modal :createAttendanceDate='displayDate' :attendanceUserName='registrationTargetName'></attendance-modal>
     <attendance-delete-modal deleteTarget='' @ok="onDeleteAttendance(deleteTarget);"></attendance-delete-modal>
   </div>
 
@@ -100,6 +100,7 @@ export default {
       deleteTarget: '',
       attendanceDeleteModal: false,
       registrationTarget: '',
+      registrationTargetName: '',
       attendanceListStart: [],
       attendanceListEnd: [],
       chartData: {},

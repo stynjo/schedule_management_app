@@ -12,6 +12,16 @@
           <div class="form-group">
             <div class="row">
               <div class="col-4">
+                <h5>登録者名</h5>
+              </div>
+              <div class="col-8">
+                <h5>{{ attendanceUserName }}</h5>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-4">
                 <h5>登録日時</h5>
               </div>
               <div class="col-8">
@@ -65,7 +75,7 @@
 <script>
 import VueTimepicker from 'vue2-timepicker'
 export default {
-  props: ['createAttendanceDate'],
+  props: ['createAttendanceDate','attendanceUserName'],
   components: {
     'vue-timepicker': VueTimepicker
   },
