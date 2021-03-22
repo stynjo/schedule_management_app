@@ -69,7 +69,7 @@
         </div>
       </div>
     </div>
-    <attendance-modal :createAttendanceDate='displayDate' deleteTarget='' @ok="onCreateAttendanceData(deleteTarget);"></attendance-modal>
+    <attendance-modal :createAttendanceDate='displayDate'></attendance-modal>
     <attendance-delete-modal deleteTarget='' @ok="onDeleteAttendance(deleteTarget);"></attendance-delete-modal>
   </div>
 
