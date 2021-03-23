@@ -3,8 +3,8 @@ require "slack"
 namespace :announce do
   desc "当日の予約一覧を通知します。"
   task todays_reservation: :environment do
-    `echo "announce:todays_reservation start!" >> /tmp/test`
-    puts ENV['SLACK_TOKEN']
+    # `echo "announce:todays_reservation start!" >> /tmp/test`
+    # puts ENV['SLACK_TOKEN']
     Slack.configure do |config|
       config.token = ENV['SLACK_TOKEN']
     end
