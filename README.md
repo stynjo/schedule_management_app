@@ -23,4 +23,5 @@ Slack API
 ```
 
 ## 取扱説明書  
-https://gist.github.com/stynjo/1f5bb76ba0c2cbf22920542c34bf6b25
+[取扱説明書.pdf](https://github.com/stynjo/schedule_management_app/files/6194556/default.pdf)
+
