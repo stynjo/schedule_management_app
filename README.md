@@ -6,6 +6,8 @@ SPAによるチャート描画により、手早く簡単にスケジュール�
 #### スケジュール管理アプリ  
 https://schedule-manager-app.herokuapp.com/ 
 
+## 取扱説明書  
+[取扱説明書.pdf](https://github.com/stynjo/schedule_management_app/files/6194556/default.pdf)
 
 ![B22C0299-B1C0-4B1B-9E0C-DE021102C0DE_1_105_c](https://user-images.githubusercontent.com/47071757/111869924-fa3f9b80-89c4-11eb-9f0f-955705b773ee.jpeg)
 
@@ -22,6 +24,5 @@ Vue.js `@2.6.11`
 Slack API
 ```
 
-## 取扱説明書  
-[取扱説明書.pdf](https://github.com/stynjo/schedule_management_app/files/6194556/default.pdf)
+
 
