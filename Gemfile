@@ -31,7 +31,7 @@ gem 'devise-i18n'
 gem 'devise-i18n-views'
 
 group :development, :test do
-  gem 'sqlite3', '~> 1.4'
+  gem 'sqlite3', '~> 1.3.6'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails', '~> 4.0.2'
   gem "factory_bot_rails"
