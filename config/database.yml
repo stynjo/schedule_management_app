@@ -22,5 +22,6 @@ test:
 
 production:
   <<: *default
-  adapter: postgresql  #追記
-  database: db/production.postgresql
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
